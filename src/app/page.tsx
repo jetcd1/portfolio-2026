@@ -35,7 +35,7 @@ export default function Home() {
           className="relative z-10 max-w-5xl w-full flex flex-col items-center"
         >
           <motion.h1 variants={fadeUp} className="text-6xl md:text-8xl lg:text-9xl font-display font-medium tracking-tighter mb-8 max-w-5xl text-foreground !leading-[1.1]">
-            Structuring <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground to-muted">Complexity.</span>
+            Structuring <span className="text-apple-blue">Complexity.</span>
           </motion.h1>
           
           <motion.p variants={fadeUp} className="text-muted text-lg md:text-2xl max-w-3xl mb-12">
@@ -78,7 +78,7 @@ export default function Home() {
           <div>
             <h2 className="text-4xl md:text-6xl font-display font-medium tracking-tight mb-4 text-foreground">Selected Work</h2>
             <p className="text-muted text-lg md:text-xl max-w-xl">
-              11 years of experience designing for data-heavy business dashboards and complex operational tools.
+              <span className="text-apple-blue font-medium">11 years</span> of experience designing for data-heavy business dashboards and complex operational tools.
             </p>
           </div>
           <Button variant="outline" href="/work">View All Works</Button>
@@ -92,8 +92,8 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <ProjectCard 
-              title="United Airlines Setup & Release"
-              description="Led UX/UI execution for large-scale internal operational tools supporting complex aviation workflows and contributed to the Orion design system."
+              title={"Ground Service Equipment\nRequest Queue"}
+              description="Internal tool for United Airlines — Airport Ops and GSE teams track, manage, and resolve equipment repair requests across stations in real time."
               tags={["Aviation", "Internal Tools", "Design System"]}
               video="/works/gse/thumbnail.mp4"
               href="/work/united-airlines"

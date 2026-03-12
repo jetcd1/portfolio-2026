@@ -6,6 +6,7 @@
   --accent: #111111;
   --muted: #888888;
   --border: #eaeaea;
+  --apple-blue: #0071E3;
   --font-sans: var(--font-inter);
   --font-display: var(--font-outfit);
 }
@@ -16,6 +17,7 @@
   --accent: #ffffff;
   --muted: #86868b;
   --border: #333336;
+  --apple-blue: #2997FF;
 }
 
 @theme inline {
@@ -24,6 +26,7 @@
   --color-accent: var(--accent);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-apple-blue: var(--apple-blue);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
 }

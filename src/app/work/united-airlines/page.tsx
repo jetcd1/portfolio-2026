@@ -1,6 +1,7 @@
 "use client";
 
 import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
+import KeyGoalsSection from "@/components/ui/KeyGoalsSection";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -9,12 +10,7 @@ import { motion } from "framer-motion";
 // The ordered list of contents for the GSE Case Study
 const gseMediaContent = [
   { id: 1, type: "image", src: "/works/gse/1.png" },
-  { 
-    id: 2, 
-    type: "image", 
-    src: "/works/gse/2.key goals.png", 
-    title: "Key Goals" 
-  },
+  { id: 2, type: "custom-key-goals" },
   { 
     id: 3, 
     type: "video", 
@@ -188,13 +184,13 @@ export default function GSEWorkDetail() {
           >
             <h1 className="text-5xl md:text-7xl lg:text-9xl font-display font-medium text-white tracking-tighter leading-none max-w-5xl">
               Ground Service Equipment<br/>
-              <span className="text-white/70 italic">Request Queue</span>
+              <span className="text-apple-blue italic">Request Queue</span>
             </h1>
 
             <div className="flex flex-col md:flex-row gap-8 md:gap-16 mt-4 md:mt-8">
               <div className="w-full md:w-2/3">
                 <p className="text-lg md:text-2xl text-white/90 leading-relaxed max-w-3xl">
-                  The GSE Service Request Queue is an internal tool for United Airlines that allows Airport Ops and Ground Service Equipment teams to track, manage, and resolve repair requests in real time.
+                  The GSE Service Request Queue is an internal tool for <span className="text-apple-blue font-semibold">United Airlines</span> that allows Airport Ops and Ground Service Equipment teams to <span className="text-apple-blue">track, manage, and resolve</span> repair requests in real time.
                 </p>
                 <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mt-6">
                   I created end-to-end UI-visual designs and interaction flows for the GSE Service Request Queue. This included designing expandable cards, search and filter components, and the add/view note modal, while ensuring full alignment with Orion 2.0 component patterns for a modern, consistent, and scalable user experience.
@@ -203,7 +199,7 @@ export default function GSEWorkDetail() {
 
               <div className="w-full md:w-1/3 flex flex-col justify-end">
                 <div className="border-t border-white/20 pt-4 md:pt-6">
-                  <p className="text-[10px] md:text-xs text-white/50 uppercase tracking-widest mb-2 font-mono">Role & Scope</p>
+                  <p className="text-[10px] md:text-xs text-apple-blue uppercase tracking-widest mb-2 font-mono">Role & Scope</p>
                   <p className="text-sm md:text-base text-white/90 font-medium tracking-wide leading-relaxed">
                     UI · VISUAL · UX · COMPONENTS · INTERACTION DESIGN<br />
                     FIGMA / 4 MONTHS
@@ -222,6 +218,9 @@ export default function GSEWorkDetail() {
           {gseMediaContent.map((item, index) => {
             if (item.type === "custom-process") {
               return <DesignProcessSection key={item.id} />;
+            }
+            if (item.type === "custom-key-goals") {
+              return <KeyGoalsSection key={item.id} />;
             }
             
             return (
@@ -275,11 +274,11 @@ export default function GSEWorkDetail() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h3 className="text-sm md:text-base font-medium text-muted uppercase tracking-[0.2em] mb-4">
+            <h3 className="text-sm md:text-base font-medium text-apple-blue uppercase tracking-[0.2em] mb-4">
               Business Outcome
             </h3>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-foreground tracking-tight leading-tight">
-              Enterprise<br />Scale & Quality
+              Enterprise<br />Scale & <span className="text-apple-blue">Quality</span>
             </h2>
           </motion.div>
           
@@ -291,10 +290,10 @@ export default function GSEWorkDetail() {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           >
             <p className="text-2xl md:text-4xl font-display text-foreground leading-snug tracking-tight font-medium">
-              Delivered a robust, scalable interface seamlessly integrated with United Airlines' Orion 2.0 Design System.
+              Delivered a robust, scalable interface seamlessly integrated with United Airlines' <span className="text-apple-blue">Orion 2.0 Design System</span>.
             </p>
             <p className="text-xl md:text-2xl text-muted leading-relaxed font-light">
-              By deeply engaging with cross-functional stakeholders and standardizing complex data logic, I crafted an intuitive tracking queue that empowered Airport Ops and GSE Teams to monitor, prioritize, and resolve maintenance requests in real-time.
+              By deeply engaging with cross-functional stakeholders and standardizing complex data logic, I crafted an intuitive tracking queue that empowered <span className="text-apple-blue font-medium">Airport Ops and GSE Teams</span> to monitor, prioritize, and resolve maintenance requests in real-time.
             </p>
             <p className="text-xl md:text-2xl text-muted leading-relaxed font-light">
               This execution minimized downtime and streamlined ground operations across high-traffic enterprise environments, showcasing an ability to translate complex business requirements into elegant, component-driven products tailored for monumental corporate scale.
