@@ -95,20 +95,25 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className="relative text-xs md:text-sm font-medium hover:opacity-70 transition-opacity py-1 uppercase tracking-wider"
+                  className="relative text-[11px] md:text-xs font-medium px-4 py-2 uppercase tracking-[0.08em] group"
                   onMouseEnter={() => setHovered(link.name)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  {link.name}
-                  {hovered === link.name && (
-                    <motion.div
-                      layoutId="nav-underline"
-                      className="absolute left-0 right-0 -bottom-1 h-px bg-white"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    />
-                  )}
+                  <span className={`relative z-10 transition-colors duration-200 ${hovered === link.name ? 'text-white' : 'text-white/50'}`}>
+                    {link.name}
+                  </span>
+                  <AnimatePresence>
+                    {hovered === link.name && (
+                      <motion.div
+                        layoutId="nav-glow"
+                        className="absolute inset-0 bg-white/10 blur-md rounded-full -z-10"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                      />
+                    )}
+                  </AnimatePresence>
                 </Link>
               ))}
             </div>
