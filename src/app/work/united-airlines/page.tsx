@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 
 // The ordered list of contents for the GSE Case Study
 const gseMediaContent = [
-  { id: 1, type: "image", src: "/works/gse/1.png" },
+  { id: 1, type: "custom-problem" },
   { id: 2, type: "custom-key-goals" },
   { 
     id: 3, 
@@ -36,6 +36,85 @@ const gseMediaContent = [
   { id: 11, type: "image", src: "/works/gse/11.jpeg" },
   { id: 12, type: "video", src: "/works/gse/12.mp4" },
 ];
+
+const ProblemSection = () => (
+  <section className="w-full flex flex-col items-center gap-20 md:gap-32 px-4">
+    {/* Text Content */}
+    <div className="max-w-4xl w-full flex flex-col items-center text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        <p className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue mb-6">Problem</p>
+        <h2 className="text-4xl md:text-6xl font-display font-medium text-foreground tracking-tight mb-12">
+          Operational Fragmentation
+        </h2>
+      </motion.div>
+      
+      <div className="flex flex-col gap-6 text-xl md:text-2xl text-muted font-light leading-relaxed max-w-3xl">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+        >
+          Airport operations relied on fragmented tools and manual coordination, where equipment requests were often processed via physical paper forms and phone calls.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          This lack of digital visibility created significant blind spots for station managers and GSE shops, leading to maintenance delays and unrecorded equipment downtime.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          A unified, real-time system was required to transform these disconnected manual processes into a scalable digital ecosystem for the entire fleet.
+        </motion.p>
+      </div>
+    </div>
+
+    {/* Side-by-Side Images */}
+    <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 px-2 md:px-0">
+      <motion.div
+        className="group relative rounded-2xl overflow-hidden border border-white/5 bg-white/5 shadow-xl"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        whileHover={{ scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
+      >
+        <img src="/works/gse/1a.png" alt="Analog Workflow" className="w-full h-auto transform transition-transform duration-700 group-hover:scale-105" />
+        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+          <p className="text-xs uppercase tracking-widest text-white/50 mb-1">Before</p>
+          <p className="text-sm text-white/90">Paper-based manual workflow</p>
+        </div>
+      </motion.div>
+
+      <motion.div
+        className="group relative rounded-2xl overflow-hidden border border-white/5 bg-white/5 shadow-xl"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        whileHover={{ scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
+      >
+        <img src="/works/gse/1b.png" alt="Digital Workflow" className="w-full h-auto transform transition-transform duration-700 group-hover:scale-105" />
+        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+          <p className="text-xs uppercase tracking-widest text-apple-blue mb-1">After</p>
+          <p className="text-sm text-white/90">Unified digital request queue</p>
+        </div>
+      </motion.div>
+    </div>
+  </section>
+);
 
 const DesignProcessSection = () => {
   const steps = [
@@ -220,6 +299,9 @@ export default function GSEWorkDetail() {
         <div className="max-w-[1400px] w-full flex flex-col gap-32 md:gap-56">
           
           {gseMediaContent.map((item, index) => {
+            if (item.type === "custom-problem") {
+              return <ProblemSection key={item.id} />;
+            }
             if (item.type === "custom-process") {
               return <DesignProcessSection key={item.id} />;
             }
