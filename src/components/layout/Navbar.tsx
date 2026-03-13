@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Instagram, Linkedin, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useIntro } from "@/components/providers/IntroProvider";
+import { usePathname } from "next/navigation";
 
 const links = [
   { name: "AI Playground", href: "/ai-playground" },
@@ -18,8 +19,20 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const { isIntroDone } = useIntro();
+  const pathname = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleLinkClick = (e: React.MouseEvent, href: string) => {
+    if (href === "/#work" && pathname === "/") {
+      e.preventDefault();
+      const element = document.getElementById("work");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -81,6 +94,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
+                  onClick={(e) => handleLinkClick(e, link.href)}
                   className="relative text-xs md:text-sm font-medium hover:opacity-70 transition-opacity py-1 uppercase tracking-wider"
                   onMouseEnter={() => setHovered(link.name)}
                   onMouseLeave={() => setHovered(null)}
@@ -174,7 +188,7 @@ export default function Navbar() {
                   <motion.div key={link.name} custom={i} variants={navLinkVariants} className="overflow-hidden">
                     <Link
                       href={link.href}
-                      onClick={() => setIsOpen(false)}
+                      onClick={(e) => handleLinkClick(e, link.href)}
                       className="text-4xl sm:text-5xl font-display font-medium uppercase tracking-tight hover:italic transition-all"
                     >
                       {link.name}

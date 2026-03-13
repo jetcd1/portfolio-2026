@@ -1,42 +1,164 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useSpring } from "framer-motion";
+/**
+ * HeroField — Premium spatial energy interaction system
+ *
+ * Architecture (3 independent depth layers):
+ * 1. Static noise grain + ambient tinted haze (deep background)
+ * 2. Slow-breathing ambient pulse (mid)
+ * 3. Cursor-responsive multi-layer light field (foreground)
+ *
+ * All cursor tracking uses direct DOM manipulation → zero React re-renders
+ * Spring physics handled by framer-motion useSpring for smoothness.
+ */
 
-export default function InteractiveBackground() {
+import { useEffect, useRef, useState } from "react";
+import { useSpring } from "framer-motion";
+
+export default function HeroField() {
   const [mounted, setMounted] = useState(false);
-  const springConfig = { damping: 25, stiffness: 120, mass: 1 };
-  const cursorX = useSpring(0, springConfig);
-  const cursorY = useSpring(0, springConfig);
+
+  // Direct DOM refs for zero-rerender cursor response
+  const primaryRef  = useRef<HTMLDivElement>(null);
+  const secondaryRef = useRef<HTMLDivElement>(null);
+  const tertiaryRef  = useRef<HTMLDivElement>(null);
+  const coronaRef    = useRef<HTMLDivElement>(null);
+
+  // Spring-smoothed cursor position (raw values, updated imperatively)
+  const rawX = useRef(0);
+  const rawY = useRef(0);
+  const smoothX = useSpring(0, { stiffness: 55, damping: 18, mass: 1.2 });
+  const smoothY = useSpring(0, { stiffness: 55, damping: 18, mass: 1.2 });
+  // Faster spring for corona (tighter follow)
+  const fastX = useSpring(0, { stiffness: 120, damping: 22, mass: 0.6 });
+  const fastY = useSpring(0, { stiffness: 120, damping: 22, mass: 0.6 });
 
   useEffect(() => {
     setMounted(true);
-    const handleMouseMove = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 300); // Center the 600px orb
-      cursorY.set(e.clientY - 300);
+
+    const handleMove = (e: MouseEvent) => {
+      rawX.current = e.clientX;
+      rawY.current = e.clientY;
+      smoothX.set(e.clientX);
+      smoothY.set(e.clientY);
+      fastX.set(e.clientX);
+      fastY.set(e.clientY);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [cursorX, cursorY]);
+    // Drive DOM from spring values imperatively — avoids React render cycle
+    const unsubSX = smoothX.on("change", (x) => {
+      if (primaryRef.current)  primaryRef.current.style.transform  = `translate(${x - 500}px, ${smoothY.get() - 500}px)`;
+      if (secondaryRef.current) secondaryRef.current.style.transform = `translate(${x - 350}px, ${smoothY.get() - 350}px)`;
+      if (tertiaryRef.current) tertiaryRef.current.style.transform  = `translate(${x - 200}px, ${smoothY.get() - 200}px)`;
+    });
+    const unsubSY = smoothY.on("change", (y) => {
+      if (primaryRef.current)  primaryRef.current.style.transform  = `translate(${smoothX.get() - 500}px, ${y - 500}px)`;
+      if (secondaryRef.current) secondaryRef.current.style.transform = `translate(${smoothX.get() - 350}px, ${y - 350}px)`;
+      if (tertiaryRef.current) tertiaryRef.current.style.transform  = `translate(${smoothX.get() - 200}px, ${y - 200}px)`;
+    });
+    const unsubFX = fastX.on("change", (x) => {
+      if (coronaRef.current) coronaRef.current.style.transform = `translate(${x - 100}px, ${fastY.get() - 100}px)`;
+    });
+    const unsubFY = fastY.on("change", (y) => {
+      if (coronaRef.current) coronaRef.current.style.transform = `translate(${fastX.get() - 100}px, ${y - 100}px)`;
+    });
+
+    window.addEventListener("mousemove", handleMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      unsubSX();
+      unsubSY();
+      unsubFX();
+      unsubFY();
+    };
+  }, [smoothX, smoothY, fastX, fastY]);
 
   if (!mounted) return null;
 
   return (
     <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-background transition-colors duration-500">
-      {/* Dynamic Mouse Follower Orb */}
-      <motion.div
-        className="absolute w-[600px] h-[600px] rounded-full blur-[100px] opacity-40 dark:opacity-20 mix-blend-normal dark:mix-blend-screen"
+
+      {/* ── Layer 0: fine grain / film noise texture ─────────────────── */}
+      <div
+        className="absolute inset-0 opacity-[0.032] dark:opacity-[0.025]"
         style={{
-          x: cursorX,
-          y: cursorY,
-          background: "radial-gradient(circle, var(--foreground) 0%, transparent 60%)",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          backgroundSize: "128px 128px",
         }}
       />
-      {/* Noise overlay for Apple-like texture */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]" 
-        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
+
+      {/* ── Layer 1: deep static ambient tinted haze (always on) ─────── */}
+      {/* Cool blue-tinted glow at top-center — gives spatial depth */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[700px] opacity-[0.07] dark:opacity-[0.12]"
+        style={{
+          background: "radial-gradient(ellipse at 50% 20%, #2997FF 0%, #0071E3 25%, transparent 70%)",
+          filter: "blur(80px)",
+        }}
+      />
+      {/* Warm neutral center bloom — lifts the background */}
+      <div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] opacity-[0.04] dark:opacity-[0.06]"
+        style={{
+          background: "radial-gradient(ellipse, var(--foreground) 0%, transparent 65%)",
+          filter: "blur(60px)",
+        }}
+      />
+
+      {/* ── Layer 2: slow breathing pulse ────────────────────────────── */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[900px] opacity-[0.03] dark:opacity-[0.04] animate-[breathe_8s_ease-in-out_infinite]"
+        style={{
+          background: "radial-gradient(ellipse, var(--foreground) 0%, transparent 60%)",
+          filter: "blur(120px)",
+        }}
+      />
+
+      {/* ── Layer 3: Cursor energy field (3 nested orbs) ─────────────── */}
+
+      {/*  Outer atmosphere — very large, soft, slow */}
+      <div
+        ref={primaryRef}
+        className="absolute top-0 left-0 w-[1000px] h-[1000px] rounded-full opacity-[0.12] dark:opacity-[0.08]"
+        style={{
+          background: "radial-gradient(circle, var(--foreground) 0%, transparent 55%)",
+          filter: "blur(90px)",
+          willChange: "transform",
+        }}
+      />
+
+      {/* Mid energy ring — blue-tinted, medium */}
+      <div
+        ref={secondaryRef}
+        className="absolute top-0 left-0 w-[700px] h-[700px] rounded-full opacity-[0.09] dark:opacity-[0.06]"
+        style={{
+          background: "radial-gradient(circle, #2997FF 0%, #0071E3 30%, transparent 60%)",
+          filter: "blur(60px)",
+          willChange: "transform",
+        }}
+      />
+
+      {/* Inner glow — tighter, slightly warmer */}
+      <div
+        ref={tertiaryRef}
+        className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full opacity-[0.14] dark:opacity-[0.1]"
+        style={{
+          background: "radial-gradient(circle, var(--foreground) 0%, rgba(255,255,255,0.4) 30%, transparent 65%)",
+          filter: "blur(28px)",
+          willChange: "transform",
+        }}
+      />
+
+      {/* Corona — tight bright center, fast follow */}
+      <div
+        ref={coronaRef}
+        className="absolute top-0 left-0 w-[200px] h-[200px] rounded-full opacity-[0.08] dark:opacity-[0.07]"
+        style={{
+          background: "radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%)",
+          filter: "blur(10px)",
+          willChange: "transform",
+        }}
       />
     </div>
   );

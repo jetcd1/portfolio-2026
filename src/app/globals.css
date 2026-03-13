@@ -7,6 +7,7 @@
   --muted: #888888;
   --border: #eaeaea;
   --apple-blue: #0071E3;
+  --apple-red: #FF3B30;
   --font-sans: var(--font-inter);
   --font-display: var(--font-outfit);
 }
@@ -18,6 +19,7 @@
   --muted: #86868b;
   --border: #333336;
   --apple-blue: #2997FF;
+  --apple-red: #FF453A;
 }
 
 @theme inline {
@@ -27,6 +29,7 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-apple-blue: var(--apple-blue);
+  --color-apple-red: var(--apple-red);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
 }
@@ -58,4 +61,10 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--muted);
+}
+
+/* Ambient breathing pulse — HeroField */
+@keyframes breathe {
+  0%, 100% { opacity: 0.03; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 0.055; transform: translate(-50%, -50%) scale(1.08); }
 }
