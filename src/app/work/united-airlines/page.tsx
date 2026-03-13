@@ -149,27 +149,40 @@ export default function GSEWorkDetail() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#050505] selection:bg-apple-blue selection:text-white">
+    <main className="min-h-screen bg-black selection:bg-apple-blue selection:text-white">
       {/* ─── Hero Section ────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center pt-32 pb-20 px-6 overflow-hidden">
-        {/* Ambient background light */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[60%] bg-apple-blue/5 blur-[120px] rounded-full pointer-events-none" />
+      <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
+        {/* Full-screen Background Video */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          <video
+            ref={heroVideoRef}
+            src="/works/gse/hero.mp4"
+            className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
+            loop
+            muted
+            playsInline
+            autoPlay
+          />
+          {/* Cinematic Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black pointer-events-none" />
+          <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+        </div>
         
-        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center text-center">
+        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center text-center mt-auto md:mt-0">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="block text-[13px] font-medium tracking-[0.2em] uppercase text-white/40 mb-6">
+            <span className="block text-[13px] font-medium tracking-[0.2em] uppercase text-white/40 mb-6 font-mono">
               United Airlines — Internal Platform
             </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-medium text-white tracking-tight leading-[1.1] mb-8">
+            <h1 className="text-5xl md:text-7xl lg:text-9xl font-display font-medium text-white tracking-tight leading-[1.05] mb-8">
               Ground Service Equipment<br />
-              <span className="text-white/60 text-4xl md:text-5xl lg:text-6xl block mt-2">Request Queue</span>
+              <span className="text-apple-blue italic md:not-italic">Request Queue</span>
             </h1>
-            <p className="text-lg md:text-2xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-12 font-light">
-              Enterprise interface for managing airport equipment requests across stations.
+            <p className="text-lg md:text-2xl text-white/60 max-w-3xl mx-auto leading-relaxed mb-12 font-light">
+              Enterprise interface for <span className="text-apple-blue/90 font-medium">United Airlines</span> for managing airport equipment requests to <span className="text-apple-blue/90 font-medium whitespace-nowrap">track, manage, and resolve</span> repair requests in real time.
             </p>
           </motion.div>
 
@@ -186,7 +199,7 @@ export default function GSEWorkDetail() {
               { label: "Platform", value: "Enterprise Web App" }
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center">
-                <span className="text-[12px] uppercase tracking-[0.15em] text-white/30 font-semibold mb-3">{item.label}</span>
+                <span className="text-[12px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-3">{item.label}</span>
                 {Array.isArray(item.value) ? (
                   <div className="flex flex-col gap-1">
                     {item.value.map((v, j) => (
@@ -200,30 +213,6 @@ export default function GSEWorkDetail() {
             ))}
           </motion.div>
         </div>
-
-        {/* Floating UI Mockup */}
-        <motion.div 
-          className="relative mt-20 w-full max-w-7xl mx-auto px-4 perspective-1000"
-          initial={{ opacity: 0, scale: 0.95, y: 60 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="relative rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_40px_120px_rgba(0,0,0,0.8)]">
-            <video
-              ref={heroVideoRef}
-              src="/works/gse/hero.mp4"
-              className="w-full h-auto object-cover opacity-90"
-              loop
-              muted
-              playsInline
-              autoPlay
-            />
-            {/* Gloss overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
-            {/* Subtle rim light */}
-            <div className="absolute inset-0 ring-1 ring-inset ring-white/20 pointer-events-none rounded-[2rem]" />
-          </div>
-        </motion.div>
       </section>
 
       {/* Case Study Media Section */}
