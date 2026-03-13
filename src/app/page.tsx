@@ -138,13 +138,13 @@ function ScrollCue() {
 
 /* ─── Hero cursor-responsive title ─────────────────────────────────── */
 function HeroTitle() {
+  const { isIntroDone } = useIntro();
   const heroRef = useRef<HTMLDivElement>(null);
   const cx = useMotionValue(0.5);
   const cy = useMotionValue(0.5);
   const scx = useSpring(cx, { stiffness: 40, damping: 18, mass: 1.5 });
   const scy = useSpring(cy, { stiffness: 40, damping: 18, mass: 1.5 });
 
-  // "Complexity." moves more than "Structuring"
   const complexX = useTransform(scx, [0, 1], ["-6px", "6px"]);
   const complexY = useTransform(scy, [0, 1], ["-3px", "3px"]);
   const structX  = useTransform(scx, [0, 1], ["-2px", "2px"]);
@@ -157,39 +157,60 @@ function HeroTitle() {
     cy.set((e.clientY - rect.top) / rect.height);
   }, [cx, cy]);
 
+  // Entrance base delay logic: 0.1s if already intro done (refresh), otherwise wait for intro (3.8s)
+  const baseDelay = isIntroDone ? 0.1 : 3.8;
+
   return (
     <div ref={heroRef} onMouseMove={onMove} className="w-full flex flex-col items-center">
-      <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-display font-medium tracking-tighter mb-8 max-w-6xl text-foreground !leading-[1] text-center select-none overflow-hidden pb-4">
-        <motion.span 
-          className="inline-block" 
-          style={{ x: structX, y: structY }}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 3.8 }}
-        >
-          Structuring{" "}
-        </motion.span>
-        <div className="inline-block relative">
-          <motion.span
-            className="inline-block text-apple-blue overflow-hidden relative"
-            style={{ x: complexX, y: complexY }}
+      <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-display font-medium tracking-tighter mb-8 max-w-6xl text-foreground !leading-[1] text-center select-none overflow-visible pb-4">
+        <div className="inline-block relative overflow-hidden h-full py-2">
+          <motion.span 
+            className="inline-block relative" 
+            style={{ x: structX, y: structY }}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 3.95 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: baseDelay }}
           >
-            Complexity.
-            
-            {/* Light Sweep Effect */}
+            Structuring{" "}
+            {/* Light Sweep - Part 1 */}
             <motion.div
               className="absolute inset-0 z-10 w-full h-full"
               initial={{ x: "-100%" }}
               animate={{ x: "100%" }}
               transition={{
-                duration: 2,
+                duration: 1,
                 ease: [0.16, 1, 0.3, 1],
                 repeat: Infinity,
-                repeatDelay: 12, // Occurs every ~14 seconds
-                delay: 6 // Initial delay after entrance
+                repeatDelay: 8,
+                delay: baseDelay + 2.5
+              }}
+              style={{
+                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)",
+              }}
+            />
+          </motion.span>
+        </div>
+        <div className="inline-block relative overflow-hidden h-full py-2">
+          <motion.span
+            className="inline-block text-apple-blue relative"
+            style={{ x: complexX, y: complexY }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: baseDelay + 0.15 }}
+          >
+            Complexity.
+            
+            {/* Light Sweep - Part 2 (Sequential) */}
+            <motion.div
+              className="absolute inset-0 z-10 w-full h-full"
+              initial={{ x: "-100%" }}
+              animate={{ x: "100%" }}
+              transition={{
+                duration: 1,
+                ease: [0.16, 1, 0.3, 1],
+                repeat: Infinity,
+                repeatDelay: 8,
+                delay: baseDelay + 2.8 // Delay relative to Structuring sweep
               }}
               style={{
                 background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)",
@@ -226,7 +247,7 @@ export default function Home() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 4.25 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: (isIntroDone ? 0.1 : 3.8) + 0.45 }}
             className="text-muted text-lg md:text-2xl max-w-2xl font-light tracking-tight opacity-70 !leading-[1.6]"
           >
             Designing clarity<br className="hidden md:block" /> for complex systems.
