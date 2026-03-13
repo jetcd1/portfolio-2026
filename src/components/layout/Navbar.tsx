@@ -115,22 +115,75 @@ export default function Navbar() {
             
             {/* Desktop Icons */}
             <div className="hidden md:flex gap-5 items-center ml-4 border-l border-white/30 pl-8">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
-                <Instagram size={18} />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
-                <Linkedin size={18} />
-              </a>
+              {/* Instagram */}
+              <div className="relative flex items-center">
+                <motion.a 
+                  href="https://instagram.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-1 hover:opacity-100 transition-opacity"
+                  onMouseEnter={() => setHovered("instagram")}
+                  onMouseLeave={() => setHovered(null)}
+                  whileHover={{ scale: 1.15 }}
+                >
+                  <Instagram size={18} className={hovered === "instagram" ? "opacity-100 text-white" : "opacity-60 text-white"} />
+                </motion.a>
+                <AnimatePresence>
+                  {hovered === "instagram" && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8, y: -10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 whitespace-nowrap z-[60]"
+                    >
+                      <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-white/90">
+                        Instagram
+                      </span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* LinkedIn */}
+              <div className="relative flex items-center">
+                <motion.a 
+                  href="https://linkedin.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-1 hover:opacity-100 transition-opacity"
+                  onMouseEnter={() => setHovered("linkedin")}
+                  onMouseLeave={() => setHovered(null)}
+                  whileHover={{ scale: 1.15 }}
+                >
+                  <Linkedin size={18} className={hovered === "linkedin" ? "opacity-100 text-white" : "opacity-60 text-white"} />
+                </motion.a>
+                <AnimatePresence>
+                  {hovered === "linkedin" && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8, y: -10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 whitespace-nowrap z-[60]"
+                    >
+                      <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-white/90">
+                        LinkedIn
+                      </span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
               
               <div className="relative flex items-center">
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                   onMouseEnter={() => setHovered("theme")}
                   onMouseLeave={() => setHovered(null)}
-                  className="ml-2 hover:opacity-70 transition-opacity relative"
+                  className="ml-2 hover:opacity-100 transition-opacity relative p-1"
                   aria-label="Toggle theme"
                 >
-                  {mounted && theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                  <motion.div whileHover={{ scale: 1.15 }} className={hovered === "theme" ? "opacity-100 text-white" : "opacity-60 text-white"}>
+                    {mounted && theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                  </motion.div>
                 </button>
 
                 <AnimatePresence>
@@ -139,7 +192,7 @@ export default function Navbar() {
                       initial={{ opacity: 0, scale: 0.8, y: -10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.8, y: -10 }}
-                      className="absolute top-full right-0 mt-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 whitespace-nowrap"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 whitespace-nowrap z-[60]"
                     >
                       <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-white/90">
                         {theme === "dark" ? "Light Mode" : "Dark Mode"}
