@@ -187,6 +187,15 @@ export default function GSEWorkDetail() {
               <span className="text-apple-blue italic">Request Queue</span>
             </h1>
 
+            <div className="mt-8 md:mt-12">
+              <p className="text-lg md:text-2xl text-white/90 leading-relaxed max-w-3xl">
+                The GSE Service Request Queue is an internal tool for <span className="text-apple-blue font-semibold">United Airlines</span> that allows Airport Ops and Ground Service Equipment teams to <span className="text-apple-blue">track, manage, and resolve</span> repair requests in real time.
+              </p>
+              <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mt-6 font-light">
+                I created end-to-end UI-visual designs and interaction flows for the GSE Service Request Queue. This included designing expandable cards, search and filter components, and the add/view note modal, while ensuring full alignment with Orion 2.0 component patterns for a modern, consistent, and scalable user experience.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-16 md:mt-24 border-t border-white/10 pt-10 md:pt-16 w-full">
               <div>
                 <p className="text-[12px] text-apple-blue uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Role</p>
