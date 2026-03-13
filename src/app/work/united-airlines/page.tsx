@@ -149,75 +149,81 @@ export default function GSEWorkDetail() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background overflow-hidden selection:bg-foreground selection:text-background">
-      {/* Hero Section */}
-      <section className="relative w-full h-screen min-h-[800px] flex flex-col justify-end pb-24 md:pb-32 px-4 md:px-12 lg:px-24 bg-black">
-        {/* Background Video */}
-        <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
-          <video
-            ref={heroVideoRef}
-            src="/works/gse/hero.mp4"
-            className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
-            loop
-            muted
-            playsInline
-          />
-          {/* Always Dark Gradient Overlay for Maximum Legibility in both modes */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col items-start text-white">
-          <Link 
-            href="/#work" 
-            className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-8 md:mb-12 font-medium tracking-wide uppercase text-xs md:text-sm"
-          >
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Works
-          </Link>
-
+    <main className="min-h-screen bg-[#050505] selection:bg-apple-blue selection:text-white">
+      {/* ─── Hero Section ────────────────────────────────────────────────── */}
+      <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center pt-32 pb-20 px-6 overflow-hidden">
+        {/* Ambient background light */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[60%] bg-apple-blue/5 blur-[120px] rounded-full pointer-events-none" />
+        
+        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center text-center">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col gap-6 md:gap-8"
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-display font-medium text-white tracking-tighter leading-none max-w-5xl">
-              Ground Service Equipment<br/>
-              <span className="text-apple-blue italic">Request Queue</span>
+            <span className="block text-[13px] font-medium tracking-[0.2em] uppercase text-white/40 mb-6">
+              United Airlines — Internal Platform
+            </span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-medium text-white tracking-tight leading-[1.1] mb-8">
+              Ground Service Equipment<br />
+              <span className="text-white/60 text-4xl md:text-5xl lg:text-6xl block mt-2">Request Queue</span>
             </h1>
+            <p className="text-lg md:text-2xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-12 font-light">
+              Enterprise interface for managing airport equipment requests across stations.
+            </p>
+          </motion.div>
 
-            <div className="mt-8 md:mt-12">
-              <p className="text-lg md:text-2xl text-white/90 leading-relaxed max-w-3xl">
-                The GSE Service Request Queue is an internal tool for <span className="text-apple-blue font-semibold">United Airlines</span> that allows Airport Ops and Ground Service Equipment teams to <span className="text-apple-blue">track, manage, and resolve</span> repair requests in real time.
-              </p>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mt-6 font-light">
-                I created end-to-end UI-visual designs and interaction flows for the GSE Service Request Queue. This included designing expandable cards, search and filter components, and the add/view note modal, while ensuring full alignment with Orion 2.0 component patterns for a modern, consistent, and scalable user experience.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-16 md:mt-24 border-t border-white/10 pt-10 md:pt-16 w-full">
-              <div>
-                <p className="text-[12px] text-apple-blue uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Role</p>
-                <p className="text-base md:text-[16px] text-white/90 font-medium leading-relaxed">
-                  Product Design · Visual Design
-                </p>
+          {/* Metadata Grid */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 border-t border-white/10 pt-10 mt-16 w-full max-w-4xl"
+          >
+            {[
+              { label: "Role", value: "Product Design" },
+              { label: "Scope", value: ["Interface Design", "Design Systems"] },
+              { label: "Platform", value: "Enterprise Web App" }
+            ].map((item, i) => (
+              <div key={i} className="flex flex-col items-center">
+                <span className="text-[12px] uppercase tracking-[0.15em] text-white/30 font-semibold mb-3">{item.label}</span>
+                {Array.isArray(item.value) ? (
+                  <div className="flex flex-col gap-1">
+                    {item.value.map((v, j) => (
+                      <span key={j} className="text-[16px] text-white/80 font-medium leading-[1.4]">{v}</span>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-[16px] text-white/80 font-medium leading-[1.4]">{item.value}</span>
+                )}
               </div>
-              <div>
-                <p className="text-[12px] text-apple-blue uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Scope</p>
-                <p className="text-base md:text-[16px] text-white/90 font-medium leading-relaxed">
-                  Interface Design · Design Systems · Interaction
-                </p>
-              </div>
-              <div>
-                <p className="text-[12px] text-apple-blue uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Platform</p>
-                <p className="text-base md:text-[16px] text-white/90 font-medium leading-relaxed">
-                  Enterprise Web App · Desktop
-                </p>
-              </div>
-            </div>
+            ))}
           </motion.div>
         </div>
+
+        {/* Floating UI Mockup */}
+        <motion.div 
+          className="relative mt-20 w-full max-w-7xl mx-auto px-4 perspective-1000"
+          initial={{ opacity: 0, scale: 0.95, y: 60 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="relative rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_40px_120px_rgba(0,0,0,0.8)]">
+            <video
+              ref={heroVideoRef}
+              src="/works/gse/hero.mp4"
+              className="w-full h-auto object-cover opacity-90"
+              loop
+              muted
+              playsInline
+              autoPlay
+            />
+            {/* Gloss overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+            {/* Subtle rim light */}
+            <div className="absolute inset-0 ring-1 ring-inset ring-white/20 pointer-events-none rounded-[2rem]" />
+          </div>
+        </motion.div>
       </section>
 
       {/* Case Study Media Section */}
