@@ -241,6 +241,7 @@ export default function Home() {
         <div className="flex flex-col gap-16 md:gap-32">
           {[
             {
+              company: "United Airlines",
               title: "Ground Service Equipment\nRequest Queue",
               description: "Internal tool for United Airlines — Airport Ops and GSE teams track, manage, and resolve equipment repair requests across stations in real time.",
               tags: ["Aviation", "Internal Tools", "Design System"],
@@ -248,12 +249,14 @@ export default function Home() {
               href: "/work/united-airlines",
             },
             {
+              company: "Ontada",
               title: "Ontada iKnowMed G2",
               description: "Contributed to ONC-certified oncology EHR product design while helping build scalable design system foundations for internal enterprise platforms.",
               tags: ["Healthcare", "EHR", "Design System"],
               href: "/work/ontada",
             },
             {
+              company: "Equilar",
               title: "Equilar Data Dashboards",
               description: "Designed executive benchmarking tools and data-heavy business dashboards, focusing on visualizing complex information clearly.",
               tags: ["Data Visualization", "B2B SaaS", "Dashboards"],
