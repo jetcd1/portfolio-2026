@@ -101,20 +101,28 @@ export default function IntroLoader() {
               className="relative z-10 flex flex-col items-center justify-center w-full"
               initial={{ opacity: 0, scale: 0.8, filter: "blur(30px)" }}
               animate={phase === 1 
-                ? { opacity: 1, scale: 1, filter: "blur(0px)", letterSpacing: "0em" } 
-                : { opacity: 0, scale: 1.25, filter: "blur(50px)", letterSpacing: "0.4em" }
+                ? { opacity: 1, scale: 1, filter: "blur(0px)", letterSpacing: "0.02em" } 
+                : { 
+                    opacity: 0, 
+                    scale: 1.5, 
+                    filter: "blur(80px) brightness(2.5)", 
+                    letterSpacing: "1.2em",
+                  }
               }
-              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ 
+                duration: phase === 1 ? 1.5 : 2.2, 
+                ease: [0.16, 1, 0.3, 1] 
+              }}
             >
               <div className="overflow-hidden mb-4 relative z-20">
                 <motion.h1 
-                  className="text-[12vw] md:text-[8vw] font-display font-light text-foreground tracking-[-0.04em] leading-none mix-blend-difference"
+                  className="text-[12vw] md:text-[8vw] font-display font-semibold text-foreground tracking-[0.02em] leading-none mix-blend-difference"
                   initial={{ y: "100%" }}
                   animate={{ y: "0%" }}
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
                   style={{ textShadow: "0 0 40px rgba(255,255,255,0.2)" }}
                 >
-                  CHAN <span className="font-semibold">JEON</span>
+                  CHAN <span className="font-light">JEON</span>
                 </motion.h1>
               </div>
 
