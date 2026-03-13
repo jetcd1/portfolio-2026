@@ -157,11 +157,11 @@ function HeroTitle() {
     cy.set((e.clientY - rect.top) / rect.height);
   }, [cx, cy]);
 
-  // Entrance base delay logic: 0.1s if already intro done (refresh), otherwise wait for intro (3.8s)
-  const baseDelay = isIntroDone ? 0.1 : 3.8;
+  // Entrance base delay logic: 0.4s if already intro done (refresh), otherwise wait for intro (3.8s)
+  const baseDelay = isIntroDone ? 0.4 : 3.8;
 
   return (
-    <div ref={heroRef} onMouseMove={onMove} className="w-full flex flex-col items-center">
+    <div ref={heroRef} onMouseMove={onMove} className="w-full flex flex-col items-center" key={isIntroDone ? "ready" : "intro"}>
       <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-display font-medium tracking-tighter mb-8 max-w-6xl text-foreground !leading-[1] text-center select-none overflow-visible pb-4">
         <div className="inline-block relative overflow-hidden h-full py-2">
           <motion.span 
@@ -247,7 +247,7 @@ export default function Home() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: (isIntroDone ? 0.1 : 3.8) + 0.45 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: (isIntroDone ? 0.4 : 3.8) + 0.45 }}
             className="text-muted text-lg md:text-2xl max-w-2xl font-light tracking-tight opacity-70 !leading-[1.6]"
           >
             Designing clarity<br className="hidden md:block" /> for complex systems.

@@ -104,13 +104,13 @@ export default function IntroLoader() {
                 ? { opacity: 1, scale: 1, filter: "blur(0px)", letterSpacing: "0.02em" } 
                 : { 
                     opacity: 0, 
-                    scale: 1.5, 
-                    filter: "blur(80px) brightness(2.5)", 
-                    letterSpacing: "1.2em",
+                    scale: 1.8, 
+                    filter: "blur(100px) brightness(4) contrast(1.2)", 
+                    letterSpacing: "1.5em",
                   }
               }
               transition={{ 
-                duration: phase === 1 ? 1.5 : 2.2, 
+                duration: phase === 1 ? 1.2 : 2.5, 
                 ease: [0.16, 1, 0.3, 1] 
               }}
             >

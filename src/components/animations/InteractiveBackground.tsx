@@ -108,7 +108,7 @@ export default function HeroField() {
       {/* ── Layer 0.5: Systematic Grid Texture (Cursor Responsive) ───── */}
       <div
         ref={gridRef}
-        className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.08] dark:opacity-[0.06]"
         style={{
           backgroundImage: `
             linear-gradient(to right, var(--foreground) 1px, transparent 1px),
