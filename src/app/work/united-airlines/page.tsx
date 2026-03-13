@@ -29,7 +29,7 @@ const gseMediaContent = [
   { id: 4, type: "custom-process" },
   { id: 5, type: "image", src: "/works/gse/5.png" },
   { id: 6, type: "image", src: "/works/gse/6.png" },
-  { id: 7, type: "image", src: "/works/gse/7.png" },
+  { id: 7, type: "image", src: "/works/gse/7.png", title: "최종목업" },
   { id: 8, type: "image", src: "/works/gse/8.png" },
   { id: 9, type: "image", src: "/works/gse/9.png" },
   { id: 10, type: "image", src: "/works/gse/10.jpeg" },
