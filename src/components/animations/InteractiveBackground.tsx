@@ -19,10 +19,11 @@ export default function HeroField() {
   const [mounted, setMounted] = useState(false);
 
   // Direct DOM refs for zero-rerender cursor response
-  const primaryRef  = useRef<HTMLDivElement>(null);
-  const secondaryRef = useRef<HTMLDivElement>(null);
-  const tertiaryRef  = useRef<HTMLDivElement>(null);
-  const coronaRef    = useRef<HTMLDivElement>(null);
+  const primaryRef   = useRef<HTMLDivElement>(null);
+  const secondaryRef  = useRef<HTMLDivElement>(null);
+  const tertiaryRef   = useRef<HTMLDivElement>(null);
+  const coronaRef     = useRef<HTMLDivElement>(null);
+  const gridRef       = useRef<HTMLDivElement>(null);
 
   // Spring-smoothed cursor position (raw values, updated imperatively)
   const rawX = useRef(0);
@@ -47,15 +48,31 @@ export default function HeroField() {
 
     // Drive DOM from spring values imperatively — avoids React render cycle
     const unsubSX = smoothX.on("change", (x) => {
-      if (primaryRef.current)  primaryRef.current.style.transform  = `translate(${x - 500}px, ${smoothY.get() - 500}px)`;
-      if (secondaryRef.current) secondaryRef.current.style.transform = `translate(${x - 350}px, ${smoothY.get() - 350}px)`;
-      if (tertiaryRef.current) tertiaryRef.current.style.transform  = `translate(${x - 200}px, ${smoothY.get() - 200}px)`;
+      const y = smoothY.get();
+      if (primaryRef.current)  primaryRef.current.style.transform  = `translate(${x - 500}px, ${y - 500}px)`;
+      if (secondaryRef.current) secondaryRef.current.style.transform = `translate(${x - 350}px, ${y - 350}px)`;
+      if (tertiaryRef.current)  tertiaryRef.current.style.transform  = `translate(${x - 200}px, ${y - 200}px)`;
+      
+      // Update grid spotlight mask
+      if (gridRef.current) {
+        gridRef.current.style.maskImage = `radial-gradient(600px circle at ${x}px ${y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 100%)`;
+        gridRef.current.style.webkitMaskImage = `radial-gradient(600px circle at ${x}px ${y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 100%)`;
+      }
     });
+
     const unsubSY = smoothY.on("change", (y) => {
-      if (primaryRef.current)  primaryRef.current.style.transform  = `translate(${smoothX.get() - 500}px, ${y - 500}px)`;
-      if (secondaryRef.current) secondaryRef.current.style.transform = `translate(${smoothX.get() - 350}px, ${y - 350}px)`;
-      if (tertiaryRef.current) tertiaryRef.current.style.transform  = `translate(${smoothX.get() - 200}px, ${y - 200}px)`;
+      const x = smoothX.get();
+      if (primaryRef.current)  primaryRef.current.style.transform  = `translate(${x - 500}px, ${y - 500}px)`;
+      if (secondaryRef.current) secondaryRef.current.style.transform = `translate(${x - 350}px, ${y - 350}px)`;
+      if (tertiaryRef.current)  tertiaryRef.current.style.transform  = `translate(${x - 200}px, ${y - 200}px)`;
+
+      // Update grid spotlight mask
+      if (gridRef.current) {
+        gridRef.current.style.maskImage = `radial-gradient(600px circle at ${x}px ${y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 100%)`;
+        gridRef.current.style.webkitMaskImage = `radial-gradient(600px circle at ${x}px ${y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 100%)`;
+      }
     });
+
     const unsubFX = fastX.on("change", (x) => {
       if (coronaRef.current) coronaRef.current.style.transform = `translate(${x - 100}px, ${fastY.get() - 100}px)`;
     });
@@ -85,6 +102,21 @@ export default function HeroField() {
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           backgroundSize: "128px 128px",
+        }}
+      />
+
+      {/* ── Layer 0.5: Systematic Grid Texture (Cursor Responsive) ───── */}
+      <div
+        ref={gridRef}
+        className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04]"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, var(--foreground) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--foreground) 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+          maskImage: "radial-gradient(600px circle at 50% 50%, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
+          WebkitMaskImage: "radial-gradient(600px circle at 50% 50%, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
         }}
       />
 
