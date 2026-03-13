@@ -33,6 +33,27 @@ export default function OntadaCaseStudy() {
           <p className="text-2xl text-muted max-w-3xl leading-relaxed">
             Contributed to ONC-certified oncology EHR product design while helping build scalable design system foundations for internal enterprise platforms.
           </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-16 md:mt-24 border-t border-white/10 pt-10 md:pt-16 w-full">
+            <div>
+              <p className="text-[12px] text-accent uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Role</p>
+              <p className="text-base md:text-[16px] text-muted font-medium leading-relaxed">
+                Product Design
+              </p>
+            </div>
+            <div>
+              <p className="text-[12px] text-accent uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Scope</p>
+              <p className="text-base md:text-[16px] text-muted font-medium leading-relaxed">
+                EHR Design · Design Systems
+              </p>
+            </div>
+            <div>
+              <p className="text-[12px] text-accent uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Platform</p>
+              <p className="text-base md:text-[16px] text-muted font-medium leading-relaxed">
+                Enterprise Healthcare App
+              </p>
+            </div>
+          </div>
         </motion.div>
       </section>
 

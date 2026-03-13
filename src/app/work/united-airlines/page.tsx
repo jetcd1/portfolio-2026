@@ -187,24 +187,24 @@ export default function GSEWorkDetail() {
               <span className="text-apple-blue italic">Request Queue</span>
             </h1>
 
-            <div className="flex flex-col md:flex-row gap-8 md:gap-16 mt-4 md:mt-8">
-              <div className="w-full md:w-2/3">
-                <p className="text-lg md:text-2xl text-white/90 leading-relaxed max-w-3xl">
-                  The GSE Service Request Queue is an internal tool for <span className="text-apple-blue font-semibold">United Airlines</span> that allows Airport Ops and Ground Service Equipment teams to <span className="text-apple-blue">track, manage, and resolve</span> repair requests in real time.
-                </p>
-                <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mt-6">
-                  I created end-to-end UI-visual designs and interaction flows for the GSE Service Request Queue. This included designing expandable cards, search and filter components, and the add/view note modal, while ensuring full alignment with Orion 2.0 component patterns for a modern, consistent, and scalable user experience.
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mt-16 md:mt-24 border-t border-white/10 pt-10 md:pt-16 w-full">
+              <div>
+                <p className="text-[12px] text-apple-blue uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Role</p>
+                <p className="text-base md:text-[16px] text-white/90 font-medium leading-relaxed">
+                  Product Design · Visual Design
                 </p>
               </div>
-
-              <div className="w-full md:w-1/3 flex flex-col justify-end">
-                <div className="border-t border-white/20 pt-4 md:pt-6">
-                  <p className="text-[10px] md:text-xs text-apple-blue uppercase tracking-widest mb-2 font-mono">Role & Scope</p>
-                  <p className="text-sm md:text-base text-white/90 font-medium tracking-wide leading-relaxed">
-                    UI · VISUAL · UX · COMPONENTS · INTERACTION DESIGN<br />
-                    FIGMA / 4 MONTHS
-                  </p>
-                </div>
+              <div>
+                <p className="text-[12px] text-apple-blue uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Scope</p>
+                <p className="text-base md:text-[16px] text-white/90 font-medium leading-relaxed">
+                  Interface Design · Design Systems · Interaction
+                </p>
+              </div>
+              <div>
+                <p className="text-[12px] text-apple-blue uppercase tracking-[0.12em] mb-3 font-semibold opacity-80">Platform</p>
+                <p className="text-base md:text-[16px] text-white/90 font-medium leading-relaxed">
+                  Enterprise Web App · Desktop
+                </p>
               </div>
             </div>
           </motion.div>
