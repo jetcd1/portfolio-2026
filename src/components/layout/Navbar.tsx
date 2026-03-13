@@ -136,10 +136,10 @@ export default function Navbar() {
                 <AnimatePresence>
                   {hovered === "theme" && mounted && (
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.8, x: -10 }}
-                      animate={{ opacity: 1, scale: 1, x: 0 }}
-                      exit={{ opacity: 0, scale: 0.8, x: -10 }}
-                      className="absolute right-full mr-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 whitespace-nowrap"
+                      initial={{ opacity: 0, scale: 0.8, y: -10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                      className="absolute top-full right-0 mt-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 whitespace-nowrap"
                     >
                       <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-white/90">
                         {theme === "dark" ? "Light Mode" : "Dark Mode"}
