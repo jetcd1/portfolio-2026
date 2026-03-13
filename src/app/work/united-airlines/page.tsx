@@ -27,9 +27,9 @@ const gseMediaContent = [
     )
   },
   { id: 4, type: "custom-process" },
-  { id: 5, type: "image", src: "/works/gse/5.png" },
+  { id: 5, type: "image", src: "/works/gse/5.png", title: "Interface Exploration" },
   { id: 6, type: "image", src: "/works/gse/6.png" },
-  { id: 7, type: "image", src: "/works/gse/7.png", title: "최종목업" },
+  { id: 7, type: "image", src: "/works/gse/7a.png", title: "Final Product" },
   { id: 8, type: "image", src: "/works/gse/8.png" },
   { id: 9, type: "image", src: "/works/gse/9.png" },
   { id: 10, type: "image", src: "/works/gse/10.jpeg" },
@@ -216,8 +216,8 @@ export default function GSEWorkDetail() {
       </section>
 
       {/* Case Study Media Section */}
-      <section className="w-full py-24 md:py-40 px-4 md:px-8 bg-background flex flex-col items-center gap-32 md:gap-48 overflow-visible">
-        <div className="max-w-[1400px] w-full flex flex-col gap-24 md:gap-40">
+      <section className="w-full py-32 md:py-64 px-4 md:px-8 bg-black flex flex-col items-center gap-48 md:gap-64 overflow-visible">
+        <div className="max-w-[1400px] w-full flex flex-col gap-32 md:gap-56">
           
           {gseMediaContent.map((item, index) => {
             if (item.type === "custom-process") {
