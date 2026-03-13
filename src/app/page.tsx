@@ -111,31 +111,27 @@ function MagneticButton({
 function ScrollCue() {
   return (
     <motion.div
-      className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+      className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 5, duration: 1.2, ease: "easeOut" }}
+      transition={{ delay: 4.5, duration: 1.2, ease: "easeOut" }}
     >
-      {/* Thin energy line */}
-      <div className="relative w-px h-16 overflow-hidden">
-        {/* Track */}
-        <div className="absolute inset-0 bg-foreground/10" />
-        {/* Moving energy fill — enters from top, exits at bottom */}
+      {/* Sleek Vertical Line Indicator */}
+      <div className="relative w-px h-24 overflow-hidden bg-foreground/5">
         <motion.div
-          className="absolute left-0 w-full"
-          style={{ background: "linear-gradient(to bottom, transparent, var(--apple-blue), transparent)", height: "40%" }}
-          animate={{ top: ["-40%", "140%"] }}
-          transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut", repeatDelay: 0.4 }}
+          className="absolute top-0 left-0 w-full bg-apple-blue"
+          style={{ height: "30%" }}
+          animate={{
+            top: ["-30%", "100%"]
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 2,
+            ease: [0.16, 1, 0.3, 1],
+            repeatDelay: 0.5
+          }}
         />
       </div>
-      {/* Label */}
-      <motion.span
-        className="text-[9px] font-mono uppercase tracking-[0.28em] text-apple-blue/60"
-        animate={{ opacity: [0.5, 1, 0.5] }}
-        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-      >
-        Scroll
-      </motion.span>
     </motion.div>
   );
 }
@@ -163,20 +159,26 @@ function HeroTitle() {
 
   return (
     <div ref={heroRef} onMouseMove={onMove} className="w-full flex flex-col items-center">
-      <motion.h1
-        variants={fadeUp}
-        className="text-6xl md:text-8xl lg:text-9xl font-display font-medium tracking-tighter mb-8 max-w-5xl text-foreground !leading-[1.1] text-center select-none"
-      >
-        <motion.span className="inline-block" style={{ x: structX, y: structY }}>
+      <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-display font-medium tracking-tighter mb-8 max-w-6xl text-foreground !leading-[1] text-center select-none overflow-hidden">
+        <motion.span 
+          className="inline-block" 
+          style={{ x: structX, y: structY }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 3.8 }}
+        >
           Structuring{" "}
         </motion.span>
         <motion.span
           className="inline-block text-apple-blue"
           style={{ x: complexX, y: complexY }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 4.1 }}
         >
           Complexity.
         </motion.span>
-      </motion.h1>
+      </h1>
     </div>
   );
 }
@@ -203,18 +205,13 @@ export default function Home() {
 
           {/* Subtitle */}
           <motion.p
-            variants={fadeUp}
-            className="text-muted text-lg md:text-2xl max-w-3xl mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 4.4 }}
+            className="text-muted text-lg md:text-2xl max-w-2xl font-light tracking-tight"
           >
-            I am a UI | UX Visual Designer building scalable, high-density interfaces
-            for complex systems in data, healthcare, and aviation domains.
+            Designing clarity<br className="hidden md:block" /> for complex systems.
           </motion.p>
-
-          {/* Magnetic CTAs */}
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-4 justify-center">
-            <MagneticButton href="#work" variant="primary">View Projects</MagneticButton>
-            <MagneticButton href="/about" variant="secondary">About Me</MagneticButton>
-          </motion.div>
         </motion.div>
 
         {/* Refined scroll cue */}
