@@ -161,7 +161,7 @@ function HeroTitle() {
   const baseDelay = isIntroDone ? 0.4 : 3.8;
 
   return (
-    <div ref={heroRef} onMouseMove={onMove} className="w-full flex flex-col items-center" key={isIntroDone ? "ready" : "intro"}>
+    <div ref={heroRef} onMouseMove={onMove} className="w-full flex flex-col items-center">
       <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-display font-medium tracking-tighter mb-8 max-w-6xl text-foreground !leading-[1] text-center select-none overflow-visible pb-4">
         <div className="inline-block relative overflow-hidden h-full py-2">
           <motion.span 
@@ -235,6 +235,7 @@ export default function Home() {
       <section className="relative w-full min-h-screen flex text-center flex-col items-center justify-center p-8 overflow-visible">
 
         <motion.div
+          key={isIntroDone ? "ready" : "intro"}
           variants={getStaggerContainer(isIntroDone)}
           initial="hidden"
           animate="visible"
@@ -247,7 +248,11 @@ export default function Home() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: (isIntroDone ? 0.4 : 3.8) + 0.45 }}
+            transition={{ 
+              duration: 1.2, 
+              ease: [0.16, 1, 0.3, 1], 
+              delay: (isIntroDone ? 0.4 : 3.8) + 0.5 
+            }}
             className="text-muted text-lg md:text-2xl max-w-2xl font-light tracking-tight opacity-70 !leading-[1.6]"
           >
             Designing clarity<br className="hidden md:block" /> for complex systems.
