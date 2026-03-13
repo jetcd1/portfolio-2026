@@ -84,7 +84,7 @@ const ProblemSection = () => (
     {/* Side-by-Side Images */}
     <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 px-2 md:px-0">
       <motion.div
-        className="group relative rounded-2xl overflow-hidden border border-white/5 bg-white/5 shadow-xl"
+        className="group relative rounded-2xl overflow-hidden border border-border bg-secondary shadow-xl"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -99,7 +99,7 @@ const ProblemSection = () => (
       </motion.div>
 
       <motion.div
-        className="group relative rounded-2xl overflow-hidden border border-white/5 bg-white/5 shadow-xl"
+        className="group relative rounded-2xl overflow-hidden border border-border bg-secondary shadow-xl"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -125,12 +125,12 @@ const DesignProcessSection = () => {
   ];
 
   return (
-    <div className="w-full relative py-20 md:py-32 overflow-hidden rounded-[2rem] md:rounded-[3rem] border border-white/5 shadow-2xl group bg-black">
+    <div className="w-full relative py-20 md:py-32 overflow-hidden rounded-[2rem] md:rounded-[3rem] border border-border bg-secondary/30 shadow-2xl group">
       {/* Animated Subtle Ambient Background */}
       <motion.div 
         className="absolute inset-0 z-0 opacity-40 pointer-events-none"
         style={{
-          background: "linear-gradient(-45deg, #050505, #111111, #080808)",
+          background: "linear-gradient(-45deg, var(--background), var(--secondary), var(--background))",
           backgroundSize: "400% 400%"
         }}
         animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
@@ -146,8 +146,8 @@ const DesignProcessSection = () => {
           viewport={{ once: true, margin: "-20%" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h3 className="text-3xl md:text-5xl font-display font-medium text-white tracking-tight mb-4">Design Process</h3>
-          <p className="text-white/50 text-lg md:text-xl max-w-2xl mx-auto font-light tracking-wide">From initial alignment to enterprise delivery, ensuring every component operates seamlessly at scale.</p>
+          <h3 className="text-3xl md:text-5xl font-display font-medium text-foreground tracking-tight mb-4">Design Process</h3>
+          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-light tracking-wide">From initial alignment to enterprise delivery, ensuring every component operates seamlessly at scale.</p>
         </motion.div>
 
         {/* The 4 Steps Container */}
@@ -228,7 +228,7 @@ export default function GSEWorkDetail() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-black selection:bg-apple-blue selection:text-white">
+    <main className="min-h-screen bg-background selection:bg-apple-blue selection:text-white">
       {/* ─── Hero Section ────────────────────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
         {/* Full-screen Background Video */}
@@ -253,15 +253,15 @@ export default function GSEWorkDetail() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="block text-[13px] font-medium tracking-[0.2em] uppercase text-white/40 mb-6 font-mono">
+            <span className="block text-[13px] font-medium tracking-[0.2em] uppercase text-white/70 mb-6 font-mono">
               United Airlines — Internal Platform
             </span>
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-display font-medium text-white tracking-tight leading-[1.05] mb-8">
+            <h1 className="text-5xl md:text-7xl lg:text-9xl font-display font-medium text-white tracking-tight leading-[1.05] mb-8 drop-shadow-sm">
               Ground Service Equipment<br />
               <span className="text-apple-blue italic md:not-italic">Request Queue</span>
             </h1>
-            <p className="text-lg md:text-2xl text-white/60 max-w-3xl mx-auto leading-relaxed mb-12 font-light">
-              Enterprise interface for <span className="text-apple-blue/90 font-medium">United Airlines</span> for managing airport equipment requests to <span className="text-apple-blue/90 font-medium whitespace-nowrap">track, manage, and resolve</span> repair requests in real time.
+            <p className="text-lg md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-12 font-medium drop-shadow-sm">
+              Enterprise interface for <span className="text-apple-blue font-semibold">United Airlines</span> for managing airport equipment requests to <span className="text-apple-blue font-semibold whitespace-nowrap">track, manage, and resolve</span> repair requests in real time.
             </p>
           </motion.div>
 
@@ -270,7 +270,7 @@ export default function GSEWorkDetail() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 border-t border-white/10 pt-10 mt-16 w-full max-w-4xl"
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 border-t border-white/20 pt-10 mt-16 w-full max-w-4xl"
           >
             {[
               { label: "Role", value: "Product Design" },
@@ -278,15 +278,15 @@ export default function GSEWorkDetail() {
               { label: "Platform", value: "Enterprise Web App" }
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center">
-                <span className="text-[12px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-3">{item.label}</span>
+                <span className="text-[12px] uppercase tracking-[0.15em] text-white/50 font-semibold mb-3">{item.label}</span>
                 {Array.isArray(item.value) ? (
                   <div className="flex flex-col gap-1">
                     {item.value.map((v, j) => (
-                      <span key={j} className="text-[16px] text-white/80 font-medium leading-[1.4]">{v}</span>
+                      <span key={j} className="text-[16px] text-white/90 font-medium leading-[1.4]">{v}</span>
                     ))}
                   </div>
                 ) : (
-                  <span className="text-[16px] text-white/80 font-medium leading-[1.4]">{item.value}</span>
+                  <span className="text-[16px] text-white/90 font-medium leading-[1.4]">{item.value}</span>
                 )}
               </div>
             ))}
@@ -295,7 +295,7 @@ export default function GSEWorkDetail() {
       </section>
 
       {/* Case Study Media Section */}
-      <section className="w-full py-32 md:py-64 px-4 md:px-8 bg-black flex flex-col items-center gap-48 md:gap-64 overflow-visible">
+      <section className="w-full py-32 md:py-64 px-4 md:px-8 bg-background flex flex-col items-center gap-48 md:gap-64 overflow-visible">
         <div className="max-w-[1400px] w-full flex flex-col gap-32 md:gap-56">
           
           {gseMediaContent.map((item, index) => {
