@@ -99,17 +99,17 @@ export default function Navbar() {
                   onMouseEnter={() => setHovered(link.name)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <span className={`relative z-10 transition-colors duration-200 ${hovered === link.name ? 'text-white' : 'text-white/50'}`}>
+                  <span className={`relative z-10 transition-colors duration-200 ${hovered === link.name ? 'text-white' : 'text-white/60'}`}>
                     {link.name}
                   </span>
                   <AnimatePresence>
                     {hovered === link.name && (
                       <motion.div
                         layoutId="nav-glow"
-                        className="absolute inset-0 bg-white/10 blur-md rounded-full -z-10"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="absolute inset-0 bg-white/20 blur-xl rounded-full -z-10"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1.1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
                       />
                     )}
