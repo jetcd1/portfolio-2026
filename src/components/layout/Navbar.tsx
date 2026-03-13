@@ -95,7 +95,7 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className="relative text-[11px] md:text-xs font-medium px-4 py-2 uppercase tracking-[0.08em] group"
+                  className="relative text-xs md:text-sm font-medium px-4 py-2 uppercase tracking-[0.08em] group"
                   onMouseEnter={() => setHovered(link.name)}
                   onMouseLeave={() => setHovered(null)}
                 >
