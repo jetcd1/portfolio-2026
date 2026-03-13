@@ -83,7 +83,7 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <nav className="flex items-center justify-between w-full px-4 md:px-8 py-4 md:py-6 text-white pointer-events-auto">
-          <Link href="/" onClick={() => setIsOpen(false)} className="font-display text-lg md:text-xl font-bold tracking-tight hover:opacity-70 transition-opacity z-50">
+          <Link href="/" onClick={() => setIsOpen(false)} className="font-display text-lg md:text-xl font-medium tracking-[0.02em] opacity-90 transition-opacity z-50">
             Chan Jeon
           </Link>
           
