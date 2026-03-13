@@ -196,15 +196,15 @@ const DesignProcessSection = () => {
                  {/* Glow Background */}
                  <div className="absolute inset-0 bg-[#FABB04] w-12 h-12 -left-3 -top-3 md:-left-4 md:-top-4 rounded-full opacity-0 group-hover:opacity-40 blur-[15px] transition-all duration-500 pointer-events-none" />
                  {/* The Dot */}
-                 <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-[#FABB04] ring-4 ring-black group-hover:scale-[1.3] transition-transform duration-500 relative z-10 shadow-[0_0_10px_rgba(250,187,4,0.2)] md:group-hover:shadow-[0_0_20px_rgba(250,187,4,0.8)]" />
+                <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-[#FABB04] ring-4 ring-background group-hover:scale-[1.3] transition-transform duration-500 relative z-10 shadow-[0_0_10px_rgba(250,187,4,0.2)] md:group-hover:shadow-[0_0_20px_rgba(250,187,4,0.8)]" />
               </div>
 
               {/* Text Typography (Apple-Style Hierarchy) - Centered under dot */}
               <div className="pl-6 md:pl-0 text-left md:text-center mt-[-4px] md:mt-0 flex flex-col items-start md:items-center max-w-[280px] mx-auto">
-                <h4 className="text-xl md:text-[22px] font-display font-medium text-white/80 group-hover:text-white transition-colors duration-500 mb-3 tracking-tight">
+                <h4 className="text-xl md:text-[22px] font-display font-medium text-foreground group-hover:text-foreground transition-colors duration-500 mb-3 tracking-tight">
                   {step.title}
                 </h4>
-                <p className="text-[15px] md:text-base text-white/40 group-hover:text-white/80 transition-colors duration-500 leading-[1.6] tracking-[0.01em] font-light">
+                <p className="text-[15px] md:text-base text-muted-foreground group-hover:text-foreground/80 transition-colors duration-500 leading-[1.6] tracking-[0.01em] font-light">
                   {step.desc}
                 </p>
               </div>
