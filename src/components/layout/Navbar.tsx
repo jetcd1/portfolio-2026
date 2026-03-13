@@ -122,13 +122,32 @@ export default function Navbar() {
                 <Linkedin size={18} />
               </a>
               
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="ml-2 hover:opacity-70 transition-opacity"
-                aria-label="Toggle theme"
-              >
-                {mounted && theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
+              <div className="relative flex items-center">
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  onMouseEnter={() => setHovered("theme")}
+                  onMouseLeave={() => setHovered(null)}
+                  className="ml-2 hover:opacity-70 transition-opacity relative"
+                  aria-label="Toggle theme"
+                >
+                  {mounted && theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                </button>
+
+                <AnimatePresence>
+                  {hovered === "theme" && mounted && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8, x: -10 }}
+                      animate={{ opacity: 1, scale: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.8, x: -10 }}
+                      className="absolute right-full mr-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 whitespace-nowrap"
+                    >
+                      <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-white/90">
+                        {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                      </span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Mobile Menu Toggle Button */}
@@ -209,9 +228,14 @@ export default function Navbar() {
                   </a>
                   <button
                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                    className="hover:text-background transition-colors"
+                    className="flex items-center gap-2 hover:text-background transition-colors group"
                   >
-                    {mounted && theme === "dark" ? <Sun size={24} /> : <Moon size={24} />}
+                    <div className="relative w-6 h-6 flex items-center justify-center">
+                      {mounted && theme === "dark" ? <Sun size={24} /> : <Moon size={24} />}
+                    </div>
+                    <span className="text-xs uppercase tracking-[0.2em] font-medium opacity-60 group-hover:opacity-100 transition-opacity">
+                      {theme === "dark" ? "Light" : "Dark"}
+                    </span>
                   </button>
                 </motion.div>
               </div>
