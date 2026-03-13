@@ -100,24 +100,27 @@ export default function IntroLoader() {
             <motion.div 
               className="relative z-10 flex flex-col items-center justify-center w-full"
               initial={{ opacity: 0, scale: 0.8, filter: "blur(30px)" }}
-              animate={phase === 1 ? { opacity: 1, scale: 1, filter: "blur(0px)" } : { opacity: 0, scale: 1.1, filter: "blur(15px)" }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              animate={phase === 1 
+                ? { opacity: 1, scale: 1, filter: "blur(0px)", letterSpacing: "0em" } 
+                : { opacity: 0, scale: 1.25, filter: "blur(50px)", letterSpacing: "0.4em" }
+              }
+              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="overflow-hidden mb-4 relative z-20">
                 <motion.h1 
-                  className="text-[12vw] md:text-[8vw] font-display font-medium text-foreground tracking-tighter leading-none mix-blend-difference"
+                  className="text-[12vw] md:text-[8vw] font-display font-light text-foreground tracking-[-0.04em] leading-none mix-blend-difference"
                   initial={{ y: "100%" }}
                   animate={{ y: "0%" }}
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
                   style={{ textShadow: "0 0 40px rgba(255,255,255,0.2)" }}
                 >
-                  CHAN JEON
+                  CHAN <span className="font-semibold">JEON</span>
                 </motion.h1>
               </div>
 
               <div className="overflow-hidden relative z-20">
                 <motion.p 
-                  className="text-sm md:text-xl text-muted uppercase tracking-[0.5em] font-sans"
+                  className="text-sm md:text-xl text-muted/35 uppercase tracking-[0.5em] font-sans"
                   initial={{ y: "-100%", opacity: 0 }}
                   animate={{ y: "0%", opacity: 1 }}
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
