@@ -11,8 +11,8 @@ type ExhibitId =
   | "glitch" | "waves" | "fluid" | "fractal";
 
 const exhibits = [
-  { id: "cosmic", name: "Cosmic Hyperspace", icon: Sparkles, color: "#9333ea" },
   { id: "vortex", name: "Neon Vortex", icon: Repeat, color: "#ec4899" },
+  { id: "cosmic", name: "Cosmic Hyperspace", icon: Sparkles, color: "#9333ea" },
   { id: "attraction", name: "Attraction Grid", icon: Boxes, color: "#06b6d4" },
   { id: "neural", name: "Neural Drift", icon: Share2, color: "#10b981" },
   { id: "optical", name: "Optical Flow", icon: PenTool, color: "#f59e0b" },
@@ -28,7 +28,7 @@ const exhibits = [
 ];
 
 export default function AIPlayground() {
-  const [activeId, setActiveId] = useState<ExhibitId>("cosmic");
+  const [activeId, setActiveId] = useState<ExhibitId>("vortex");
   const [isTransitioning, setIsTransitioning] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -94,7 +94,7 @@ export default function AIPlayground() {
                 className="group relative flex items-center gap-4 py-2 transition-all duration-700 text-left"
               >
                 <div 
-                  className={`w-[2px] h-4 md:h-8 transition-all duration-1000 rounded-full ${
+                  className={`w-[4px] h-4 md:h-8 transition-all duration-1000 rounded-full ${
                     isActive 
                       ? "bg-white opacity-100 shadow-[0_0_25px_white]" 
                       : "bg-white/5 group-hover:bg-white/30 opacity-0 group-hover:opacity-100"
@@ -127,7 +127,7 @@ export default function AIPlayground() {
                      <motion.div 
                        initial={{ width: 0, opacity: 0 }}
                        animate={{ width: "100%", opacity: 1 }}
-                       className="h-[1px] bg-gradient-to-r from-white/40 to-transparent mt-1 ml-3"
+                       className="h-[2px] bg-gradient-to-r from-white/60 to-transparent mt-1 ml-3"
                      />
                   )}
                 </div>
