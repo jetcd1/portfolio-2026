@@ -165,47 +165,135 @@ export default function AIPlayground() {
 function CosmicEngine({ isWarping, activeExhibit }: { isWarping: boolean; activeExhibit: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const requestRef = useRef<number | null>(null);
-  const stars = useMemo(() => Array.from({ length: 300 }, () => ({
+  const [isUserWarping, setIsUserWarping] = useState(false);
+  const [displaySpeed, setDisplaySpeed] = useState(0.3);
+  
+  const stars = useMemo(() => Array.from({ length: 400 }, () => ({
     x: Math.random() * 2000 - 1000,
     y: Math.random() * 2000 - 1000,
     z: Math.random() * 2000,
     px: 0, py: 0,
-    color: `hsla(${Math.random() * 360}, 70%, 80%, ${Math.random() * 0.5 + 0.3})`
+    color: `hsla(${Math.random() * 60 + 200}, 100%, 80%, ${Math.random() * 0.4 + 0.4})`
   })), []);
+
   const speed = useRef(0.3);
-  const targetSpeed = isWarping ? 60 : 0.3;
+  const currentTargetSpeed = isWarping ? 80 : (isUserWarping ? 120 : 0.3);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    
     const resize = () => { if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } };
     window.addEventListener("resize", resize);
     resize();
+
     const animate = () => {
       if (!canvas || !ctx) return;
-      speed.current += (targetSpeed - speed.current) * 0.04;
-      ctx.fillStyle = `rgba(0, 0, 0, ${isWarping ? 0.3 : 0.15})`;
+      
+      // Acceleration logic
+      speed.current += (currentTargetSpeed - speed.current) * 0.05;
+      setDisplaySpeed(speed.current);
+
+      const boostFactor = (speed.current - 0.3) / 120; // 0 to ~1
+      
+      ctx.fillStyle = `rgba(0, 0, 0, ${0.15 + boostFactor * 0.25})`;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      const cx = canvas.width / 2; const cy = canvas.height / 2;
+      
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
       stars.forEach(s => {
         s.z -= speed.current;
-        if (s.z <= 0) { s.z = 2000; s.x = Math.random() * 2000 - 1000; s.y = Math.random() * 2000 - 1000; s.px = 0; s.py = 0; }
-        const x = (s.x / s.z) * cx + cx; const y = (s.y / s.z) * cy + cy;
-        if (s.px !== 0) {
-          ctx.beginPath(); ctx.strokeStyle = isWarping ? s.color : "rgba(255,255,255,0.2)";
-          ctx.lineWidth = (1 - s.z / 2000) * (isWarping ? 4 : 1.5);
-          ctx.lineCap = "round"; ctx.moveTo(s.px, s.py); ctx.lineTo(x, y); ctx.stroke();
+        if (s.z <= 0) { 
+          s.z = 2000; 
+          s.x = Math.random() * 2000 - 1000; 
+          s.y = Math.random() * 2000 - 1000; 
+          s.px = 0; s.py = 0; 
         }
-        s.px = x; s.py = y;
+        
+        const x = (s.x / s.z) * cx + cx;
+        const y = (s.y / s.z) * cy + cy;
+
+        if (s.px !== 0) {
+          ctx.beginPath();
+          const opacity = Math.min(1, (1 - s.z / 2000) * (0.3 + boostFactor * 0.7));
+          ctx.strokeStyle = `hsla(${200 + boostFactor * 100}, 100%, 90%, ${opacity})`;
+          ctx.lineWidth = (1 - s.z / 2000) * (1.5 + boostFactor * 8);
+          ctx.lineCap = "round";
+          ctx.moveTo(s.px, s.py);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+        }
+        s.px = x;
+        s.py = y;
       });
+
       requestRef.current = requestAnimationFrame(animate);
     };
+
+    const handleDown = () => { if (activeExhibit === "cosmic") setIsUserWarping(true); };
+    const handleUp = () => setIsUserWarping(false);
+
+    window.addEventListener("mousedown", handleDown);
+    window.addEventListener("mouseup", handleUp);
+    window.addEventListener("touchstart", handleDown);
+    window.addEventListener("touchend", handleUp);
+
     animate();
-    return () => { window.removeEventListener("resize", resize); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
-  }, [isWarping, stars, targetSpeed]);
-  return <canvas ref={canvasRef} className="w-full h-full" />;
+    return () => { 
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("mousedown", handleDown);
+      window.removeEventListener("mouseup", handleUp);
+      window.removeEventListener("touchstart", handleDown);
+      window.removeEventListener("touchend", handleUp);
+      if (requestRef.current) cancelAnimationFrame(requestRef.current); 
+    };
+  }, [isWarping, stars, currentTargetSpeed, activeExhibit]);
+
+  return (
+    <div className="relative w-full h-full cursor-pointer overflow-hidden">
+      <canvas ref={canvasRef} className="w-full h-full" />
+      
+      {/* Velocity HUD */}
+      {activeExhibit === "cosmic" && (
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+          <motion.div 
+            animate={{ 
+              scale: isUserWarping ? 1.05 : 1,
+              opacity: displaySpeed > 1 ? 1 : 0.3
+            }}
+            className="flex flex-col items-center gap-2"
+          >
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] uppercase tracking-[0.8em] text-cyan-400/60 font-bold mb-2">Hyperspace Velocity</span>
+              <div className="flex items-baseline gap-2">
+                <span className="text-white text-7xl md:text-9xl font-black tracking-tighter tabular-nums drop-shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+                  {Math.floor(displaySpeed * 43.2).toLocaleString()}
+                </span>
+                <span className="text-cyan-400 font-bold text-xl md:text-2xl">LY/S</span>
+              </div>
+              <div className="w-64 h-1 bg-white/5 mt-4 rounded-full overflow-hidden relative border border-white/10">
+                <motion.div 
+                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-500 to-white shadow-[0_0_15px_rgba(6,182,212,0.5)]"
+                  style={{ width: `${Math.min(100, (displaySpeed / 120) * 100)}%` }}
+                />
+              </div>
+            </div>
+            
+            <motion.p 
+              animate={{ opacity: isUserWarping ? [0.4, 1, 0.4] : 0.5 }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="text-white/20 text-[10px] uppercase tracking-[0.5em] mt-8 font-bold"
+            >
+              {isUserWarping ? "Propulsion Active - Maximum Burn" : "Hold Click to Accelerate"}
+            </motion.p>
+          </motion.div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ─── New Advanced Exhibits ─────────────────────────────────────────── //
