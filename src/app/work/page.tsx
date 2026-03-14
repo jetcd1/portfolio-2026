@@ -41,6 +41,16 @@ export default function Work() {
           image="/works/Orion/2.png" 
           href="/work/orion"
         />
+
+        {/* Ontada Project */}
+        <ProjectCard 
+          company="McKesson"
+          title="Ontada Design System"
+          description="Initiated and established a comprehensive design system from scratch, scaling it across McKesson's internal product ecosystem."
+          tags={["Design System", "Healthcare", "Figma"]}
+          video="/works/Ontada/thumbnail.mp4"
+          href="/work/ontada"
+        />
       </div>
     </main>
   );

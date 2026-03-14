@@ -313,6 +313,22 @@ export default function Home() {
               href="/work/orion"
             />
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            <ProjectCard 
+              company="McKesson"
+              title="Ontada Design System"
+              description="Initiated and established a comprehensive design system from scratch, scaling it across McKesson's internal product ecosystem."
+              tags={["Design System", "Healthcare", "Figma"]}
+              video="/works/Ontada/thumbnail.mp4"
+              href="/work/ontada"
+            />
+          </motion.div>
         </div>
       </section>
     </main>
