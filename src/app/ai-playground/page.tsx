@@ -180,7 +180,7 @@ function CosmicEngine({ isWarping, activeExhibit }: { isWarping: boolean; active
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    const resize = () => { if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } };
     window.addEventListener("resize", resize);
     resize();
     const animate = () => {
@@ -213,6 +213,7 @@ function CosmicEngine({ isWarping, activeExhibit }: { isWarping: boolean; active
 function VortexExhibit() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouse = useRef({ x: 0, y: 0 });
+  const requestRef = useRef<number | null>(null);
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -231,11 +232,11 @@ function VortexExhibit() {
         ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(x, y, p.size, 0, Math.PI * 2); ctx.fill();
         if (Math.random() > 0.99) ctx.shadowBlur = 10, ctx.shadowColor = p.c; else ctx.shadowBlur = 0;
       });
-      requestAnimationFrame(animate);
+      requestRef.current = requestAnimationFrame(animate);
     };
     const handleMove = (e: MouseEvent) => { mouse.current = { x: e.clientX, y: e.clientY }; };
     window.addEventListener("mousemove", handleMove); animate();
-    return () => window.removeEventListener("mousemove", handleMove);
+    return () => { window.removeEventListener("mousemove", handleMove); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
   }, []);
   return <canvas ref={canvasRef} className="w-full h-full mix-blend-screen" />;
 }
@@ -243,12 +244,14 @@ function VortexExhibit() {
 function AttractionGridExhibit() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouse = useRef({ x: -1000, y: -1000 });
+  const requestRef = useRef<number | null>(null);
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    const resize = () => { if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } };
     window.addEventListener("resize", resize); resize();
     const cols = Math.ceil(canvas.width / 40); const rows = Math.ceil(canvas.height / 40);
     const animate = () => {
+      if (!canvas || !ctx) return;
       ctx.clearRect(0,0,canvas.width, canvas.height);
       for(let i=0; i<cols; i++) {
         for(let j=0; j<rows; j++) {
@@ -262,11 +265,11 @@ function AttractionGridExhibit() {
           if (f > 0.4) { ctx.strokeStyle = `hsla(200, 100%, 70%, ${f * 0.3})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(ix, iy); ctx.lineTo(ox, oy); ctx.stroke(); }
         }
       }
-      requestAnimationFrame(animate);
+      requestRef.current = requestAnimationFrame(animate);
     };
     const handleMove = (e: MouseEvent) => { mouse.current = { x: e.clientX, y: e.clientY }; };
     window.addEventListener("mousemove", handleMove); animate();
-    return () => window.removeEventListener("mousemove", handleMove);
+    return () => { window.removeEventListener("mousemove", handleMove); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
   }, []);
   return <canvas ref={canvasRef} className="w-full h-full" />;
 }
@@ -274,15 +277,17 @@ function AttractionGridExhibit() {
 function NeuralDriftExhibit() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouse = useRef({ x: 0, y: 0 });
+  const requestRef = useRef<number | null>(null);
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
-    resize(); function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize(); function resize() { if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } }
     const nodes = Array.from({ length: 120 }, () => ({
-      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+      x: Math.random() * (canvas?.width || 1000), y: Math.random() * (canvas?.height || 1000),
       vx: (Math.random() - 0.5) * 1, vy: (Math.random() - 0.5) * 1,
       r: Math.random() * 2 + 1
     }));
     const animate = () => {
+      if (!canvas || !ctx) return;
       ctx.clearRect(0,0,canvas.width, canvas.height);
       nodes.forEach(n => {
         n.x += n.vx; n.y += n.vy;
@@ -298,11 +303,11 @@ function NeuralDriftExhibit() {
         if(Math.sqrt(mdx*mdx+mdy*mdy) < 200) { n.vx += mdx*0.001; n.vy += mdy*0.001; }
         ctx.fillStyle = "#10b981"; ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2); ctx.fill();
       });
-      requestAnimationFrame(animate);
+      requestRef.current = requestAnimationFrame(animate);
     };
     const handleMove = (e: MouseEvent) => { mouse.current = { x: e.clientX, y: e.clientY }; };
     window.addEventListener("mousemove", handleMove); animate();
-    return () => window.removeEventListener("mousemove", handleMove);
+    return () => { window.removeEventListener("mousemove", handleMove); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
   }, []);
   return <canvas ref={canvasRef} className="w-full h-full" />;
 }
@@ -310,9 +315,10 @@ function NeuralDriftExhibit() {
 function OpticalFlowExhibit() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const trails = useRef<any[]>([]);
+  const requestRef = useRef<number | null>(null);
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    if (canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     const animate = () => {
       if (!canvas || !ctx) return;
       ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,canvas.width, canvas.height);
@@ -320,10 +326,10 @@ function OpticalFlowExhibit() {
         t.life -= 0.01; t.x += t.vx; t.y += t.vy; t.rot += t.vr;
         ctx.save(); ctx.translate(t.x, t.y); ctx.rotate(t.rot);
         ctx.strokeStyle = `hsla(${t.h}, 100%, 70%, ${t.life})`; ctx.lineWidth = 2;
-        ctx.strokeRect(-t.s/2, -t.s/2, t.s, t.s); ctx.restore();
+        ctx.strokeRect(-t.s/2, -t.h/2, t.s, t.s); ctx.restore();
         if(t.life <= 0) trails.current.splice(i, 1);
       });
-      requestAnimationFrame(animate);
+      requestRef.current = requestAnimationFrame(animate);
     };
     const handleMove = (e: MouseEvent) => {
       if(Math.random() > 0.5) trails.current.push({
@@ -332,17 +338,19 @@ function OpticalFlowExhibit() {
       });
     };
     window.addEventListener("mousemove", handleMove); animate();
-    return () => window.removeEventListener("mousemove", handleMove);
+    return () => { window.removeEventListener("mousemove", handleMove); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
   }, []);
   return <canvas ref={canvasRef} className="w-full h-full" />;
 }
 
 function SymmetryExhibit() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestRef = useRef<number | null>(null);
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    if (canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     const handleMove = (e: MouseEvent) => {
+      if (!canvas || !ctx) return; // Added null check for ctx here
       const cx = canvas.width/2; const cy = canvas.height/2;
       const x = e.clientX - cx; const y = e.clientY - cy;
       ctx.strokeStyle = `hsla(${Date.now()%360}, 80%, 60%, 0.4)`; ctx.lineWidth = 2;
@@ -354,10 +362,11 @@ function SymmetryExhibit() {
     ctx.fillStyle = "black"; ctx.fillRect(0,0,canvas.width, canvas.height);
     const animate = () => { 
       if (!canvas || !ctx) return;
-      ctx.fillStyle = "rgba(0,0,0,0.02)"; ctx.fillRect(0,0,canvas.width, canvas.height); requestAnimationFrame(animate); 
+      ctx.fillStyle = "rgba(0,0,0,0.02)"; ctx.fillRect(0,0,canvas.width, canvas.height); 
+      requestRef.current = requestAnimationFrame(animate); 
     };
     window.addEventListener("mousemove", handleMove); animate();
-    return () => window.removeEventListener("mousemove", handleMove);
+    return () => { window.removeEventListener("mousemove", handleMove); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
   }, []);
   return <canvas ref={canvasRef} className="w-full h-full mix-blend-screen" />;
 }
@@ -365,10 +374,12 @@ function SymmetryExhibit() {
 function QuantumFieldExhibit() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouse = useRef({ x: 0, y: 0 });
+  const requestRef = useRef<number | null>(null);
   useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    if (canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     const animate = () => {
+      if (!canvas || !ctx) return;
       ctx.clearRect(0,0,canvas.width, canvas.height);
       for(let x=20; x<canvas.width; x+=40) {
         for(let y=20; y<canvas.height; y+=40) {
@@ -378,11 +389,11 @@ function QuantumFieldExhibit() {
           ctx.beginPath(); ctx.moveTo(-10, 0); ctx.lineTo(10, 0); ctx.stroke(); ctx.restore();
         }
       }
-      requestAnimationFrame(animate);
+      requestRef.current = requestAnimationFrame(animate);
     };
     const handleMove = (e: MouseEvent) => { mouse.current = { x: e.clientX, y: e.clientY }; };
     window.addEventListener("mousemove", handleMove); animate();
-    return () => window.removeEventListener("mousemove", handleMove);
+    return () => { window.removeEventListener("mousemove", handleMove); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
   }, []);
   return <canvas ref={canvasRef} className="w-full h-full" />;
 }
@@ -408,33 +419,42 @@ function KineticExhibit() {
 
 function PhysicsExhibit() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestRef = useRef<number | null>(null);
   useEffect(() => {
     const canvas = canvasRef.current; if(!canvas) return; const ctx = canvas.getContext("2d"); if(!ctx) return;
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    if (canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     const cards: any[] = []; const g = 0.5;
     const create = (x: number, y: number) => ({ x, y, w: 80, h: 110, vx: (Math.random()-0.5)*15, vy: (Math.random()-0.5)*15, r: Math.random()*Math.PI*2, vr: (Math.random()-0.5)*0.2, c: `hsla(${Math.random()*360}, 80%, 60%, 0.8)` });
     const handleDown = (e: MouseEvent) => { for(let i=0; i<5; i++) cards.push(create(e.clientX, e.clientY)); };
     window.addEventListener("mousedown", handleDown);
     const animate = () => {
+      if (!canvas || !ctx) return;
       ctx.clearRect(0,0,canvas.width, canvas.height);
       cards.forEach((c, i) => {
         c.vy += g; c.x += c.vx; c.y += c.vy; c.r += c.vr;
         if(c.y+c.h>canvas.height) { c.y=canvas.height-c.h; c.vy*=-0.6; } if(c.x<0||c.x+c.w>canvas.width) c.vx*=-1;
         ctx.save(); ctx.translate(c.x+c.w/2, c.y+c.h/2); ctx.rotate(c.r); ctx.fillStyle=c.c; ctx.shadowBlur=20; ctx.shadowColor=c.c; ctx.fillRect(-c.w/2, -c.h/2, c.w, c.h); ctx.strokeStyle="white"; ctx.lineWidth=1; ctx.strokeRect(-c.w/2, -c.h/2, c.w, c.h); ctx.restore();
       });
-      if(cards.length>40) cards.shift(); requestAnimationFrame(animate);
+      if(cards.length>40) cards.shift(); 
+      requestRef.current = requestAnimationFrame(animate);
     };
-    animate(); return () => window.removeEventListener("mousedown", handleDown);
+    animate(); return () => { window.removeEventListener("mousedown", handleDown); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
   }, []);
   return <div className="relative w-full h-full"><canvas ref={canvasRef} className="w-full h-full" /><div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20 uppercase tracking-[0.5em] text-[8px] font-bold">Touch Grid To Interact</div></div>;
 }
 
 function ParticleExhibit() {
   const canvasRef = useRef<HTMLCanvasElement>(null); const mouse = useRef({ x: 0, y: 0 });
+  const requestRef = useRef<number | null>(null);
   useEffect(() => {
     const canvas = canvasRef.current; if(!canvas) return; const ctx = canvas.getContext("2d"); if(!ctx) return;
-    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-    const p = Array.from({ length: 1000 }, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: 0, vy: 0, s: Math.random()*2+1, c: `hsla(${Math.random()*360}, 100%, 70%, 1)` }));
+    if(canvas) { canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+    const p = Array.from({ length: 1000 }, () => ({ 
+      x: Math.random() * (canvas?.width || 1000), 
+      y: Math.random() * (canvas?.height || 1000), 
+      vx: 0, vy: 0, s: Math.random()*2+1, 
+      c: `hsla(${Math.random()*360}, 100%, 70%, 1)` 
+    }));
     const animate = () => {
       if (!canvas || !ctx) return;
       ctx.fillStyle="rgba(0,0,0,0.1)"; ctx.fillRect(0,0,canvas.width, canvas.height);
@@ -443,10 +463,10 @@ function ParticleExhibit() {
         part.vx+=dx*f*0.01; part.vy+=dy*f*0.01; part.vx*=0.95; part.vy*=0.95; part.x+=part.vx; part.y+=part.vy;
         ctx.fillStyle=part.c; ctx.shadowBlur=10; ctx.shadowColor=part.c; ctx.beginPath(); ctx.arc(part.x, part.y, part.s, 0, Math.PI*2); ctx.fill();
       });
-      requestAnimationFrame(animate);
+      requestRef.current = requestAnimationFrame(animate);
     };
     const handleMove = (e: MouseEvent) => { mouse.current={ x: e.clientX, y: e.clientY }; };
-    window.addEventListener("mousemove", handleMove); animate(); return () => window.removeEventListener("mousemove", handleMove);
+    window.addEventListener("mousemove", handleMove); animate(); return () => { window.removeEventListener("mousemove", handleMove); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
   }, []);
   return <canvas ref={canvasRef} className="w-full h-full" />;
 }
