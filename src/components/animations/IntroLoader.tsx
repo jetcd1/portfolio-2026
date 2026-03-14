@@ -114,7 +114,7 @@ export default function IntroLoader() {
                 ease: [0.16, 1, 0.3, 1] 
               }}
             >
-              <div className="overflow-hidden mb-4 relative z-20">
+              <div className="overflow-hidden mb-6 relative z-20">
                 <motion.h1 
                   className="text-[12vw] md:text-[8vw] font-display font-semibold text-foreground tracking-[0.02em] leading-none mix-blend-difference"
                   initial={{ y: "100%" }}
@@ -128,7 +128,7 @@ export default function IntroLoader() {
 
               <div className="overflow-hidden relative z-20">
                 <motion.p 
-                  className="text-sm md:text-xl text-muted/35 uppercase tracking-[0.5em] font-sans"
+                  className="text-sm md:text-xl text-muted/60 uppercase tracking-[0.6em] font-sans font-medium"
                   initial={{ y: "-100%", opacity: 0 }}
                   animate={{ y: "0%", opacity: 1 }}
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}

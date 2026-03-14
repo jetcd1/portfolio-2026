@@ -273,84 +273,46 @@ export default function Home() {
           className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8"
         >
           <div>
-            <h2 className="text-4xl md:text-6xl font-display font-medium tracking-tight mb-4 text-foreground">Selected Work</h2>
-            <p className="text-muted text-lg md:text-xl max-w-xl">
-              <span className="text-apple-blue font-medium">11 years</span> of experience designing for data-heavy business dashboards and complex operational tools.
+            <h2 className="text-5xl md:text-8xl font-display font-semibold tracking-[-0.04em] mb-6 text-foreground leading-[0.9]">Selected Work</h2>
+            <p className="text-muted text-xl md:text-2xl max-w-2xl font-light opacity-80 leading-relaxed">
+              <span className="text-apple-blue font-medium">11 years</span> of experience crafting high-density, scalable interfaces for enterprise operations.
             </p>
           </div>
         </motion.div>
 
         <div className="flex flex-col gap-16 md:gap-32">
-          {[
-            {
-              company: "United Airlines",
-              title: "Ground Service Equipment\nRequest Queue",
-              description: "Internal tool for United Airlines — Airport Ops and GSE teams track, manage, and resolve equipment repair requests across stations in real time.",
-              tags: ["Aviation", "Internal Tools", "Design System"],
-              video: "/works/gse/thumbnail.mp4",
-              href: "/work/united-airlines",
-            },
-            {
-              company: "Ontada",
-              title: "Ontada iKnowMed G2",
-              description: "Contributed to ONC-certified oncology EHR product design while helping build scalable design system foundations for internal enterprise platforms.",
-              tags: ["Healthcare", "EHR", "Design System"],
-              href: "/work/ontada",
-            },
-            {
-              company: "Equilar",
-              title: "Equilar Data Dashboards",
-              description: "Designed executive benchmarking tools and data-heavy business dashboards, focusing on visualizing complex information clearly.",
-              tags: ["Data Visualization", "B2B SaaS", "Dashboards"],
-              href: "/work/equilar",
-            },
-            {
-              title: "Financial Analytics OS",
-              description: "Architected the design system and core interface for a high-frequency trading analytics platform.",
-              tags: ["FinTech", "Analytics", "System Design"],
-              href: "#",
-            },
-            {
-              title: "AI Workflow Automation",
-              description: "Designed an intuitive node-based editor for enterprise teams to build complex AI pipelines without code.",
-              tags: ["Artificial Intelligence", "B2B", "Editor"],
-              href: "#",
-            },
-            {
-              title: "Cloud Infrastructure Manager",
-              description: "Redesigned the core control plane for a major cloud provider, improving resource allocation efficiency by 40%.",
-              tags: ["Cloud", "Infrastructure", "Enterprise"],
-              href: "#",
-            },
-            {
-              title: "Supply Chain Logistics Hub",
-              description: "Created a predictive global supply chain overview dashboard for real-time tracking and exception management.",
-              tags: ["Logistics", "Global", "Dashboard"],
-              href: "#",
-            },
-            {
-              title: "Healthcare Data Interoperability",
-              description: "Built a scalable standard for mapping disparate healthcare data sources into a unified clinical view.",
-              tags: ["Healthcare", "Data Integration", "Platform"],
-              href: "#",
-            },
-            {
-              title: "Identity & Access Gateway",
-              description: "Developed a zero-trust enterprise architecture administration panel for managing over 1M+ internal permissions.",
-              tags: ["Security", "Identity", "Admin Control"],
-              href: "#",
-            },
-          ].map((project, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
-            >
-              <ProjectCard {...project} />
-            </motion.div>
-          ))}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            <ProjectCard 
+              company="United Airlines"
+              title="Ground Service Equipment Request Queue"
+              description="Internal operations platform for airport teams to manage equipment requests across stations."
+              tags={["Aviation", "Internal Tools", "Design System"]}
+              video="/works/gse/thumbnail.mp4"
+              href="/work/united-airlines"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            <ProjectCard 
+              company="United Airlines"
+              title="Orion Design System 2.0"
+              description="Design system architecture for enterprise products at scale, bringing clarity and consistency to tools used by thousands."
+              tags={["Design System", "Aviation", "Figma"]}
+              video="/works/Orion/thumbnail.mp4"
+              image="/works/Orion/2.png"
+              href="/work/orion"
+            />
+          </motion.div>
         </div>
       </section>
     </main>

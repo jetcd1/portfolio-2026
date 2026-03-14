@@ -21,6 +21,7 @@ export default function Work() {
       </motion.div>
 
       <div className="flex flex-col gap-32 md:gap-48 mt-24">
+        {/* GSE Project */}
         <ProjectCard 
           company="United Airlines"
           title="Ground Service Equipment Request Queue"
@@ -29,21 +30,16 @@ export default function Work() {
           video="/works/gse/thumbnail.mp4"
           href="/work/united-airlines"
         />
-        
-        <ProjectCard 
-          company="Ontada"
-          title="iKnowMed G2 EHR System"
-          description="Next-generation oncology EHR focusing on clinical efficiency and high-density data management."
-          tags={["Healthcare", "EHR"]}
-          href="/work/ontada"
-        />
 
+        {/* Orion Project */}
         <ProjectCard 
-          company="Equilar"
-          title="Executive Finance Dashboards"
-          description="Data-heavy business intelligence tools for executive benchmarking and corporate governance."
-          tags={["Data Visualization", "B2B SaaS"]}
-          href="/work/equilar"
+          company="United Airlines"
+          title="Orion Design System 2.0"
+          description="Design system architecture for enterprise products at scale."
+          tags={["Design System", "Aviation"]}
+          video="/works/Orion/thumbnail.mp4"
+          image="/works/Orion/2.png" 
+          href="/work/orion"
         />
       </div>
     </main>

@@ -2,6 +2,8 @@
 
 import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import KeyGoalsSection from "@/components/ui/KeyGoalsSection";
+import ProjectNavigation from "@/components/ui/ProjectNavigation";
+import BackToTop from "@/components/ui/BackToTop";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -387,6 +389,17 @@ export default function GSEWorkDetail() {
           </motion.div>
         </div>
       </section>
+
+      <ProjectNavigation 
+        nextProject={{
+          title: "Orion Design System 2.0",
+          company: "United Airlines",
+          video: "/works/Orion/thumbnail.mp4",
+          href: "/work/orion"
+        }}
+      />
+      {/* Back to Top */}
+      <BackToTop />
     </main>
   );
 }

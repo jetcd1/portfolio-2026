@@ -5,7 +5,7 @@ import { useRef, ReactNode } from "react";
 
 interface TiltParallaxMediaProps {
   children: ReactNode;
-  title?: string;
+  title?: ReactNode;
   description?: ReactNode;
   delayOffset?: number; // Used for staggered reveal
   noPadding?: boolean;  // Set true to skip the studio backdrop framing
@@ -59,7 +59,7 @@ export default function TiltParallaxMedia({ children, title, description, delayO
       {/* Title & Description Section */}
       {(title || description) && (
         <div className="max-w-4xl mx-auto text-center w-full px-4 flex flex-col gap-6">
-          {title && <h2 className="text-4xl md:text-5xl font-display font-medium text-foreground tracking-tight">{title}</h2>}
+          {title && <div className="text-4xl md:text-5xl font-display font-medium text-foreground tracking-tight">{title}</div>}
           {description && <div className="text-lg md:text-xl text-muted leading-relaxed font-light">{description}</div>}
         </div>
       )}

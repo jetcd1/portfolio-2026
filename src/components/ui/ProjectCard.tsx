@@ -196,7 +196,7 @@ export default function ProjectCard({
         >
           <Link
             href={href}
-            className="group block w-full relative h-[65vh] md:h-[75vh] min-h-[500px] max-h-[850px] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] cursor-none"
+            className="group block w-full relative aspect-[16/10] md:aspect-video min-h-[400px] max-h-[700px] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] cursor-none"
             data-hover="true"
           >
             {/* ── Media ─────────────────────────── */}
@@ -214,7 +214,7 @@ export default function ProjectCard({
                   className="absolute inset-0 w-full h-full object-cover"
                   animate={{
                     scale: isHovered ? 1.06 : 1,
-                    filter: isHovered ? "brightness(1.05) saturate(1.15)" : "brightness(0.9) saturate(0.8)",
+                    filter: isHovered ? "brightness(1.15) saturate(1.25)" : "brightness(0.95) saturate(0.85)",
                   }}
                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 />
@@ -237,7 +237,7 @@ export default function ProjectCard({
             {/* Overlay */}
             <motion.div
               className="absolute inset-0 pointer-events-none"
-              style={{ background: "rgba(0,0,0,0.22)" }}
+              style={{ background: "rgba(0,0,0,0.15)" }}
               animate={{ opacity: isHovered ? 1 : 0 }}
               transition={{ duration: 0.5 }}
             />
