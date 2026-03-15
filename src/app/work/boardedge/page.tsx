@@ -183,7 +183,7 @@ export default function BoardedgeCaseStudy() {
   }, []);
 
   return (
-    <main ref={containerRef} className="min-h-screen bg-background selection:bg-apple-blue selection:text-white pb-0 pt-[120px] md:pt-[160px]">
+    <main ref={containerRef} className="min-h-screen bg-background selection:bg-apple-blue selection:text-white pb-0">
       
       <Lightbox src={lightboxImg || ""} isOpen={!!lightboxImg} onClose={() => setLightboxImg(null)} />
 
@@ -256,12 +256,7 @@ export default function BoardedgeCaseStudy() {
           
           <ScrollReveal>
             <TiltParallaxMedia 
-              title={(
-                <div className="flex flex-col items-center gap-4">
-                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Structure</span>
-                  <span>Product Dashboard</span>
-                </div>
-              )}
+              title="Product Dashboard"
               description="Establishing the visual language for a data-dense executive recruiting platform."
             >
               <div onClick={() => setLightboxImg("/works/boardedge/4.png")} className="cursor-zoom-in">
@@ -277,14 +272,7 @@ export default function BoardedgeCaseStudy() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <TiltParallaxMedia 
-              title={(
-                <div className="flex flex-col items-center gap-4">
-                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Componentry</span>
-                  <span>UI System Details</span>
-                </div>
-              )}
-            >
+            <TiltParallaxMedia title="UI System Details">
                <div className="flex flex-col gap-24">
                  <div onClick={() => setLightboxImg("/works/boardedge/6.png")} className="cursor-zoom-in">
                    <img src="/works/boardedge/6.png" alt="Data Vis" className="w-full h-auto" />
@@ -300,14 +288,7 @@ export default function BoardedgeCaseStudy() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <TiltParallaxMedia 
-              title={(
-                <div className="flex flex-col items-center gap-4">
-                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Identity</span>
-                  <span>Personal Profile</span>
-                </div>
-              )}
-            >
+            <TiltParallaxMedia title="Personal Profile">
               <div onClick={() => setLightboxImg("/works/boardedge/7.png")} className="cursor-zoom-in">
                 <img src="/works/boardedge/7.png" alt="Advanced Search" className="w-full h-auto" />
               </div>
@@ -315,14 +296,7 @@ export default function BoardedgeCaseStudy() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <TiltParallaxMedia 
-              title={(
-                <div className="flex flex-col items-center gap-4">
-                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">UX Flow</span>
-                  <span>Company Profiles</span>
-                </div>
-              )}
-            >
+            <TiltParallaxMedia title="Company Profiles">
               <div onClick={() => setLightboxImg("/works/boardedge/8.png")} className="cursor-zoom-in">
                 <img src="/works/boardedge/8.png" alt="Company Profile" className="w-full h-auto" />
               </div>
@@ -331,12 +305,7 @@ export default function BoardedgeCaseStudy() {
 
           <ScrollReveal>
             <TiltParallaxMedia 
-              title={(
-                <div className="flex flex-col items-center gap-4">
-                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Experience</span>
-                  <span>Product Environment</span>
-                </div>
-              )}
+              title="Product Environment"
               description="A data-driven platform designed to help executives explore corporate relationships, analyze networks, and identify strategic business opportunities."
             >
               <div onClick={() => setLightboxImg("/works/boardedge/9.png")} className="cursor-zoom-in">
@@ -347,12 +316,7 @@ export default function BoardedgeCaseStudy() {
 
           <ScrollReveal>
             <TiltParallaxMedia 
-              title={(
-                <div className="flex flex-col items-center gap-4">
-                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Intelligence</span>
-                  <span>Board Research Reports</span>
-                </div>
-              )}
+              title="Board Research Reports"
               description="Generate detailed board analysis reports and export insights in downloadable PDF format."
             >
                <div onClick={() => setLightboxImg("/works/boardedge/10.png")} className="cursor-zoom-in">

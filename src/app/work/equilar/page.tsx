@@ -160,7 +160,7 @@ export default function EquilarCaseStudy() {
   }, []);
 
   return (
-    <main ref={containerRef} className="min-h-screen bg-background selection:bg-apple-blue selection:text-white pb-0 pt-[120px] md:pt-[160px]">
+    <main ref={containerRef} className="min-h-screen bg-background selection:bg-apple-blue selection:text-white pb-0">
       
       <Lightbox src={lightboxImg || ""} isOpen={!!lightboxImg} onClose={() => setLightboxImg(null)} />
 
