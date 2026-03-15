@@ -1,13 +1,78 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, useInView } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, Search, Share2, BarChart3, Apple, Monitor, Database, Users } from "lucide-react";
+import { ArrowLeft, Search, Share2, BarChart3, Apple, Monitor, Database, Users, CheckCircle2 } from "lucide-react";
 
 import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import BackToTop from "@/components/ui/BackToTop";
+
+// --- Custom Section: My Role ---
+function MyRoleSection() {
+  const roles = [
+    { title: "Product UI / Visual Design", desc: "Establishing a premium, high-density visual language." },
+    { title: "Interaction Design", desc: "Crafting fluid transitions and complex data interactions." },
+    { title: "Design System", desc: "Building a scalable component ecosystem for consistency." },
+    { title: "Data Visualization", desc: "Translating complex board data into actionable insights." }
+  ];
+
+  return (
+    <section className="w-full py-32 px-6 bg-black/20 overflow-hidden relative border-y border-white/5">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-16 md:gap-32 items-start">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="md:w-1/3"
+          >
+            <h3 className="text-apple-blue font-mono text-[11px] uppercase tracking-[0.3em] mb-4">My Role</h3>
+            <h2 className="text-4xl md:text-5xl font-display font-medium text-white tracking-tight leading-tight">
+              Leading the <br />Experience Design
+            </h2>
+          </motion.div>
+          
+          <div className="md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+            {roles.map((role, i) => (
+              <motion.div 
+                key={role.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.8 }}
+                className="group"
+              >
+                <div className="h-[2px] w-8 bg-apple-blue/30 group-hover:w-full transition-all duration-700 ease-out mb-6" />
+                <h4 className="text-xl font-display font-medium text-white mb-2">{role.title}</h4>
+                <p className="text-white/40 text-sm leading-relaxed font-light">{role.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Scroll Entrance Wrapper
+function ScrollReveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50, scale: 0.98 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay }}
+      className="w-full h-full"
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 // --- Custom Section 5: Search, Connect, Benchmark Interaction ---
 function PillarInteraction() {
@@ -182,157 +247,150 @@ export default function BoardedgeCaseStudy() {
         </div>
       </section>
 
+      {/* ─── My Role Section ─────────────────────────────── */}
+      <MyRoleSection />
+
       {/* ─── Case Study Media Section ─────────────────────────────────── */}
       <section className="w-full py-32 md:py-64 px-4 md:px-8 bg-background flex flex-col items-center gap-48 md:gap-80 overflow-visible">
         <div className="max-w-[1400px] w-full flex flex-col gap-40 md:gap-72">
           
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Structure</span>
-                <span>Product Dashboard</span>
+          <ScrollReveal>
+            <TiltParallaxMedia 
+              title={(
+                <div className="flex flex-col items-center gap-4">
+                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Structure</span>
+                  <span>Product Dashboard</span>
+                </div>
+              )}
+              description="Establishing the visual language for a data-dense executive recruiting platform."
+            >
+              <div onClick={() => setLightboxImg("/works/boardedge/4.png")} className="cursor-zoom-in">
+                <img src="/works/boardedge/4.png" alt="Boardedge Dashboard" className="w-full h-auto" />
               </div>
-            )}
-            description="Establishing the visual language for a data-dense executive recruiting platform."
-          >
-            <div onClick={() => setLightboxImg("/works/boardedge/4.png")} className="cursor-zoom-in">
-              <img src="/works/boardedge/4.png" alt="Boardedge Dashboard" className="w-full h-auto" />
-            </div>
-          </TiltParallaxMedia>
+            </TiltParallaxMedia>
+          </ScrollReveal>
 
-          <TiltParallaxMedia>
-            <PillarInteraction />
-          </TiltParallaxMedia>
+          <ScrollReveal>
+            <TiltParallaxMedia>
+              <PillarInteraction />
+            </TiltParallaxMedia>
+          </ScrollReveal>
 
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Componentry</span>
-                <span>UI System Details</span>
-              </div>
-            )}
-          >
-             <div className="flex flex-col gap-24">
-               <div onClick={() => setLightboxImg("/works/boardedge/6.png")} className="cursor-zoom-in">
-                 <img src="/works/boardedge/6.png" alt="Data Vis" className="w-full h-auto" />
+          <ScrollReveal>
+            <TiltParallaxMedia 
+              title={(
+                <div className="flex flex-col items-center gap-4">
+                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Componentry</span>
+                  <span>UI System Details</span>
+                </div>
+              )}
+            >
+               <div className="flex flex-col gap-24">
+                 <div onClick={() => setLightboxImg("/works/boardedge/6.png")} className="cursor-zoom-in">
+                   <img src="/works/boardedge/6.png" alt="Data Vis" className="w-full h-auto" />
+                 </div>
+                 <div onClick={() => setLightboxImg("/works/boardedge/6a.png")} className="cursor-zoom-in">
+                   <img src="/works/boardedge/6a.png" alt="UI Detail A" className="w-full h-auto" />
+                 </div>
+                 <div onClick={() => setLightboxImg("/works/boardedge/6b.png")} className="cursor-zoom-in">
+                   <img src="/works/boardedge/6b.png" alt="UI Detail B" className="w-full h-auto" />
+                 </div>
                </div>
-               <div onClick={() => setLightboxImg("/works/boardedge/6a.png")} className="cursor-zoom-in">
-                 <img src="/works/boardedge/6a.png" alt="UI Detail A" className="w-full h-auto" />
+            </TiltParallaxMedia>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <TiltParallaxMedia 
+              title={(
+                <div className="flex flex-col items-center gap-4">
+                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Identity</span>
+                  <span>Personal Profile</span>
+                </div>
+              )}
+            >
+              <div onClick={() => setLightboxImg("/works/boardedge/7.png")} className="cursor-zoom-in">
+                <img src="/works/boardedge/7.png" alt="Advanced Search" className="w-full h-auto" />
+              </div>
+            </TiltParallaxMedia>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <TiltParallaxMedia 
+              title={(
+                <div className="flex flex-col items-center gap-4">
+                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">UX Flow</span>
+                  <span>Company Profiles</span>
+                </div>
+              )}
+            >
+              <div onClick={() => setLightboxImg("/works/boardedge/8.png")} className="cursor-zoom-in">
+                <img src="/works/boardedge/8.png" alt="Company Profile" className="w-full h-auto" />
+              </div>
+            </TiltParallaxMedia>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <TiltParallaxMedia 
+              title={(
+                <div className="flex flex-col items-center gap-4">
+                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Experience</span>
+                  <span>Product Environment</span>
+                </div>
+              )}
+              description="A data-driven platform designed to help executives explore corporate relationships, analyze networks, and identify strategic business opportunities."
+            >
+              <div onClick={() => setLightboxImg("/works/boardedge/9.png")} className="cursor-zoom-in">
+                <img src="/works/boardedge/9.png" alt="Mobile UI" className="w-full h-auto" />
+              </div>
+            </TiltParallaxMedia>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <TiltParallaxMedia 
+              title={(
+                <div className="flex flex-col items-center gap-4">
+                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Intelligence</span>
+                  <span>Board Research Reports</span>
+                </div>
+              )}
+              description="Generate detailed board analysis reports and export insights in downloadable PDF format."
+            >
+               <div onClick={() => setLightboxImg("/works/boardedge/10.png")} className="cursor-zoom-in">
+                  <img src="/works/boardedge/10.png" alt="Marketing 1" className="w-full h-auto" />
                </div>
-               <div onClick={() => setLightboxImg("/works/boardedge/6b.png")} className="cursor-zoom-in">
-                 <img src="/works/boardedge/6b.png" alt="UI Detail B" className="w-full h-auto" />
+            </TiltParallaxMedia>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <TiltParallaxMedia>
+               <div onClick={() => setLightboxImg("/works/boardedge/11.png")} className="cursor-zoom-in">
+                 <img src="/works/boardedge/11.png" alt="Marketing 2" className="w-full h-auto" />
                </div>
-             </div>
-          </TiltParallaxMedia>
+            </TiltParallaxMedia>
+          </ScrollReveal>
 
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Navigation</span>
-                <span>Personal Profile</span>
+          <ScrollReveal>
+            <TiltParallaxMedia 
+              title={(
+                <div className="flex flex-col items-center gap-4">
+                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Interaction</span>
+                  <span>Experience Prototypes</span>
+                </div>
+              )}
+            >
+              <div onClick={() => setLightboxImg("/works/boardedge/12.gif")} className="cursor-zoom-in">
+                <img src="/works/boardedge/12.gif" alt="Prototype A" className="w-full h-auto rounded-xl" />
               </div>
-            )}
-          >
-            <div onClick={() => setLightboxImg("/works/boardedge/7.png")} className="cursor-zoom-in">
-              <img src="/works/boardedge/7.png" alt="Advanced Search" className="w-full h-auto" />
-            </div>
-          </TiltParallaxMedia>
+            </TiltParallaxMedia>
+          </ScrollReveal>
 
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Information Design</span>
-                <span>Company Profiles</span>
+          <ScrollReveal>
+            <TiltParallaxMedia>
+              <div onClick={() => setLightboxImg("/works/boardedge/12_2.gif")} className="cursor-zoom-in">
+                <img src="/works/boardedge/12_2.gif" alt="Prototype B" className="w-full h-auto rounded-xl" />
               </div>
-            )}
-          >
-            <div onClick={() => setLightboxImg("/works/boardedge/8.png")} className="cursor-zoom-in">
-              <img src="/works/boardedge/8.png" alt="Company Profile" className="w-full h-auto" />
-            </div>
-          </TiltParallaxMedia>
-
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Title</span>
-                <span>Product Experience</span>
-              </div>
-            )}
-            description="A data-driven platform designed to help executives explore corporate relationships, analyze networks, and identify strategic business opportunities."
-          >
-            <div onClick={() => setLightboxImg("/works/boardedge/9.png")} className="cursor-zoom-in">
-              <img src="/works/boardedge/9.png" alt="Mobile UI" className="w-full h-auto" />
-            </div>
-          </TiltParallaxMedia>
-
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Title</span>
-                <span>Board Intelligence Reports</span>
-              </div>
-            )}
-            description="Generate detailed board analysis reports and export insights in downloadable PDF format."
-          >
-            <div className="flex flex-col gap-24">
-              <div onClick={() => setLightboxImg("/works/boardedge/10.png")} className="cursor-zoom-in">
-                <img src="/works/boardedge/10.png" alt="Marketing 1" className="w-full h-auto" />
-              </div>
-              <div onClick={() => setLightboxImg("/works/boardedge/11.png")} className="cursor-zoom-in">
-                <img src="/works/boardedge/11.png" alt="Marketing 2" className="w-full h-auto" />
-              </div>
-            </div>
-          </TiltParallaxMedia>
-
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Interaction</span>
-                <span>Experience Prototype</span>
-              </div>
-            )}
-          >
-             <div className="flex flex-col gap-24">
-               <div onClick={() => setLightboxImg("/works/boardedge/12.gif")} className="cursor-zoom-in">
-                 <img src="/works/boardedge/12.gif" alt="Prototype A" className="w-full h-auto rounded-xl" />
-               </div>
-               <div onClick={() => setLightboxImg("/works/boardedge/12_2.gif")} className="cursor-zoom-in">
-                 <img src="/works/boardedge/12_2.gif" alt="Prototype B" className="w-full h-auto rounded-xl" />
-               </div>
-             </div>
-          </TiltParallaxMedia>
-
-          {/* Slider Sections */}
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Editorial</span>
-                <span>Board Brief Sliders</span>
-              </div>
-            )}
-          >
-            <div onClick={() => setLightboxImg("/works/boardedge/board-brief-slider-jan2019.png")} className="cursor-zoom-in">
-              <img src="/works/boardedge/board-brief-slider-jan2019.png" alt="Board Brief" className="w-full h-auto" />
-            </div>
-          </TiltParallaxMedia>
-
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Insights</span>
-                <span>Research Visualization</span>
-              </div>
-            )}
-          >
-            <div className="flex flex-col gap-24">
-              <div onClick={() => setLightboxImg("/works/boardedge/research-slider-sep-2017.jpg")} className="cursor-zoom-in">
-                <img src="/works/boardedge/research-slider-sep-2017.jpg" alt="Research Slider" className="w-full h-auto" />
-              </div>
-              <div onClick={() => setLightboxImg("/works/boardedge/slider-boardedge-business-development-april2018.png")} className="cursor-zoom-in">
-                <img src="/works/boardedge/slider-boardedge-business-development-april2018.png" alt="Biz Dev Slider" className="w-full h-auto" />
-              </div>
-            </div>
-          </TiltParallaxMedia>
+            </TiltParallaxMedia>
+          </ScrollReveal>
 
         </div>
       </section>
