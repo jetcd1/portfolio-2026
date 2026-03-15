@@ -22,7 +22,6 @@ const exhibits = [
   { id: "kinetic_type", name: "Kinetic Typography", icon: Type, color: "#fff" },
   { id: "balloon_metaball", name: "Balloon Metaballs", icon: CircleDashed, color: "#fff" },
   { id: "chronos_sphere", name: "Chronos-Sphere", icon: Clock, color: "#fff" },
-  { id: "vortex", name: "Neon Vortex", icon: Repeat, color: "#ec4899" },
   { id: "cosmic", name: "Cosmic Hyperspace", icon: Sparkles, color: "#9333ea" },
   { id: "attraction", name: "Attraction Grid", icon: Boxes, color: "#06b6d4" },
   { id: "neural", name: "Neural Drift", icon: Share2, color: "#10b981" },
@@ -73,7 +72,6 @@ export default function AIPlayground() {
              {activeId === "kinetic_type" && <KineticTypographyExhibit />}
              {activeId === "balloon_metaball" && <BalloonMetaballExhibit />}
              {activeId === "chronos_sphere" && <ChronosSphereExhibit />}
-             {activeId === "vortex" && <VortexExhibit />}
              {activeId === "attraction" && <AttractionGridExhibit />}
              {activeId === "neural" && <NeuralDriftExhibit />}
              {activeId === "optical" && <OpticalFlowExhibit />}
@@ -127,7 +125,7 @@ export default function AIPlayground() {
                     className={`leading-none flex flex-wrap transition-all duration-300 ${
                       isActive 
                         ? "text-[1.9vh] md:text-[2.4vh] lg:text-[3.1vh] text-white uppercase font-black tracking-tight" 
-                        : "text-[1.6vh] md:text-[2.0vh] lg:text-[2.5vh] font-medium lowercase tracking-tight"
+                        : "text-[1.6vh] md:text-[2.0vh] lg:text-[2.5vh] font-medium capitalize tracking-tight"
                     }`}
                   >
                     {ex.name.split("").map((char, index) => (
@@ -1750,8 +1748,8 @@ function ChronosSphereExhibit() {
         <OrbitControls enableDamping dampingFactor={0.05} rotateSpeed={0.5} minDistance={3} maxDistance={20} />
       </Canvas>
 
-      {/* Mode Selector */}
-      <div className="absolute top-8 right-8 z-50 flex flex-col gap-2">
+      {/* Mode Selector - Moved down to avoid nav overlap */}
+      <div className="absolute top-32 right-8 z-50 flex flex-col gap-2">
         {['GLOBE', 'FLAT', 'CYLINDER'].map((mode) => (
           <button
             key={mode}
