@@ -120,118 +120,72 @@ export default function EquilarCaseStudy() {
   const headerOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
 
   return (
-    <main ref={containerRef} className="min-h-screen bg-background selection:bg-apple-blue selection:text-white pb-0">
+    <main ref={containerRef} className="min-h-screen bg-background selection:bg-apple-blue selection:text-white pb-0 pt-[120px] md:pt-[160px]">
       
-      {/* ─── Hero Section ────────────────────────────────────────────── */}
-      <section className="relative w-full h-screen min-h-[800px] flex items-end justify-center pb-24 px-4 overflow-hidden bg-black">
-        {/* Cinematic Auto-playing Video */}
-        <div className="absolute inset-0 z-0 select-none flex items-center justify-center">
-          <video 
-            src="/works/equilarapp/hero.mp4" 
-            autoPlay loop muted playsInline 
-            className="w-full h-full object-contain brightness-[0.5] md:brightness-75 scale-[1.02]"
-          />
-          {/* Subtle gradient overlay to merge video into background and hide pixelated text at bottom */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-background" />
-          <div className="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-background via-background/80 to-transparent blur-sm" />
-        </div>
+      {/* Global Back Link */}
+      <motion.div style={{ opacity: headerOpacity }} className="fixed top-8 left-4 md:top-12 md:left-10 z-[100]">
+        <Link href="/work" className="inline-flex items-center gap-2 group px-4 py-2 rounded-full bg-background/80 backdrop-blur-md border border-border/50 hover:bg-foreground hover:text-background transition-all duration-500 shadow-sm">
+          <ArrowLeft className="w-4 h-4 text-muted-foreground group-hover:text-background transition-colors" />
+          <span className="text-xs font-medium tracking-widest uppercase text-muted-foreground group-hover:text-background transition-colors">All Work</span>
+        </Link>
+      </motion.div>
 
-        {/* Global Back Link */}
-        <motion.div style={{ opacity: headerOpacity }} className="absolute top-8 left-4 md:top-12 md:left-10 z-50">
-          <Link href="/work" className="inline-flex items-center gap-2 group px-4 py-2 rounded-full bg-black/20 backdrop-blur-md border border-white/10 hover:bg-white hover:text-black transition-all duration-500">
-            <ArrowLeft className="w-4 h-4 text-white/70 group-hover:text-black transition-colors" />
-            <span className="text-xs font-medium tracking-widest uppercase text-white/70 group-hover:text-black transition-colors">All Work</span>
-          </Link>
-        </motion.div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 w-full max-w-6xl flex flex-col md:flex-row justify-between items-end gap-12">
-          <div className="max-w-3xl">
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.2 }}>
-              <motion.h1 
-                className="text-5xl md:text-7xl lg:text-[7rem] font-display font-medium text-white tracking-tighter leading-none mb-6 drop-shadow-2xl"
-              >
-                Equilar App
-              </motion.h1>
-            </motion.div>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.8 }}
-              className="text-white/80 text-lg md:text-2xl font-light leading-relaxed max-w-2xl drop-shadow-md"
-            >
-              Equilar is the leading provider of board intelligence solutions. The Equilar app helps you with business development and prepares you for your most important business meetings.
-            </motion.p>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Role & Context ─────────────────────────────────────────── */}
-      <section className="w-full py-24 md:py-32 px-4 md:px-8 border-b border-border/20">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-16 md:gap-24">
-          <motion.div 
-            className="md:w-1/3 flex flex-col gap-12"
-            initial={{ opacity: 0, y: 30 }}
+      {/* ─── Hero / Discovery Section (Orion Style) ─────────────────── */}
+      <section className="w-full flex flex-col items-center gap-20 md:gap-32 px-4 mb-24 md:mb-40">
+        <div className="max-w-4xl w-full flex flex-col items-center text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div>
-              <h3 className="text-xs font-bold text-muted uppercase tracking-[0.2em] mb-3">Role</h3>
-              <p className="text-foreground text-sm leading-relaxed">
-                Senior Product Designer<br />
-                Hands-on UX/UI, Prototyping & Visual Design
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xs font-bold text-muted uppercase tracking-[0.2em] mb-3">Timeline & Toolkit</h3>
-              <p className="text-foreground text-sm leading-relaxed">
-                Mar 2016 — Oct 2017<br />
-                Illustrator, Sketch, After Effects
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xs font-bold text-muted uppercase tracking-[0.2em] mb-3">Tags</h3>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {["BRANDING", "MOBILE UI", "UX", "DESIGN SYSTEM"].map(tag => (
-                  <span key={tag} className="text-[10px] tracking-widest uppercase px-3 py-1.5 border border-border/50 rounded-full text-foreground/70 bg-foreground/5">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <p className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue mb-6">Equilar App</p>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-foreground tracking-tight mb-12">
+              Actionable Intelligence
+            </h2>
           </motion.div>
           
+          <div className="flex flex-col gap-6 text-xl md:text-2xl text-muted font-light leading-relaxed max-w-3xl">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+            >
+              Equilar is the leading provider of board intelligence solutions. The Equilar app helps you with business development and prepares you for your most important business meetings.
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              As a hands-on Senior Designer, I led the mobile UX and UI design, distilling a massive database of over 300,000 executive profiles into an intuitive, high-performance mobile experience.
+            </motion.p>
+          </div>
+        </div>
+
+        {/* Hero Media Block (using 1.png instead of video) */}
+        <div className="w-full max-w-7xl px-2 md:px-0 mt-8">
           <motion.div 
-            className="md:w-2/3"
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}
+             initial={{ opacity: 0, y: 40 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+             transition={{ duration: 1, delay: 0.3 }}
+             className="w-full overflow-hidden rounded-2xl border border-border/20 shadow-2xl"
           >
-            <h2 className="text-2xl md:text-4xl font-display font-medium text-foreground leading-tight tracking-tight mb-8">
-              Navigating Boardroom Connections with Clarity
-            </h2>
-            <div className="text-muted text-base md:text-lg font-light leading-relaxed flex flex-col gap-6">
-              <p>
-                As a hands-on Senior Designer, I led the mobile UX and UI design for the Equilar App from the ground up. My goal was to distill a massive database of over 300,000 executive profiles into an intuitive, high-performance mobile experience that executives could use on the go.
-              </p>
-              <p>
-                The challenge lay in designing powerful search and network-mapping interactions that felt effortless, helping users instantly identify "who knows who" to tap into new business opportunities seamlessly.
-              </p>
-            </div>
+            <img 
+              src="/works/equilarapp/1.png" 
+              alt="Equilar Hero Background" 
+              className="w-full h-auto block align-bottom object-cover" 
+            />
           </motion.div>
         </div>
       </section>
 
       {/* ─── Gallery Showcases ──────────────────────────────────────── */}
-      <section className="w-full py-24 md:py-40 px-4 md:px-8 bg-background flex flex-col items-center gap-24 md:gap-40">
+      <section className="w-full pb-24 md:pb-40 px-4 md:px-8 bg-background flex flex-col items-center gap-24 md:gap-40">
         <div className="max-w-[1200px] w-full flex flex-col gap-24 md:gap-40">
-          
-          {/* Section 1: The Foundation */}
-          <div className="flex flex-col gap-8">
-            <ParallaxImage src="/works/equilarapp/1.png" alt="Equilar UI Setup" />
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center max-w-2xl mx-auto mt-4">
-              <h3 className="text-xl font-display font-medium mb-2">Establishing the Core Experience</h3>
-              <p className="text-muted font-light text-sm">Translating complex data grids into digestable, premium mobile interfaces.</p>
-            </motion.div>
-            <ParallaxImage src="/works/equilarapp/1a.png" alt="Equilar Wireframes & Flows" className="mt-12" />
-          </div>
 
           {/* Section 2: Custom Coded Interaction (Replacing 2.png) */}
           <ConnectionsInteraction />
@@ -241,21 +195,25 @@ export default function EquilarCaseStudy() {
             <div className="flex flex-col gap-6">
               <ParallaxImage src="/works/equilarapp/3.png" alt="Equilar UI Feature 3" />
               <div className="px-2">
-                <h4 className="font-display font-medium mb-1">Executive Profiles</h4>
-                <p className="text-muted text-xs font-light">Comprehensive data structured for quick scanning.</p>
+                <h4 className="font-display font-medium mb-1">Brand Identity System</h4>
+                <p className="text-muted text-xs font-light">Color, typography, and visual language established for product consistency.</p>
               </div>
             </div>
             <div className="flex flex-col gap-6 mt-0 md:mt-24">
               <ParallaxImage src="/works/equilarapp/4.png" alt="Equilar UI Feature 4" />
               <div className="px-2">
-                <h4 className="font-display font-medium mb-1">Network Synergy</h4>
-                <p className="text-muted text-xs font-light">Visual indicators for shared board history.</p>
+                <h4 className="font-display font-medium mb-1">Logo Design Exploration</h4>
+                <p className="text-muted text-xs font-light">Developing a geometric identity symbolizing connection, structure, and executive networks.</p>
               </div>
             </div>
           </div>
           
-          <div className="flex justify-center w-full">
+          <div className="flex flex-col gap-6 items-center w-full">
             <ParallaxImage src="/works/equilarapp/4a.png" alt="Equilar Interface detail" className="max-w-4xl" />
+            <div className="px-2 text-center max-w-2xl">
+              <h4 className="font-display font-medium mb-1">Icon System</h4>
+              <p className="text-muted text-xs font-light">A unified icon library designed to support fast scanning and clarity across data-dense enterprise interfaces.</p>
+            </div>
           </div>
 
           {/* Sections 5 & 6 */}
@@ -263,15 +221,15 @@ export default function EquilarCaseStudy() {
             <div className="flex flex-col gap-6">
               <ParallaxImage src="/works/equilarapp/5.png" alt="Equilar Connections" />
               <div className="px-2">
-                <h4 className="font-display font-medium mb-1">Radar View</h4>
-                <p className="text-muted text-xs font-light">Mapping corporate influence radii.</p>
+                <h4 className="font-display font-medium mb-1">Ideation & Exploration</h4>
+                <p className="text-muted text-xs font-light">Whiteboard sessions and quick sketches used to shape early product concepts.</p>
               </div>
             </div>
             <div className="flex flex-col gap-6 mt-0 md:mt-24">
               <ParallaxImage src="/works/equilarapp/6.png" alt="Equilar Data Visualization" />
               <div className="px-2">
-                <h4 className="font-display font-medium mb-1">Advanced Filters</h4>
-                <p className="text-muted text-xs font-light">Drill down by industry, cap, and tenure.</p>
+                <h4 className="font-display font-medium mb-1">Primary User Profile</h4>
+                <p className="text-muted text-xs font-light">Mapping motivations, environments, and pain points of executive decision-makers.</p>
               </div>
             </div>
           </div>
