@@ -532,19 +532,236 @@ function QuantumFieldExhibit() {
 
 // ─── Previous Exhibits (Enhanced) ──────────────────────────────────── //
 
+const KINETIC_CITIES = [
+  { name: "Local", tz: -(new Date().getTimezoneOffset() / 60) },
+  { name: "Seoul", tz: 9 },
+  { name: "New York", tz: -5 },
+  { name: "London", tz: 0 },
+  { name: "Tokyo", tz: 9 },
+  { name: "Dubai", tz: 4 },
+];
+
+function TimeRing({ radius, value, max, label, color, speed = 1 }: { radius: number, value: number, max: number, label: string, color: string, speed?: number }) {
+  const groupRef = useRef<THREE.Group>(null);
+  const textRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      // Rotate the entire ring based on the value
+      const targetRotation = -(value / max) * Math.PI * 2;
+      groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetRotation, 0.1);
+    }
+    if (textRef.current) {
+      // Counter-rotate the text group if we want them to stay upright, 
+      // but for "Kinetic" feel, let's just let them spin or wobble
+      textRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 2) * 0.1;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {/* Visual Ring */}
+      <mesh>
+        <ringGeometry args={[radius - 0.05, radius + 0.05, 64]} />
+        <meshStandardMaterial color={color} transparent opacity={0.1} emissive={color} emissiveIntensity={2} />
+      </mesh>
+      
+      {/* Markers / Numbers */}
+      {Array.from({ length: 12 }).map((_, i) => {
+        const angle = (i / 12) * Math.PI * 2;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        return (
+          <mesh key={i} position={[x, y, 0]}>
+            <boxGeometry args={[0.02, 0.1, 0.02]} />
+            <meshStandardMaterial color={color} emissive={color} emissiveIntensity={5} />
+          </mesh>
+        );
+      })}
+
+      {/* Main Value Display */}
+      <group ref={textRef} position={[Math.cos(0) * radius, Math.sin(0) * radius, 0.2]}>
+         <Float speed={5} rotationIntensity={0.5} floatIntensity={0.5}>
+           <Text
+             fontSize={0.4}
+             color="white"
+             font="/fonts/Inter-Bold.woff"
+             anchorX="center"
+             anchorY="middle"
+           >
+             {value.toString().padStart(2, "0")}
+           </Text>
+           <Text
+             position={[0, -0.3, 0]}
+             fontSize={0.1}
+             color={color}
+             font="/fonts/Inter-Bold.woff"
+             anchorX="center"
+             anchorY="middle"
+             letterSpacing={0.2}
+           >
+             {label.toUpperCase()}
+           </Text>
+         </Float>
+      </group>
+    </group>
+  );
+}
+
+function CentisecondVortex({ color }: { color: string }) {
+  const pointsRef = useRef<THREE.Points>(null);
+  const geomRef = useRef<THREE.BufferGeometry>(null);
+  const count = 1000;
+  
+  const [positions, colors] = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const cols = new Float32Array(count * 3);
+    const colorObj = new THREE.Color(color);
+    
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 4.5 + Math.random() * 0.5;
+      pos[i * 3] = Math.cos(angle) * radius;
+      pos[i * 3 + 1] = Math.sin(angle) * radius;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 2;
+      
+      cols[i * 3] = colorObj.r;
+      cols[i * 3 + 1] = colorObj.g;
+      cols[i * 3 + 2] = colorObj.b;
+    }
+    return [pos, cols];
+  }, [color]);
+
+  useEffect(() => {
+    if (geomRef.current) {
+      geomRef.current.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geomRef.current.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    }
+  }, [positions, colors]);
+
+  useFrame((state) => {
+    if (pointsRef.current) {
+      pointsRef.current.rotation.z += 0.2; // High speed
+      pointsRef.current.position.z = Math.sin(state.clock.getElapsedTime() * 10) * 0.5;
+    }
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry ref={geomRef} />
+      <pointsMaterial size={0.02} vertexColors transparent opacity={0.6} blending={THREE.AdditiveBlending} />
+    </points>
+  );
+}
+
 function KineticExhibit() {
   const [time, setTime] = useState(new Date());
-  useEffect(() => { const timer = setInterval(() => setTime(new Date()), 10); return () => clearInterval(timer); }, []);
-  const f = (n: number) => n.toString().padStart(2, "0");
+  const [activeCity, setActiveCity] = useState("Local");
+  const [tzOffset, setTzOffset] = useState(-(new Date().getTimezoneOffset() / 60));
+
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 10);
+    return () => clearInterval(timer);
+  }, []);
+
+  const getTargetTime = () => {
+    const utc = time.getTime() + (time.getTimezoneOffset() * 60000);
+    return new Date(utc + (3600000 * tzOffset));
+  };
+
+  const t = getTargetTime();
+  const h = t.getHours();
+  const m = t.getMinutes();
+  const s = t.getSeconds();
+  const ms = Math.floor(t.getMilliseconds() / 10);
+
   return (
-    <div className="flex flex-col items-center">
-      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-[10vw] font-black tracking-tighter flex items-center leading-none text-white mix-blend-difference">
-        <div className="flex flex-col items-center"><span>{f(time.getHours())}</span><span className="text-[8px] uppercase tracking-[1em] opacity-30 mt-2">Hours</span></div>
-        <span className="mx-2 opacity-20 animate-pulse">:</span>
-        <div className="flex flex-col items-center"><span>{f(time.getMinutes())}</span><span className="text-[8px] uppercase tracking-[1em] opacity-30 mt-2">Min</span></div>
-        <span className="mx-2 opacity-20">:</span>
-        <div className="flex flex-col items-center text-cyan-500"><span>{f(time.getSeconds())}</span><span className="text-[8px] uppercase tracking-[1em] opacity-30 mt-2">Sec</span></div>
-      </motion.div>
+    <div className="relative w-full h-full bg-[#020205] overflow-hidden">
+      <Canvas camera={{ position: [0, 0, 12], fov: 40 }}>
+        <color attach="background" args={["#020205"]} />
+        <ambientLight intensity={0.4} />
+        <pointLight position={[10, 10, 10]} intensity={2} color="#44aaff" />
+        <pointLight position={[-10, -10, -10]} intensity={1} color="#ff44aa" />
+        
+        <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+        
+        <group rotation={[0.2, -0.3, 0]}>
+          <TimeRing radius={3.5} value={h} max={24} label="Hours" color="#ffffff" />
+          <TimeRing radius={2.5} value={m} max={60} label="Minutes" color="#00f2ff" />
+          <TimeRing radius={1.5} value={s} max={60} label="Seconds" color="#ff00e1" />
+          
+          {/* Centisecond Center Display */}
+          <group position={[0, 0, 0]}>
+            <Text
+              fontSize={0.8}
+              color="white"
+              font="/fonts/Inter-Bold.woff"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {ms.toString().padStart(2, "0")}
+            </Text>
+            <Text
+              position={[0, -0.6, 0]}
+              fontSize={0.12}
+              color="#ffcc00"
+              font="/fonts/Inter-Bold.woff"
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.4}
+            >
+              MS / 100
+            </Text>
+          </group>
+
+          <CentisecondVortex color="#ff00e1" />
+        </group>
+
+        <OrbitControls enableDamping dampingFactor={0.05} rotateSpeed={0.5} minDistance={5} maxDistance={25} />
+      </Canvas>
+
+      {/* Futuristic HUD Selector */}
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 z-50 flex flex-wrap justify-center gap-3 p-2 bg-black/40 backdrop-blur-2xl rounded-2xl border border-white/5 shadow-2xl">
+        {KINETIC_CITIES.map((city) => (
+          <button
+            key={city.name}
+            onClick={() => {
+              setActiveCity(city.name);
+              setTzOffset(city.tz);
+              // Trigger a small GSAP splash or sound if we had one
+            }}
+            className={`px-4 py-2 rounded-xl text-[10px] tracking-[0.2em] font-bold uppercase transition-all duration-500
+              ${activeCity === city.name 
+                ? 'bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)]' 
+                : 'text-white/30 hover:text-white hover:bg-white/5'
+              }`}
+          >
+            {city.name}
+          </button>
+        ))}
+      </div>
+
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 text-center pointer-events-none">
+        <motion.div
+           initial={{ opacity: 0, y: 10 }}
+           animate={{ opacity: 1, y: 0 }}
+           key={activeCity}
+        >
+          <span className="text-white text-3xl font-black tracking-tighter uppercase italic block mb-1">
+            {activeCity} Time
+          </span>
+          <span className="text-cyan-400/60 text-[10px] font-mono tracking-[0.6em] uppercase">
+            Zero-Latency Kinetic Chronograph
+          </span>
+        </motion.div>
+      </div>
+
+      {/* Decorative Elements */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none border-[1px] border-white/5 m-4 rounded-[40px]" />
+      <div className="absolute top-1/2 left-8 -translate-y-1/2 flex flex-col gap-4">
+         <div className="w-1 h-20 bg-gradient-to-b from-transparent via-cyan-500 to-transparent opacity-20" />
+         <span className="text-[8px] text-white/10 uppercase vertical-text tracking-[1em]">Engine Sync v2.4</span>
+      </div>
     </div>
   );
 }
