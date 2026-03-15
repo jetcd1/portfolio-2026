@@ -370,14 +370,7 @@ export default function BoardedgeCaseStudy() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <TiltParallaxMedia 
-              title={(
-                <div className="flex flex-col items-center gap-4">
-                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Interaction</span>
-                  <span>Experience Prototypes</span>
-                </div>
-              )}
-            >
+            <TiltParallaxMedia>
               <div onClick={() => setLightboxImg("/works/boardedge/12.gif")} className="cursor-zoom-in">
                 <img src="/works/boardedge/12.gif" alt="Prototype A" className="w-full h-auto rounded-xl" />
               </div>
@@ -403,10 +396,10 @@ export default function BoardedgeCaseStudy() {
             initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <h3 className="text-sm md:text-base font-medium text-apple-blue uppercase tracking-[0.2em] mb-4">
-              Business Outcome
+              Product Impact
             </h3>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-foreground tracking-tight leading-tight">
-              Reimagining <br /><span className="text-apple-blue">Governance</span>
+              Optimizing <br /><span className="text-apple-blue">Insight</span>
             </h2>
           </motion.div>
           
@@ -415,10 +408,10 @@ export default function BoardedgeCaseStudy() {
             initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           >
             <p className="text-2xl md:text-4xl font-display text-foreground leading-snug tracking-tight font-medium">
-              Empowering board members with deep network intelligence and recruitment tools.
+              Redesigned the BoardEdge experience to transform complex governance data into clear, actionable insights.
             </p>
             <p className="text-xl md:text-2xl text-muted leading-relaxed font-light">
-              By simplifying the pathway to board recruitment and benchmarking, Boardedge has become an essential tool for institutional investors and board members alike.
+              The platform enables institutional investors and board members to explore executive networks, benchmark board composition, and identify potential board recruitment opportunities.
             </p>
           </motion.div>
         </div>
