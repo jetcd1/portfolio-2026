@@ -205,19 +205,32 @@ export default function ProjectCard({
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${image})` }} />
               )}
               {video && (
-                <motion.video
-                  ref={videoRef}
-                  src={video}
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                  animate={{
-                    scale: isHovered ? 1.06 : 1,
-                    filter: isHovered ? "brightness(1.15) saturate(1.25)" : "brightness(0.95) saturate(0.85)",
-                  }}
-                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                />
+                video.toLowerCase().endsWith('.gif') ? (
+                  <motion.img
+                    src={video}
+                    alt={title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    animate={{
+                      scale: isHovered ? 1.06 : 1,
+                      filter: isHovered ? "brightness(1.15) saturate(1.25)" : "brightness(0.95) saturate(0.85)",
+                    }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                ) : (
+                  <motion.video
+                    ref={videoRef}
+                    src={video}
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover"
+                    animate={{
+                      scale: isHovered ? 1.06 : 1,
+                      filter: isHovered ? "brightness(1.15) saturate(1.25)" : "brightness(0.95) saturate(0.85)",
+                    }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                )
               )}
             </motion.div>
 

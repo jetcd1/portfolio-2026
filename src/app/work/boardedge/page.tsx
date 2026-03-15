@@ -371,17 +371,9 @@ export default function BoardedgeCaseStudy() {
 
           <ScrollReveal>
             <TiltParallaxMedia>
-              <div onClick={() => setLightboxImg("/works/boardedge/12.gif")} className="cursor-zoom-in">
-                <img src="/works/boardedge/12.gif" alt="Prototype A" className="w-full h-auto rounded-xl" />
-              </div>
-            </TiltParallaxMedia>
-          </ScrollReveal>
-
-          <ScrollReveal>
-            <TiltParallaxMedia>
-              <div onClick={() => setLightboxImg("/works/boardedge/12_2.gif")} className="cursor-zoom-in">
-                <img src="/works/boardedge/12_2.gif" alt="Prototype B" className="w-full h-auto rounded-xl" />
-              </div>
+               <div onClick={() => setLightboxImg("/works/boardedge/12.gif")} className="cursor-zoom-in">
+                 <img src="/works/boardedge/12.gif" alt="Prototype A" className="w-full h-auto rounded-xl" />
+               </div>
             </TiltParallaxMedia>
           </ScrollReveal>
 

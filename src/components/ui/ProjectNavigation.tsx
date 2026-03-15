@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useRef } from "react";
 
 interface ProjectData {
@@ -44,11 +44,19 @@ export default function ProjectNavigation({ previousProject, nextProject }: Proj
         style={{ scale: springScale, opacity: springOpacity }}
       >
         {project.video ? (
-          <video 
-            src={project.video}
-            autoPlay loop muted playsInline
-            className="w-full h-full object-cover brightness-[0.3] group-hover:brightness-[0.6] transition-all duration-1000 group-hover:scale-105"
-          />
+          project.video.toLowerCase().endsWith('.gif') ? (
+            <motion.img 
+              src={project.video}
+              alt={project.title}
+              className="w-full h-full object-cover brightness-[0.3] group-hover:brightness-[0.6] transition-all duration-1000 group-hover:scale-105"
+            />
+          ) : (
+            <video 
+              src={project.video}
+              autoPlay loop muted playsInline
+              className="w-full h-full object-cover brightness-[0.3] group-hover:brightness-[0.6] transition-all duration-1000 group-hover:scale-105"
+            />
+          )
         ) : (
           <div 
             className="w-full h-full bg-cover bg-center brightness-[0.3] group-hover:brightness-[0.6] transition-all duration-1000 group-hover:scale-105"
@@ -73,6 +81,11 @@ export default function ProjectNavigation({ previousProject, nextProject }: Proj
         </h2>
 
         <div className="flex items-center gap-4 group/btn">
+          {type === "prev" && (
+            <div className="w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all duration-500">
+              <ArrowLeft className="w-5 h-5 md:w-7 md:h-7 text-white group-hover:text-black transition-colors duration-500" />
+            </div>
+          )}
           <span className="text-lg md:text-2xl font-light text-white/50 group-hover:text-white transition-colors duration-500">
             {project.company}
           </span>
