@@ -129,7 +129,7 @@ export default function BoardedgeCaseStudy() {
           <img
             src="/works/boardedge/hero.png"
             alt="Boardedge Hero Background"
-            className="absolute top-0 left-0 w-full h-full object-cover opacity-40 brightness-50"
+            className="absolute top-0 left-0 w-full h-full object-cover opacity-60 brightness-75"
           />
           {/* Cinematic Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black pointer-events-none" />
@@ -200,29 +200,8 @@ export default function BoardedgeCaseStudy() {
             </div>
           </TiltParallaxMedia>
 
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Architecture</span>
-                <span>Product Pillars</span>
-              </div>
-            )}
-          >
+          <TiltParallaxMedia>
             <PillarInteraction />
-          </TiltParallaxMedia>
-
-          <TiltParallaxMedia 
-            title={(
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Data Visualization</span>
-                <span>Shareholder Engagement</span>
-              </div>
-            )}
-            description="Translating historical professional connections into actionable insights."
-          >
-            <div onClick={() => setLightboxImg("/works/boardedge/6.png")} className="cursor-zoom-in">
-              <img src="/works/boardedge/6.png" alt="Data Vis" className="w-full h-auto" />
-            </div>
           </TiltParallaxMedia>
 
           <TiltParallaxMedia 
@@ -234,6 +213,9 @@ export default function BoardedgeCaseStudy() {
             )}
           >
              <div className="flex flex-col gap-24">
+               <div onClick={() => setLightboxImg("/works/boardedge/6.png")} className="cursor-zoom-in">
+                 <img src="/works/boardedge/6.png" alt="Data Vis" className="w-full h-auto" />
+               </div>
                <div onClick={() => setLightboxImg("/works/boardedge/6a.png")} className="cursor-zoom-in">
                  <img src="/works/boardedge/6a.png" alt="UI Detail A" className="w-full h-auto" />
                </div>
@@ -247,7 +229,7 @@ export default function BoardedgeCaseStudy() {
             title={(
               <div className="flex flex-col items-center gap-4">
                 <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Navigation</span>
-                <span>Advanced Search Module</span>
+                <span>Personal Profile</span>
               </div>
             )}
           >
@@ -272,10 +254,11 @@ export default function BoardedgeCaseStudy() {
           <TiltParallaxMedia 
             title={(
               <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Mobile Strategy</span>
-                <span>Responsive Adaptation</span>
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Title</span>
+                <span>Product Experience</span>
               </div>
             )}
+            description="A data-driven platform designed to help executives explore corporate relationships, analyze networks, and identify strategic business opportunities."
           >
             <div onClick={() => setLightboxImg("/works/boardedge/9.png")} className="cursor-zoom-in">
               <img src="/works/boardedge/9.png" alt="Mobile UI" className="w-full h-auto" />
@@ -285,10 +268,11 @@ export default function BoardedgeCaseStudy() {
           <TiltParallaxMedia 
             title={(
               <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Marketing</span>
-                <span>Campaign Visuals</span>
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Title</span>
+                <span>Board Intelligence Reports</span>
               </div>
             )}
+            description="Generate detailed board analysis reports and export insights in downloadable PDF format."
           >
             <div className="flex flex-col gap-24">
               <div onClick={() => setLightboxImg("/works/boardedge/10.png")} className="cursor-zoom-in">
