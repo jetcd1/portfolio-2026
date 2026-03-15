@@ -1,30 +1,13 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import BackToTop from "@/components/ui/BackToTop";
-
-// Reusable component for media with parallax offset and tilt
-function ParallaxImage({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
-  const springY = useSpring(y, { stiffness: 100, damping: 30 });
-
-  return (
-    <motion.div 
-      ref={ref} 
-      style={{ y: springY }} 
-      className={`relative w-full overflow-hidden rounded-lg md:rounded-2xl transform-gpu ${className}`}
-    >
-      <img src={src} alt={alt} className="w-full h-auto block align-bottom" loading="lazy" />
-    </motion.div>
-  );
-}
 
 // Custom Section 2: Boardroom Connections Interaction (Code-driven instead of 2.png)
 function ConnectionsInteraction() {
@@ -130,147 +113,165 @@ export default function EquilarCaseStudy() {
         </Link>
       </motion.div>
 
-      {/* ─── Hero / Discovery Section (Orion Style) ─────────────────── */}
-      <section className="w-full flex flex-col items-center gap-20 md:gap-32 px-4 mb-24 md:mb-40">
-        <div className="max-w-4xl w-full flex flex-col items-center text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <p className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue mb-6">Equilar App</p>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-foreground tracking-tight mb-12">
-              Actionable Intelligence
-            </h2>
-          </motion.div>
-          
-          <div className="flex flex-col gap-6 text-xl md:text-2xl text-muted font-light leading-relaxed max-w-3xl">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-            >
-              Equilar is the leading provider of board intelligence solutions. The Equilar app helps you with business development and prepares you for your most important business meetings.
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              As a hands-on Senior Designer, I led the mobile UX and UI design, distilling a massive database of over 300,000 executive profiles into an intuitive, high-performance mobile experience.
-            </motion.p>
-          </div>
+      {/* ─── Hero Section ────────────────────────────────────────────────── */}
+      <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
+        {/* Full-screen Background Image (1.png instead of video for this specific work) */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          <img
+            src="/works/equilarapp/1.png"
+            alt="Equilar Hero Background"
+            className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
+          />
+          {/* Cinematic Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black pointer-events-none" />
+          <div className="absolute inset-0 bg-black/40 pointer-events-none" />
         </div>
-
-        {/* Hero Media Block (using 1.png instead of video) */}
-        <div className="w-full max-w-7xl px-2 md:px-0 mt-8">
-          <motion.div 
-             initial={{ opacity: 0, y: 40 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-             transition={{ duration: 1, delay: 0.3 }}
-             className="w-full overflow-hidden rounded-2xl border border-border/20 shadow-2xl"
+        
+        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center text-center mt-auto md:mt-0">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <img 
-              src="/works/equilarapp/1.png" 
-              alt="Equilar Hero Background" 
-              className="w-full h-auto block align-bottom object-cover" 
-            />
+            <span className="block text-[13px] font-medium tracking-[0.2em] uppercase text-white/70 mb-6 font-mono">
+              Equilar — Board Intelligence
+            </span>
+            <h1 className="text-5xl md:text-7xl lg:text-9xl font-display font-medium text-white tracking-tight leading-[1.05] mb-8 drop-shadow-sm">
+              Equilar <span className="text-apple-blue italic md:not-italic">App</span>
+            </h1>
+            <p className="text-lg md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-12 font-medium drop-shadow-sm">
+              Equilar is the leading provider of board intelligence solutions. The Equilar app helps you with business development and be prepared for your most important business meetings. Search over 300K profiles of executives and board members (who are typically not on LinkedIn), identify “who knows who” and navigate boardroom connections to tap new business opportunities.
+            </p>
+          </motion.div>
+
+          {/* Metadata Grid (Consistent with other works) */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 border-t border-white/20 pt-10 mt-16 w-full max-w-4xl"
+          >
+            {[
+              { label: "Scope", value: ["Branding, Mobile UI", "UX, Design System"] },
+              { label: "Tools", value: ["Illustrator, Sketch", "After Effects"] },
+              { label: "Timeline", value: "Mar 2016 — Oct 2017" }
+            ].map((item, i) => (
+              <div key={i} className="flex flex-col items-center">
+                <span className="text-[12px] uppercase tracking-[0.15em] text-white/50 font-semibold mb-3">{item.label}</span>
+                {Array.isArray(item.value) ? (
+                  <div className="flex flex-col gap-1">
+                    {item.value.map((v, j) => (
+                      <span key={j} className="text-[16px] text-white/90 font-medium leading-[1.4]">{v}</span>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-[16px] text-white/90 font-medium leading-[1.4]">{item.value}</span>
+                )}
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ─── Gallery Showcases ──────────────────────────────────────── */}
-      <section className="w-full pb-24 md:pb-40 px-4 md:px-8 bg-background flex flex-col items-center gap-24 md:gap-40">
-        <div className="max-w-[1200px] w-full flex flex-col gap-24 md:gap-40">
-
-          {/* Section 2: Custom Coded Interaction (Replacing 2.png) */}
-          <ConnectionsInteraction />
-
-          {/* Sections 3 through 6: Feature Deep Dives */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-            <div className="flex flex-col gap-6">
-              <ParallaxImage src="/works/equilarapp/3.png" alt="Equilar UI Feature 3" />
-              <div className="px-2">
-                <h4 className="font-display font-medium mb-1">Brand Identity System</h4>
-                <p className="text-muted text-xs font-light">Color, typography, and visual language established for product consistency.</p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-6 mt-0 md:mt-24">
-              <ParallaxImage src="/works/equilarapp/4.png" alt="Equilar UI Feature 4" />
-              <div className="px-2">
-                <h4 className="font-display font-medium mb-1">Logo Design Exploration</h4>
-                <p className="text-muted text-xs font-light">Developing a geometric identity symbolizing connection, structure, and executive networks.</p>
-              </div>
-            </div>
-          </div>
+      {/* ─── Case Study Media Section ─────────────────────────────────── */}
+      <section className="w-full py-32 md:py-64 px-4 md:px-8 bg-background flex flex-col items-center gap-48 md:gap-64 overflow-visible">
+        <div className="max-w-[1400px] w-full flex flex-col gap-32 md:gap-56">
           
-          <div className="flex flex-col gap-6 items-center w-full">
-            <ParallaxImage src="/works/equilarapp/4a.png" alt="Equilar Interface detail" className="max-w-4xl" />
-            <div className="px-2 text-center max-w-2xl">
-              <h4 className="font-display font-medium mb-1">Icon System</h4>
-              <p className="text-muted text-xs font-light">A unified icon library designed to support fast scanning and clarity across data-dense enterprise interfaces.</p>
-            </div>
-          </div>
+          <TiltParallaxMedia 
+            title="Connections Interaction" 
+            description="Developing a dynamic visual language to represent complex boardroom networks."
+          >
+            <ConnectionsInteraction />
+          </TiltParallaxMedia>
 
-          {/* Sections 5 & 6 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-            <div className="flex flex-col gap-6">
-              <ParallaxImage src="/works/equilarapp/5.png" alt="Equilar Connections" />
-              <div className="px-2">
-                <h4 className="font-display font-medium mb-1">Ideation & Exploration</h4>
-                <p className="text-muted text-xs font-light">Whiteboard sessions and quick sketches used to shape early product concepts.</p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-6 mt-0 md:mt-24">
-              <ParallaxImage src="/works/equilarapp/6.png" alt="Equilar Data Visualization" />
-              <div className="px-2">
-                <h4 className="font-display font-medium mb-1">Primary User Profile</h4>
-                <p className="text-muted text-xs font-light">Mapping motivations, environments, and pain points of executive decision-makers.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Large Scale Screens 7 - 9 */}
-          <div className="flex flex-col gap-24 md:gap-32">
-            <div className="flex flex-col gap-8">
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full">
-                <p className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue mb-2">Structure</p>
-                <h3 className="text-3xl md:text-4xl font-display font-medium text-foreground tracking-tight">Information Architecture</h3>
-              </motion.div>
-              <ParallaxImage src="/works/equilarapp/7.png" alt="Equilar Information Architecture" />
-            </div>
-
-            <div className="flex flex-col gap-8">
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full">
-                <p className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue mb-2">Ideation</p>
-                <h3 className="text-3xl md:text-4xl font-display font-medium text-foreground tracking-tight">Wireframes and Flows</h3>
-              </motion.div>
-              <ParallaxImage src="/works/equilarapp/8.png" alt="Equilar Wireframes" />
-            </div>
-
-            <div className="flex flex-col pt-8">
-              <ParallaxImage src="/works/equilarapp/9.png" alt="Equilar Flow 3" />
-            </div>
-          </div>
-
-          {/* Final Details 10 - 13 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 pt-16">
-            <div className="col-span-1 md:col-span-2 mb-4">
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full text-center">
-                <h3 className="text-4xl md:text-5xl font-display font-medium text-foreground tracking-tight mb-4">Final Mockups</h3>
-                <p className="text-muted text-lg font-light">Polished interface designs crafted for high-performance enterprise use.</p>
-              </motion.div>
-            </div>
+            <TiltParallaxMedia 
+              title="Brand Identity System" 
+              description="Color, typography, and visual language established for product consistency."
+            >
+              <img src="/works/equilarapp/3.png" alt="Brand Identity" className="w-full h-auto" />
+            </TiltParallaxMedia>
             
-            <ParallaxImage src="/works/equilarapp/10.png" alt="Equilar Final Mockup 1" />
-            <ParallaxImage src="/works/equilarapp/11.png" alt="Equilar Final Mockup 2" />
-            <ParallaxImage src="/works/equilarapp/12.png" alt="Equilar Asset 3" className="md:col-span-2 mt-8 md:mt-16" />
-            <ParallaxImage src="/works/equilarapp/13.png" alt="Equilar Asset 4" className="md:col-span-2" />
+            <TiltParallaxMedia 
+              title="Logo Design Exploration" 
+              description="Developing a geometric identity symbolizing connection, structure, and executive networks."
+              delayOffset={0.2}
+            >
+              <div className="mt-0 md:mt-24">
+                <img src="/works/equilarapp/4.png" alt="Logo Exploration" className="w-full h-auto" />
+              </div>
+            </TiltParallaxMedia>
           </div>
+
+          <TiltParallaxMedia 
+            title="Icon System" 
+            description="A unified icon library designed to support fast scanning and clarity across data-dense enterprise interfaces."
+          >
+            <img src="/works/equilarapp/4a.png" alt="Icon System" className="w-full h-auto max-w-4xl mx-auto" />
+          </TiltParallaxMedia>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
+            <TiltParallaxMedia 
+              title="Ideation & Exploration" 
+              description="Whiteboard sessions and quick sketches used to shape early product concepts."
+            >
+              <img src="/works/equilarapp/5.png" alt="Ideation" className="w-full h-auto" />
+            </TiltParallaxMedia>
+            
+            <TiltParallaxMedia 
+              title="Primary User Profile" 
+              description="Mapping motivations, environments, and pain points of executive decision-makers."
+              delayOffset={0.2}
+            >
+              <div className="mt-0 md:mt-24">
+                <img src="/works/equilarapp/6.png" alt="User Profile" className="w-full h-auto" />
+              </div>
+            </TiltParallaxMedia>
+          </div>
+
+          <TiltParallaxMedia 
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Structure</span>
+                <span>Information Architecture</span>
+              </div>
+            )}
+          >
+            <img src="/works/equilarapp/7.png" alt="Information Architecture" className="w-full h-auto" />
+          </TiltParallaxMedia>
+
+          <TiltParallaxMedia 
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Ideation</span>
+                <span>Wireframes and Flows</span>
+              </div>
+            )}
+          >
+            <img src="/works/equilarapp/8.png" alt="Wireframes" className="w-full h-auto" />
+          </TiltParallaxMedia>
+
+          <TiltParallaxMedia noPadding={true}>
+            <img src="/works/equilarapp/9.png" alt="Flow Detail" className="w-full h-auto" />
+          </TiltParallaxMedia>
+
+          <TiltParallaxMedia 
+            title="Final Mockups" 
+            description="Polished interface designs crafted for high-performance enterprise use."
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <img src="/works/equilarapp/10.png" alt="Final Mockup 1" className="w-full h-auto" />
+              <img src="/works/equilarapp/11.png" alt="Final Mockup 2" className="w-full h-auto" />
+            </div>
+          </TiltParallaxMedia>
+
+          <TiltParallaxMedia noPadding={true}>
+            <img src="/works/equilarapp/12.png" alt="Product Detail 1" className="w-full h-auto" />
+          </TiltParallaxMedia>
+
+          <TiltParallaxMedia noPadding={true}>
+            <img src="/works/equilarapp/13.png" alt="Product Detail 2" className="w-full h-auto" />
+          </TiltParallaxMedia>
 
         </div>
       </section>
