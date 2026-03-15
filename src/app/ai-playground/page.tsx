@@ -90,7 +90,7 @@ export default function AIPlayground() {
 
       {/* ─── Premium Sidebar ────────────────────────────────────────────── */}
       <nav className="fixed left-0 top-0 bottom-0 z-50 flex flex-col justify-center pl-4 md:pl-8 pr-12 pointer-events-none">
-        <div className="flex flex-col gap-1 md:gap-2 pointer-events-auto max-h-[85vh] overflow-y-auto no-scrollbar py-20 pr-4" ref={scrollRef}>
+        <div className="flex flex-col gap-0.5 md:gap-1 pointer-events-auto max-h-[85vh] overflow-y-auto no-scrollbar py-20 pr-4" ref={scrollRef}>
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -106,7 +106,7 @@ export default function AIPlayground() {
               <button
                 key={ex.id}
                 onClick={() => handleExhibitChange(ex.id as ExhibitId)}
-                className="group relative flex items-center gap-4 py-1.5 md:py-2.5 transition-all duration-300 text-left"
+                className="group relative flex items-center gap-4 py-1 md:py-1.5 transition-all duration-300 text-left"
               >
                 {/* Magnetic Hover Indicator */}
                 <motion.div 
