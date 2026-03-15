@@ -107,10 +107,10 @@ export default function AIPlayground() {
                 
                 <div className="flex flex-col overflow-hidden py-1">
                   <span 
-                    className={`font-bold tracking-tighter leading-none flex flex-wrap transition-colors duration-300 ${
+                    className={`leading-none flex flex-wrap transition-all duration-300 ${
                       isActive 
-                        ? "text-[2vh] md:text-[2.5vh] lg:text-[3.2vh] text-white uppercase" 
-                        : "text-[1.8vh] md:text-[2.2vh] lg:text-[2.8vh] text-white/20 uppercase"
+                        ? "text-[1.9vh] md:text-[2.4vh] lg:text-[3.1vh] text-white uppercase font-black tracking-[0.08em]" 
+                        : "text-[1.8vh] md:text-[2.2vh] lg:text-[2.8vh] text-white/30 font-bold tracking-tight"
                     }`}
                   >
                     {ex.name.split("").map((char, index) => (
