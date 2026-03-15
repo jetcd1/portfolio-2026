@@ -108,77 +108,84 @@ export default function AIPlayground() {
                 onClick={() => handleExhibitChange(ex.id as ExhibitId)}
                 className="group relative flex items-center gap-4 py-1.5 md:py-2.5 transition-all duration-300 text-left"
               >
-                {/* Thick Indicator Line */}
+                {/* Magnetic Hover Indicator */}
                 <motion.div 
-                  initial={false}
-                  animate={{ 
-                    height: isActive ? "32px" : "16px",
-                    opacity: isActive ? 1 : 0,
-                  }}
-                  whileHover={{ opacity: isActive ? 1 : 0.4, height: isActive ? "32px" : "24px" }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className={`w-[4px] rounded-full ${isActive ? "bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)]" : "bg-white/40"}`} 
-                />
-                
-                <div className="flex flex-col overflow-hidden py-1">
-                  <span 
-                    className={`leading-none flex flex-wrap transition-all duration-300 ${
-                      isActive 
-                        ? "text-[1.9vh] md:text-[2.4vh] lg:text-[3.1vh] text-white uppercase font-black tracking-tight" 
-                        : "text-[1.6vh] md:text-[2.0vh] lg:text-[2.5vh] font-medium capitalize tracking-tight"
-                    }`}
-                  >
-                    {ex.name.split("").map((char, index) => (
-                      <span key={index} className="relative inline-block overflow-hidden min-w-[0.25em]">
-                        {/* Measuring span */}
-                        <span className="invisible">{char === " " ? "\u00A0" : char}</span>
-                        
-                        {/* Idle / Active visible text */}
-                        <motion.span
-                          className={`absolute inset-0 flex items-center ${
-                            isActive 
-                              ? "text-white" 
-                              : "text-transparent bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-500 group-hover:from-white group-hover:to-white"
-                          }`}
-                          initial={false}
-                          animate={{ y: "0%" }}
-                          whileHover={{ y: "-110%" }}
-                          transition={{
-                            duration: 0.4,
-                            ease: [0.76, 0, 0.24, 1],
-                            delay: index * 0.015, // Ultra-fast Stagger
-                          }}
-                        >
-                          {char === " " ? "\u00A0" : char}
-                        </motion.span>
-
-                        {/* Hover sliding text - Staggered piano effect */}
-                        <motion.span
-                          className="absolute inset-0 flex items-center text-white font-black"
-                          initial={{ y: "110%" }}
-                          whileHover={{ y: "0%" }}
-                          transition={{
-                            duration: 0.4,
-                            ease: [0.76, 0, 0.24, 1],
-                            delay: index * 0.015, // Ultra-fast Stagger
-                          }}
-                        >
-                          {char === " " ? "\u00A0" : char}
-                        </motion.span>
-                      </span>
-                    ))}
-                  </span>
+                   whileHover={{ x: 4 }}
+                   className="flex items-center gap-4"
+                >
+                  <motion.div 
+                    initial={false}
+                    animate={{ 
+                      height: isActive ? "32px" : "16px",
+                      opacity: isActive ? 1 : 0,
+                    }}
+                    whileHover={{ opacity: isActive ? 1 : 0.4, height: isActive ? "32px" : "24px" }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                    className={`w-[4px] rounded-full ${isActive ? "bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)]" : "bg-white/40"}`} 
+                  />
                   
-                  {isActive && (
-                     <motion.div 
-                       layoutId="active-underline"
-                       initial={{ opacity: 0 }}
-                       animate={{ opacity: 1 }}
-                       transition={{ duration: 0.3 }}
-                       className="h-[2px] bg-gradient-to-r from-white to-transparent mt-1 ml-1"
-                     />
-                  )}
-                </div>
+                  <div className="flex flex-col overflow-hidden py-1">
+                    <motion.span 
+                      initial={false}
+                      className={`leading-none flex flex-wrap transition-all duration-300 ${
+                        isActive 
+                          ? "text-[1.9vh] md:text-[2.4vh] lg:text-[3.1vh] text-white font-bold tracking-tight capitalize" 
+                          : "text-[1.6vh] md:text-[2.0vh] lg:text-[2.5vh] font-medium tracking-tight capitalize"
+                      }`}
+                    >
+                      {ex.name.split("").map((char, index) => (
+                        <span key={index} className="relative inline-block overflow-hidden min-w-[0.25em]">
+                          {/* Measuring span */}
+                          <span className="invisible">{char === " " ? "\u00A0" : char}</span>
+                          
+                          {/* Idle / Active visible text */}
+                          <motion.span
+                            className={`absolute inset-0 flex items-center ${
+                              isActive 
+                                ? "text-white" 
+                                : "text-transparent bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-500 group-hover:from-white group-hover:to-white"
+                            }`}
+                            initial={false}
+                            animate={{ y: "0%", rotate: 0, skewX: 0 }}
+                            whileHover={{ y: "-110%", rotate: -5, skewX: -10 }}
+                            transition={{
+                              duration: 0.5,
+                              ease: [0.33, 1, 0.68, 1], // Custom Apple-style ease
+                              delay: index * 0.012,
+                            }}
+                          >
+                            {char === " " ? "\u00A0" : char}
+                          </motion.span>
+  
+                          {/* Hover sliding text - Premium Spring Reveal */}
+                          <motion.span
+                            className="absolute inset-0 flex items-center text-white font-bold"
+                            initial={{ y: "110%", rotate: 5, skewX: 10 }}
+                            whileHover={{ y: "0%", rotate: 0, skewX: 0 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 300,
+                              damping: 25,
+                              delay: index * 0.012,
+                            }}
+                          >
+                            {char === " " ? "\u00A0" : char}
+                          </motion.span>
+                        </span>
+                      ))}
+                    </motion.span>
+                    
+                    {isActive && (
+                       <motion.div 
+                         layoutId="active-underline"
+                         initial={{ opacity: 0, scaleX: 0 }}
+                         animate={{ opacity: 1, scaleX: 1 }}
+                         transition={{ duration: 0.5, ease: "circOut" }}
+                         className="h-[2px] bg-gradient-to-r from-white to-transparent mt-1 ml-1 origin-left"
+                       />
+                    )}
+                  </div>
+                </motion.div>
                 
                 {/* Ultra-Premium Indicator */}
                 {isActive && (
