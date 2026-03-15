@@ -2,15 +2,19 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat } from "lucide-react";
+import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard } from "lucide-react";
 
 // --- Types --- //
 type ExhibitId = 
+  | "core_collapse" | "elastic_field" | "keyboard_wave"
   | "cosmic" | "kinetic" | "physics" | "particles" | "vortex" 
   | "attraction" | "neural" | "optical" | "symmetry" | "quantum"
   | "glitch" | "waves" | "fluid" | "fractal";
 
 const exhibits = [
+  { id: "core_collapse", name: "Core Collapse", icon: Target, color: "#fff" },
+  { id: "elastic_field", name: "Elastic UI Field", icon: MousePointerClick, color: "#fff" },
+  { id: "keyboard_wave", name: "Keyboard Waveform", icon: Keyboard, color: "#fff" },
   { id: "vortex", name: "Neon Vortex", icon: Repeat, color: "#ec4899" },
   { id: "cosmic", name: "Cosmic Hyperspace", icon: Sparkles, color: "#9333ea" },
   { id: "attraction", name: "Attraction Grid", icon: Boxes, color: "#06b6d4" },
@@ -28,7 +32,7 @@ const exhibits = [
 ];
 
 export default function AIPlayground() {
-  const [activeId, setActiveId] = useState<ExhibitId>("vortex");
+  const [activeId, setActiveId] = useState<ExhibitId>("core_collapse");
   const [isTransitioning, setIsTransitioning] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -56,6 +60,9 @@ export default function AIPlayground() {
           className="fixed inset-0 z-10 pointer-events-none"
         >
           <div className="w-full h-full flex items-center justify-center pointer-events-auto">
+             {activeId === "core_collapse" && <CoreCollapseExhibit />}
+             {activeId === "elastic_field" && <ElasticFieldExhibit />}
+             {activeId === "keyboard_wave" && <KeyboardWaveformExhibit />}
              {activeId === "vortex" && <VortexExhibit />}
              {activeId === "attraction" && <AttractionGridExhibit />}
              {activeId === "neural" && <NeuralDriftExhibit />}
@@ -622,6 +629,488 @@ function FractalExhibit() {
         ))}
       </div>
       <span className="text-white/20 uppercase tracking-[1em] text-[7px] font-bold">Generative Architecture</span>
+    </div>
+  );
+}
+
+// ─── Premium Exhibits ─────────────────────────────────────────────────── //
+
+function CoreCollapseExhibit() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestRef = useRef<number | null>(null);
+  const [phase, setPhase] = useState<"vortex" | "collapsing" | "grid">("vortex");
+  const phaseRef = useRef(phase);
+
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
+    const resize = () => { if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } };
+    window.addEventListener("resize", resize); resize();
+
+    const numParticles = 6000;
+    const gridSize = Math.ceil(Math.pow(numParticles, 1/3));
+    const spacing = 35;
+    
+    const particles = Array.from({ length: numParticles }, (_, i) => {
+      const gx = (i % gridSize) - gridSize/2;
+      const gy = (Math.floor(i / gridSize) % gridSize) - gridSize/2;
+      const gz = (Math.floor(i / Math.pow(gridSize, 2))) - gridSize/2;
+      
+      return {
+        vr: Math.random() * 1000 + 50, // vortex radius
+        va: Math.random() * Math.PI * 2, // vortex angle
+        vs: Math.random() * 0.02 + 0.005, // vortex speed
+        gx: gx * spacing, gy: gy * spacing, gz: gz * spacing,
+        size: Math.random() * 1.5 + 0.5,
+        color: `hsla(${Math.random() * 60 + 280}, 100%, 60%, ${Math.random() * 0.5 + 0.3})`,
+        gridColor: `hsla(${180 + (gx/gridSize)*60 + (gy/gridSize)*60}, 100%, 70%, 0.6)`
+      };
+    });
+
+    let time = 0;
+    let collapseProgress = 0;
+    let gridProgress = 0;
+
+    const animate = () => {
+      if (!canvas || !ctx) return;
+      const currentPhase = phaseRef.current;
+      
+      // Motion blur trail length depends on phase
+      ctx.fillStyle = currentPhase === "collapsing" ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.15)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      time += 0.005;
+
+      if (currentPhase === "collapsing") {
+        collapseProgress += (1 - collapseProgress) * 0.08;
+      } else if (currentPhase === "vortex") {
+        collapseProgress *= 0.9;
+        gridProgress *= 0.9;
+      }
+
+      if (currentPhase === "grid") {
+        gridProgress += (1 - gridProgress) * 0.05;
+      }
+
+      const rotY = time * 2;
+      const rotX = time * 1.5;
+      const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+      const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+
+      particles.forEach(p => {
+        // Vortex Position
+        p.va += p.vs * (1 + collapseProgress * 20); 
+        const currentR = p.vr * (1 - Math.pow(collapseProgress, 3)); 
+        const vx = cx + Math.cos(p.va) * currentR;
+        const vy = cy + Math.sin(p.va) * currentR;
+
+        // Grid Position
+        const x1 = p.gx * cosY - p.gz * sinY;
+        const z1 = p.gz * cosY + p.gx * sinY;
+        const y2 = p.gy * cosX - z1 * sinX;
+        const z2 = z1 * cosX + p.gy * sinX;
+        
+        const fov = 1000;
+        const zScale = Math.max(0.1, fov / (fov + z2 + 800));
+        const gx = cx + x1 * zScale;
+        const gy = cy + y2 * zScale;
+
+        // Interpolate
+        let drawX = vx;
+        let drawY = vy;
+        let drawSize = p.size;
+        let drawColor = p.color;
+
+        if (currentPhase === "grid" || gridProgress > 0) {
+          // Lerp from center (collapse point) to grid
+          drawX = vx + (gx - vx) * gridProgress;
+          drawY = vy + (gy - vy) * gridProgress;
+          drawSize = p.size * (1 - gridProgress) + (p.size * zScale * 2.5) * gridProgress;
+          drawColor = gridProgress > 0.5 ? p.gridColor : p.color;
+        }
+
+        ctx.beginPath();
+        ctx.arc(drawX, drawY, drawSize, 0, Math.PI * 2);
+        ctx.fillStyle = drawColor;
+        ctx.fill();
+      });
+
+      // Draw Singularity Energy when collapsed
+      if (collapseProgress > 0.9 && currentPhase === "collapsing") {
+        const pulse = Math.sin(time * 50) * 10;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 20 + pulse, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.shadowBlur = 50;
+        ctx.shadowColor = "magenta";
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+    return () => { window.removeEventListener("resize", resize); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
+  }, []);
+
+  const handleClick = () => {
+    if (phase === "vortex") {
+      setPhase("collapsing");
+      setTimeout(() => setPhase("grid"), 800);
+    } else if (phase === "grid") {
+      setPhase("vortex");
+    }
+  };
+
+  return (
+    <div className={`relative w-full h-full cursor-crosshair transition-all duration-300 ${phase === "collapsing" ? "invert saturate-200" : ""}`} onClick={handleClick}>
+      <canvas ref={canvasRef} className="w-full h-full mix-blend-screen" />
+      <div className="absolute inset-x-0 bottom-16 text-center pointer-events-none">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          key={phase}
+          className="inline-flex flex-col items-center"
+        >
+          <span className="text-white text-xs md:text-sm font-bold tracking-[0.4em] uppercase mb-2">
+            {phase === "vortex" ? "Core Collapse Sequence" : phase === "collapsing" ? "System Singularity Reached" : "Geometric Reconstitution Active"}
+          </span>
+          <span className="text-white/40 text-[9px] uppercase tracking-[0.2em]">
+            {phase === "vortex" ? "Click to initiate singularity" : phase === "collapsing" ? "Reformatting..." : "Click to reset to chaos state"}
+          </span>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function ElasticFieldExhibit() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestRef = useRef<number | null>(null);
+  const [buttons, setButtons] = useState<{ x: number, y: number, actions: string[] } | null>(null);
+  const mouse = useRef({ x: 0, y: 0, isDown: false, startX: 0, startY: 0, dragDist: 0 });
+  const [effectState, setEffectState] = useState<"normal" | "exploded" | "frozen">("normal");
+  const effectRef = useRef(effectState);
+
+  useEffect(() => { effectRef.current = effectState; }, [effectState]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
+    const resize = () => { if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } };
+    window.addEventListener("resize", resize); resize();
+
+    const cols = 50;
+    const rows = 30;
+    const spacingX = canvas.width / cols;
+    const spacingY = canvas.height / rows;
+
+    const particles = Array.from({ length: cols * rows }, (_, i) => {
+      const basex = (i % cols) * spacingX;
+      const basey = Math.floor(i / cols) * spacingY;
+      return {
+        x: basex, y: basey,
+        basex, basey,
+        vx: 0, vy: 0,
+        size: Math.random() * 1.5 + 0.5,
+      };
+    });
+
+    const animate = () => {
+      if (!canvas || !ctx) return;
+      ctx.fillStyle = "rgba(0,0,0,0.2)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const mx = mouse.current.x;
+      const my = mouse.current.y;
+      const isDrag = mouse.current.isDown;
+      const effect = effectRef.current;
+
+      particles.forEach(p => {
+        let tx = p.basex;
+        let ty = p.basey;
+
+        if (effect === "frozen") {
+          // Do nothing, freeze in place
+        } else if (effect === "exploded") {
+          const dx = p.x - canvas.width/2;
+          const dy = p.y - canvas.height/2;
+          const dist = Math.sqrt(dx*dx+dy*dy) || 1;
+          tx = p.basex + (dx/dist) * 1000;
+          ty = p.basey + (dy/dist) * 1000;
+        } else {
+          if (isDrag && !buttons) {
+            const dx = mx - p.basex;
+            const dy = my - p.basey;
+            const dist = Math.sqrt(dx*dx+dy*dy);
+            if (dist < 400) {
+              const pull = Math.pow((400 - dist) / 400, 2);
+              tx = p.basex + dx * pull * 0.95;
+              ty = p.basey + dy * pull * 0.95;
+            }
+          }
+        }
+
+        const ax = (tx - p.x) * 0.15;
+        const ay = (ty - p.y) * 0.15;
+        
+        p.vx = (p.vx + ax) * (effect==="frozen" ? 0.99 : 0.75);
+        p.vy = (p.vy + ay) * (effect==="frozen" ? 0.99 : 0.75);
+        
+        p.x += p.vx;
+        p.y += p.vy;
+
+        const stretchDist = Math.sqrt(Math.pow(p.x - p.basex, 2) + Math.pow(p.y - p.basey, 2));
+        const hue = 180 + stretchDist * 0.5;
+
+        ctx.fillStyle = `hsla(${hue}, 100%, 70%, ${0.4 + stretchDist*0.01})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size + stretchDist*0.005, 0, Math.PI * 2);
+        ctx.fill();
+        
+        if (stretchDist > 15 && effect !== "exploded") {
+           ctx.strokeStyle = `hsla(${hue}, 100%, 70%, ${Math.min(0.5, stretchDist*0.002)})`;
+           ctx.lineWidth = 0.5;
+           ctx.beginPath();
+           ctx.moveTo(p.basex, p.basey);
+           ctx.lineTo(p.x, p.y);
+           ctx.stroke();
+        }
+      });
+
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+    return () => { window.removeEventListener("resize", resize); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
+  }, [buttons]);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    mouse.current.isDown = true;
+    mouse.current.startX = e.clientX;
+    mouse.current.startY = e.clientY;
+    setButtons(null);
+    setEffectState("normal");
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    mouse.current.x = e.clientX;
+    mouse.current.y = e.clientY;
+    if (mouse.current.isDown) {
+      const dx = mouse.current.x - mouse.current.startX;
+      const dy = mouse.current.y - mouse.current.startY;
+      mouse.current.dragDist = Math.sqrt(dx*dx+dy*dy);
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    mouse.current.isDown = false;
+    if (mouse.current.dragDist > 100) {
+      setButtons({ x: e.clientX, y: e.clientY, actions: ["EXPLODE", "FREEZE", "REEL", "RESET"] });
+    }
+    mouse.current.dragDist = 0;
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full cursor-grab active:cursor-grabbing overflow-hidden"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+    >
+      <canvas ref={canvasRef} className="w-full h-full" />
+      
+      <div className="absolute inset-x-0 bottom-16 text-center pointer-events-none">
+        <span className="text-white text-[10px] md:text-sm font-bold tracking-[0.4em] uppercase mb-2 block">
+          Elastic UI Field
+        </span>
+        <span className="text-white/40 text-[9px] uppercase tracking-[0.2em]">
+          Click & Drag to stretch field. Release to spawn UI.
+        </span>
+      </div>
+
+      <AnimatePresence>
+        {buttons && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.9, filter: "blur(5px)" }}
+            transition={{ type: "spring", damping: 20, stiffness: 300 }}
+            className="absolute flex flex-col gap-2 p-4 rounded-3xl bg-white/5 border border-white/20 backdrop-blur-xl shadow-2xl z-50 pointer-events-auto"
+            style={{ left: Math.min(buttons.x, window.innerWidth - 180), top: Math.min(buttons.y, window.innerHeight - 250) }}
+          >
+            {buttons.actions.map((action, i) => (
+              <motion.button
+                key={action}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="px-6 py-3 min-w-[140px] text-white text-xs font-bold tracking-[0.2em] rounded-xl bg-white/5 hover:bg-white/20 border border-white/10 hover:border-white/40 transition-all text-left group"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setButtons(null);
+                  if (action === "EXPLODE") setEffectState("exploded");
+                  if (action === "FREEZE") setEffectState("frozen");
+                  if (action === "REEL") setEffectState("normal");
+                  if (action === "RESET") setEffectState("normal");
+                  
+                  if (action !== "FREEZE" && action !== "EXPLODE") {
+                    setTimeout(() => setEffectState("normal"), 100);
+                  }
+                }}
+              >
+                <div className="flex items-center justify-between pointer-events-none">
+                   <span>{action}</span>
+                   <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity translate-x-[-10px] group-hover:translate-x-0" />
+                </div>
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function KeyboardWaveformExhibit() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestRef = useRef<number | null>(null);
+  const [typedString, setTypedString] = useState("");
+  const typeSpeedRef = useRef(0);
+  const particlesRef = useRef<any[]>([]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
+    const resize = () => { if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } };
+    window.addEventListener("resize", resize); resize();
+
+    // Helper offscreen canvas to get pixel data of text
+    const textCanvas = document.createElement("canvas");
+    const textCtx = textCanvas.getContext("2d")!;
+    textCanvas.width = window.innerWidth; textCanvas.height = window.innerHeight;
+
+    const spawnTextParticles = (char: string) => {
+      textCtx.clearRect(0,0, textCanvas.width, textCanvas.height);
+      const fontSize = Math.min(400, window.innerWidth * 0.4);
+      textCtx.font = `bold ${fontSize}px sans-serif`;
+      textCtx.fillStyle = "white";
+      textCtx.textAlign = "center";
+      textCtx.textBaseline = "middle";
+      textCtx.fillText(char, textCanvas.width/2, textCanvas.height/2);
+
+      const imgData = textCtx.getImageData(0, 0, textCanvas.width, textCanvas.height).data;
+      const newParticles = [];
+
+      for (let y = 0; y < textCanvas.height; y += 8) {
+        for (let x = 0; x < textCanvas.width; x += 8) {
+          const i = (y * textCanvas.width + x) * 4;
+          if (imgData[i + 3] > 128) {
+             newParticles.push({
+               x: x + (Math.random()-0.5)*10,
+               y: y + (Math.random()-0.5)*10,
+               vx: (Math.random()-0.5)*20,
+               vy: (Math.random()-0.5)*20,
+               life: 1,
+               hue: Math.random() * 60 + 260
+             });
+          }
+        }
+      }
+      particlesRef.current.push(...newParticles);
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.length === 1 && e.key.match(/[a-zA-Z0-9]/)) {
+         setTypedString(s => s.length > 15 ? s.slice(1) + e.key : s + e.key);
+         spawnTextParticles(e.key.toUpperCase());
+         typeSpeedRef.current += 15;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    let time = 0;
+    const animate = () => {
+      if (!canvas || !ctx) return;
+      ctx.fillStyle = "rgba(0,0,0,0.15)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      time += 0.05;
+      typeSpeedRef.current *= 0.95; 
+      
+      const speedParam = typeSpeedRef.current;
+
+      const particles = particlesRef.current;
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.life -= 0.008;
+        
+        const waveY = Math.sin(p.x * 0.005 + time) * (50 + Math.min(speedParam * 3, 300));
+        const targetY = canvas.height/2 + waveY;
+        
+        p.vx += (Math.cos(p.y * 0.01 + time) - 0.5) * (1 + speedParam * 0.02);
+        p.vy += (targetY - p.y) * Math.max(0.01, p.life * 0.05); 
+        
+        p.vx *= 0.92;
+        p.vy *= 0.92;
+        
+        p.x += p.vx;
+        p.y += p.vy;
+
+        ctx.fillStyle = `hsla(${p.hue - speedParam * 2}, 100%, 70%, ${p.life})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, Math.max(0.1, p.life * 3 + (speedParam * 0.02)), 0, Math.PI * 2);
+        ctx.fill();
+
+        if (p.life <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+
+      if (particles.length < 50) {
+         ctx.beginPath();
+         for(let x=0; x<canvas.width; x+=10) {
+           const y = canvas.height/2 + Math.sin(x*0.005 + time) * 50 + Math.sin(x*0.01 - time*1.5) * 30;
+           if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+         }
+         ctx.strokeStyle = "rgba(255,255,255,0.05)";
+         ctx.lineWidth = 1;
+         ctx.stroke();
+      }
+
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+    return () => { window.removeEventListener("keydown", handleKeyDown); window.removeEventListener("resize", resize); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
+  }, []);
+
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      <canvas ref={canvasRef} className="w-full h-full mix-blend-screen" />
+      <div className="absolute top-1/4 w-full text-center pointer-events-none opacity-20">
+        <h2 className="text-white text-[15vw] font-black tracking-tighter mix-blend-overlay">
+          {typedString}
+        </h2>
+      </div>
+      <div className="absolute inset-x-0 bottom-16 text-center pointer-events-none">
+        <motion.div 
+          animate={{ opacity: [0.3, 1, 0.3] }} 
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="text-white text-[10px] md:text-sm font-bold tracking-[0.4em] uppercase mb-2 block"
+        >
+          {typeSpeedRef.current > 50 ? "Waveform Override Active" : "Keyboard Waveform"}
+        </motion.div>
+        <span className="text-white/40 text-[9px] uppercase tracking-[0.2em]">
+          Type characters (A-Z) to generate physical manifestations
+        </span>
+      </div>
     </div>
   );
 }
