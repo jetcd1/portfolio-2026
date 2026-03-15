@@ -133,7 +133,7 @@ export default function AIPlayground() {
                           : "text-[1.6vh] md:text-[2.0vh] lg:text-[2.5vh] font-medium tracking-tight"
                       }`}
                     >
-                      {(isActive ? ex.name : ex.name.charAt(0).toUpperCase() + ex.name.slice(1).toLowerCase()).split("").map((char, index) => (
+                      {(isActive ? ex.name.toUpperCase() : ex.name).split("").map((char, index) => (
                         <span key={index} className="relative inline-block overflow-hidden min-w-[0.25em]">
                           {/* Measuring span */}
                           <span className="invisible">{char === " " ? "\u00A0" : char}</span>
