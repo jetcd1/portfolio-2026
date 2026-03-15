@@ -183,17 +183,6 @@ export default function AIPlayground() {
           })}
         </div>
       </nav>
-
-      {/* HUD Info */}
-      <div className="fixed bottom-12 right-12 z-50 text-right pointer-events-none hidden md:block">
-        <div className="flex flex-col gap-1">
-          <span className="text-white/20 text-[9px] uppercase tracking-[0.5em] font-bold">System Status</span>
-          <span className="text-white/60 text-[11px] font-mono flex items-center justify-end gap-3 uppercase tracking-widest">
-            {isTransitioning ? "Engaging Hyperspace" : "Orbital Observation" }
-            <span className={`w-1.5 h-1.5 rounded-full ${isTransitioning ? "bg-red-500 animate-ping" : "bg-cyan-500/50 shadow-[0_0_10px_#06b6d4]"}`} />
-          </span>
-        </div>
-      </div>
     </div>
   );
 }
