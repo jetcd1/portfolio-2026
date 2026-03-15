@@ -2,11 +2,15 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard, Type, CircleDashed } from "lucide-react";
+import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard, Type, CircleDashed, Clock } from "lucide-react";
+import * as THREE from "three";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls, Stars, Html, Text, Float } from "@react-three/drei";
+import gsap from "gsap";
 
 // --- Types --- //
 type ExhibitId = 
-  | "core_collapse" | "elastic_field" | "keyboard_wave" | "kinetic_type" | "balloon_metaball"
+  | "core_collapse" | "elastic_field" | "keyboard_wave" | "kinetic_type" | "balloon_metaball" | "chronos_sphere"
   | "cosmic" | "kinetic" | "physics" | "particles" | "vortex" 
   | "attraction" | "neural" | "optical" | "symmetry" | "quantum"
   | "glitch" | "waves" | "fluid" | "fractal";
@@ -17,6 +21,7 @@ const exhibits = [
   { id: "keyboard_wave", name: "Keyboard Waveform", icon: Keyboard, color: "#fff" },
   { id: "kinetic_type", name: "Kinetic Typography", icon: Type, color: "#fff" },
   { id: "balloon_metaball", name: "Balloon Metaballs", icon: CircleDashed, color: "#fff" },
+  { id: "chronos_sphere", name: "Chronos-Sphere", icon: Clock, color: "#fff" },
   { id: "vortex", name: "Neon Vortex", icon: Repeat, color: "#ec4899" },
   { id: "cosmic", name: "Cosmic Hyperspace", icon: Sparkles, color: "#9333ea" },
   { id: "attraction", name: "Attraction Grid", icon: Boxes, color: "#06b6d4" },
@@ -67,6 +72,7 @@ export default function AIPlayground() {
              {activeId === "keyboard_wave" && <KeyboardWaveformExhibit />}
              {activeId === "kinetic_type" && <KineticTypographyExhibit />}
              {activeId === "balloon_metaball" && <BalloonMetaballExhibit />}
+             {activeId === "chronos_sphere" && <ChronosSphereExhibit />}
              {activeId === "vortex" && <VortexExhibit />}
              {activeId === "attraction" && <AttractionGridExhibit />}
              {activeId === "neural" && <NeuralDriftExhibit />}
@@ -1567,3 +1573,230 @@ function BalloonMetaballExhibit() {
     </div>
   );
 }
+
+// --- Chronos-Sphere Components --- //
+
+const CITIES = [
+  { name: "Seoul", lat: 37.5665, lon: 126.9780, tz: 9 },
+  { name: "New York", lat: 40.7128, lon: -74.0060, tz: -5 },
+  { name: "London", lat: 51.5074, lon: -0.1278, tz: 0 },
+  { name: "Tokyo", lat: 35.6762, lon: 139.6503, tz: 9 },
+  { name: "Paris", lat: 48.8566, lon: 2.3522, tz: 1 },
+  { name: "Sydney", lat: -33.8688, lon: 151.2093, tz: 11 },
+  { name: "Dubai", lat: 25.2048, lon: 55.2708, tz: 4 },
+  { name: "San Francisco", lat: 37.7749, lon: -122.4194, tz: -8 },
+];
+
+function ChronosGlobe({ timeOffset, viewMode }: { timeOffset: number, viewMode: string }) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  const shaderArgs = useMemo(() => ({
+    uniforms: {
+      uTime: { value: 0 },
+      uTimeOffset: { value: 0 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      void main() {
+        vUv = uv;
+        vNormal = normalize(normalMatrix * normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float uTime;
+      uniform float uTimeOffset;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+
+      void main() {
+        // Simple day/night based on horizontal UV and time offset
+        float dayNight = sin(vUv.x * 6.28318 + uTime * 0.1 + uTimeOffset * 0.05);
+        vec3 dayColor = vec3(0.9, 0.7, 0.3);
+        vec3 nightColor = vec3(0.1, 0.2, 0.5);
+        
+        vec3 color = mix(nightColor, dayColor, smoothstep(-0.2, 0.2, dayNight));
+        
+        // Add glassy feel with rim lighting
+        float rim = 1.0 - max(dot(vNormal, vec3(0,0,1)), 0.0);
+        color += pow(rim, 3.0) * 0.5;
+        
+        gl_FragColor = vec4(color, 0.6);
+      }
+    `,
+    transparent: true,
+  }), []);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      const { uniforms } = meshRef.current.material as THREE.ShaderMaterial;
+      uniforms.uTime.value = state.clock.getElapsedTime();
+      uniforms.uTimeOffset.value = timeOffset;
+      
+      if (viewMode === 'GLOBE') {
+        meshRef.current.rotation.y += 0.001;
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (!meshRef.current) return;
+    if (viewMode === 'GLOBE') {
+      gsap.to(meshRef.current.scale, { x: 1, y: 1, z: 1, duration: 1.5, ease: "expo.out" });
+      gsap.to(meshRef.current.rotation, { x: 0, z: 0, duration: 1.5, ease: "expo.out" });
+    } else {
+      gsap.to(meshRef.current.scale, { x: 0, y: 0, z: 0, duration: 1, ease: "expo.in" });
+    }
+  }, [viewMode]);
+
+  return (
+    <mesh ref={meshRef}>
+      <sphereGeometry args={[2, 64, 64]} />
+      <shaderMaterial args={[shaderArgs]} />
+    </mesh>
+  );
+}
+
+function CityPillars({ timeOffset, viewMode }: { timeOffset: number, viewMode: string }) {
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  const getPos = (lat: number, lon: number, mode: string) => {
+    if (mode === 'GLOBE') {
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lon + 180) * (Math.PI / 180);
+      return [
+        2.1 * Math.sin(phi) * Math.cos(theta),
+        2.1 * Math.cos(phi),
+        2.1 * Math.sin(phi) * Math.sin(theta)
+      ];
+    } else if (mode === 'FLAT') {
+      return [
+        (lon / 180) * 5,
+        (lat / 90) * 3,
+        0
+      ];
+    } else { // CYLINDER
+      const theta = (lon + 180) * (Math.PI / 180);
+      return [
+        3 * Math.cos(theta),
+        (lat / 90) * 4,
+        3 * Math.sin(theta)
+      ];
+    }
+  };
+
+  return (
+    <group>
+      {CITIES.map((city) => {
+        const pos = getPos(city.lat, city.lon, viewMode);
+        const cityTime = new Date();
+        cityTime.setHours(cityTime.getHours() + city.tz + (timeOffset / 15));
+        const seconds = cityTime.getSeconds();
+        const height = 0.2 + (seconds / 60) * 1.5;
+
+        return (
+          <group key={city.name} position={pos as [number, number, number]}>
+            <mesh 
+              onPointerOver={() => setHovered(city.name)} 
+              onPointerOut={() => setHovered(null)}
+              position={[0, height / 2, 0]}
+            >
+              <cylinderGeometry args={[0.02, 0.02, height, 8]} />
+              <meshStandardMaterial color="#00f2ff" emissive="#00f2ff" emissiveIntensity={2} transparent opacity={0.8} />
+            </mesh>
+            
+            {hovered === city.name && (
+              <Html distanceFactor={10}>
+                <div className="bg-black/80 backdrop-blur-md border border-white/20 p-3 rounded-lg text-white whitespace-nowrap pointer-events-none">
+                  <div className="text-[10px] uppercase tracking-widest opacity-50">{city.name}</div>
+                  <div className="text-sm font-mono font-bold">
+                    {cityTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                  </div>
+                </div>
+              </Html>
+            )}
+            
+            <Text
+              position={[0, height + 0.1, 0]}
+              fontSize={0.05}
+              color="white"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {city.name}
+            </Text>
+          </group>
+        );
+      })}
+    </group>
+  );
+}
+
+function ChronosSphereExhibit() {
+  const [timeOffset, setTimeOffset] = useState(0);
+  const [viewMode, setViewMode] = useState<'GLOBE' | 'FLAT' | 'CYLINDER'>('GLOBE');
+
+  return (
+    <div className="relative w-full h-full bg-[#050510] overflow-hidden">
+      <Canvas camera={{ position: [0, 0, 7], fov: 45 }}>
+        <ambientLight intensity={0.2} />
+        <pointLight position={[10, 10, 10]} intensity={1.5} />
+        <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+        
+        <ChronosGlobe timeOffset={timeOffset} viewMode={viewMode} />
+        <CityPillars timeOffset={timeOffset} viewMode={viewMode} />
+        
+        <OrbitControls enableDamping dampingFactor={0.05} rotateSpeed={0.5} minDistance={3} maxDistance={20} />
+      </Canvas>
+
+      {/* Mode Selector */}
+      <div className="absolute top-8 right-8 z-50 flex flex-col gap-2">
+        {['GLOBE', 'FLAT', 'CYLINDER'].map((mode) => (
+          <button
+            key={mode}
+            onClick={() => setViewMode(mode as any)}
+            className={`px-4 py-2 rounded-full border text-[10px] tracking-[0.2em] font-bold uppercase transition-all
+              ${viewMode === mode 
+                ? 'bg-white text-black border-white' 
+                : 'bg-black/20 text-white/40 border-white/10 hover:border-white/40 hover:text-white'
+              }`}
+          >
+            {mode}
+          </button>
+        ))}
+      </div>
+
+      {/* Time-Travel Slider */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[80%] max-w-2xl z-50">
+        <div className="flex flex-col gap-4 bg-black/40 backdrop-blur-xl border border-white/10 p-6 rounded-3xl">
+          <div className="flex justify-between items-center text-[10px] tracking-[0.3em] font-bold uppercase text-white/60">
+            <span>Past</span>
+            <span className="text-cyan-400">Chronos Chronology</span>
+            <span>Future</span>
+          </div>
+          <input 
+            type="range" 
+            min="-1440" 
+            max="1440" 
+            value={timeOffset} 
+            onChange={(e) => setTimeOffset(parseInt(e.target.value))}
+            className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-cyan-500"
+          />
+          <div className="text-center text-[9px] text-white/20 uppercase tracking-widest">
+            Drag to manipulate global timeline • {Math.floor(Math.abs(timeOffset)/60)}h {Math.abs(timeOffset)%60}m {timeOffset > 0 ? 'Ahead' : 'Behind'}
+          </div>
+        </div>
+      </div>
+
+      {/* HUD overlays */}
+      <div className="absolute top-8 left-8 z-50 pointer-events-none">
+        <div className="flex flex-col gap-1">
+          <span className="text-white text-xl font-black tracking-tighter uppercase italic">Chronos-Sphere</span>
+          <span className="text-cyan-400/60 text-[10px] font-mono tracking-widest">DEEP TIME DATA VISUALIZATION</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
