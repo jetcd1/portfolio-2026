@@ -175,15 +175,38 @@ export default function AIPlayground() {
                       ))}
                     </motion.span>
                     
-                    {isActive && (
-                       <motion.div 
-                         layoutId="active-underline"
-                         initial={{ opacity: 0, scaleX: 0 }}
-                         animate={{ opacity: 1, scaleX: 1 }}
-                         transition={{ duration: 0.5, ease: "circOut" }}
-                         className="h-[2px] bg-gradient-to-r from-white to-transparent mt-1 ml-1 origin-left"
-                       />
-                    )}
+                    {/* Hover & Active Underline - Dash Swipe Interaction */}
+                    <div className="relative h-[2px] w-full mt-1 overflow-hidden">
+                      {/* Base Track */}
+                      <div className={`absolute inset-0 h-full w-full transition-opacity duration-500 ${isActive ? 'bg-white/20' : 'bg-transparent group-hover:bg-white/10'}`} />
+                      
+                      {/* Animated Swipe Line */}
+                      <motion.div 
+                        initial={false}
+                        animate={{ 
+                          x: isActive ? "0%" : "-101%",
+                          opacity: isActive ? 1 : 0
+                        }}
+                        whileHover={{ 
+                          x: "0%", 
+                          opacity: 1 
+                        }}
+                        transition={{ 
+                          type: "spring", 
+                          stiffness: 200, 
+                          damping: 30,
+                          delay: isActive ? 0.1 : 0
+                        }}
+                        className="absolute inset-0 h-full w-full bg-gradient-to-r from-white via-white to-transparent origin-left"
+                      />
+
+                      {/* Moving Dash Highlight (Genius Detail) */}
+                      <motion.div
+                        animate={{ x: ["-100%", "200%"] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                        className={`absolute inset-0 h-full w-12 bg-white/40 blur-sm pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                      />
+                    </div>
                   </div>
                 </motion.div>
                 
