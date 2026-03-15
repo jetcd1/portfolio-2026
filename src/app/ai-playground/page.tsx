@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard } from "lucide-react";
+import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard, Type } from "lucide-react";
 
 // --- Types --- //
 type ExhibitId = 
-  | "core_collapse" | "elastic_field" | "keyboard_wave"
+  | "core_collapse" | "elastic_field" | "keyboard_wave" | "kinetic_type"
   | "cosmic" | "kinetic" | "physics" | "particles" | "vortex" 
   | "attraction" | "neural" | "optical" | "symmetry" | "quantum"
   | "glitch" | "waves" | "fluid" | "fractal";
@@ -15,6 +15,7 @@ const exhibits = [
   { id: "core_collapse", name: "Core Collapse", icon: Target, color: "#fff" },
   { id: "elastic_field", name: "Elastic UI Field", icon: MousePointerClick, color: "#fff" },
   { id: "keyboard_wave", name: "Keyboard Waveform", icon: Keyboard, color: "#fff" },
+  { id: "kinetic_type", name: "Kinetic Typography", icon: Type, color: "#fff" },
   { id: "vortex", name: "Neon Vortex", icon: Repeat, color: "#ec4899" },
   { id: "cosmic", name: "Cosmic Hyperspace", icon: Sparkles, color: "#9333ea" },
   { id: "attraction", name: "Attraction Grid", icon: Boxes, color: "#06b6d4" },
@@ -63,6 +64,7 @@ export default function AIPlayground() {
              {activeId === "core_collapse" && <CoreCollapseExhibit />}
              {activeId === "elastic_field" && <ElasticFieldExhibit />}
              {activeId === "keyboard_wave" && <KeyboardWaveformExhibit />}
+             {activeId === "kinetic_type" && <KineticTypographyExhibit />}
              {activeId === "vortex" && <VortexExhibit />}
              {activeId === "attraction" && <AttractionGridExhibit />}
              {activeId === "neural" && <NeuralDriftExhibit />}
@@ -1109,6 +1111,146 @@ function KeyboardWaveformExhibit() {
         </motion.div>
         <span className="text-white/40 text-[9px] uppercase tracking-[0.2em]">
           Type characters (A-Z) to generate physical manifestations
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function KineticTypographyExhibit() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestRef = useRef<number | null>(null);
+  const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2, vx: 0, vy: 0 });
+
+  useEffect(() => {
+    const canvas = canvasRef.current; if (!canvas) return; const ctx = canvas.getContext("2d"); if (!ctx) return;
+    const resize = () => { if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } };
+    window.addEventListener("resize", resize); resize();
+
+    // Configuration
+    const text = "AI LAB";
+    const fontSize = Math.max(40, window.innerWidth / 20);
+    const spacingX = fontSize * 3.5;
+    const spacingY = fontSize * 1.5;
+    
+    // Grid Generation
+    const cols = Math.ceil(canvas.width / spacingX) + 2;
+    const rows = Math.ceil(canvas.height / spacingY) + 2;
+    
+    const grid: any[] = [];
+    for(let i=0; i<rows; i++) {
+      for(let j=0; j<cols; j++) {
+        grid.push({
+          x: j * spacingX - spacingX,
+          y: i * spacingY - spacingY,
+          baseX: j * spacingX - spacingX,
+          baseY: i * spacingY - spacingY,
+          skewX: 0,
+          skewY: 0,
+          scale: 1
+        });
+      }
+    }
+
+    const animate = () => {
+      if (!canvas || !ctx) return;
+      
+      // Motion Blur trail
+      ctx.fillStyle = "rgba(0,0,0,0.15)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      // Mouse velocity damping
+      mouse.current.vx *= 0.9;
+      mouse.current.vy *= 0.9;
+
+      const vMag = Math.sqrt(mouse.current.vx**2 + mouse.current.vy**2);
+      const isChromatic = vMag > 50; // Threshold for RGB split
+
+      grid.forEach(cell => {
+         // Distance to mouse
+         const dx = mouse.current.x - cell.baseX;
+         const dy = mouse.current.y - cell.baseY;
+         const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+         
+         // Proximity influence
+         const influence = Math.max(0, 1 - dist / 500); 
+
+         // Target skew & scale based on velocity + influence
+         const targetSkewX = (mouse.current.vx * 0.005) * influence;
+         const targetSkewY = (mouse.current.vy * 0.005) * influence;
+         const targetScale = 1 + (vMag * 0.005) * influence;
+
+         // Lerp to target for smooth animation (Spring/Lerp)
+         cell.skewX += (targetSkewX - cell.skewX) * 0.1;
+         cell.skewY += (targetSkewY - cell.skewY) * 0.1;
+         cell.scale += (targetScale - cell.scale) * 0.1;
+
+         // Variable weight approximation (draw thicker for high scale)
+         const customFont = `${cell.scale > 1.2 ? "900" : "800"} ${fontSize}px sans-serif`;
+         ctx.font = customFont;
+
+         ctx.save();
+         // Transform matrix: scaleX, skewY, skewX, scaleY, translateX, translateY
+         ctx.translate(cell.baseX, cell.baseY);
+         ctx.transform(cell.scale, cell.skewY, cell.skewX, cell.scale, 0, 0);
+
+         if (isChromatic && influence > 0.1) {
+            // Chromatic Aberration Layers
+            const splitOffset = vMag * 0.1 * influence; // Distance of RGB split
+            
+            ctx.globalCompositeOperation = "screen";
+
+            // Red
+            ctx.fillStyle = "rgba(255, 0, 0, 0.8)";
+            ctx.fillText(text, -splitOffset, -splitOffset);
+
+            // Green
+            ctx.fillStyle = "rgba(0, 255, 0, 0.8)";
+            ctx.fillText(text, 0, 0);
+
+            // Blue
+            ctx.fillStyle = "rgba(0, 0, 255, 0.8)";
+            ctx.fillText(text, splitOffset, splitOffset);
+         } else {
+            // Standard White
+            ctx.globalCompositeOperation = "source-over";
+            ctx.fillStyle = `rgba(255, 255, 255, ${0.1 + influence * 0.9})`;
+            ctx.fillText(text, 0, 0);
+         }
+
+         ctx.restore();
+      });
+
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+    return () => { window.removeEventListener("resize", resize); if (requestRef.current) cancelAnimationFrame(requestRef.current); };
+  }, []);
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    mouse.current.vx = e.clientX - mouse.current.x;
+    mouse.current.vy = e.clientY - mouse.current.y;
+    mouse.current.x = e.clientX;
+    mouse.current.y = e.clientY;
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full cursor-crosshair overflow-hidden"
+      onPointerMove={handlePointerMove}
+    >
+      <canvas ref={canvasRef} className="w-full h-full" />
+      
+      <div className="absolute inset-x-0 bottom-16 text-center pointer-events-none">
+        <span className="text-white text-[10px] md:text-sm font-bold tracking-[0.4em] uppercase mb-2 block">
+          Kinetic Typography
+        </span>
+        <span className="text-white/40 text-[9px] uppercase tracking-[0.2em]">
+          Move pointer rapidly to trigger velocity shear & chromatic aberration
         </span>
       </div>
     </div>
