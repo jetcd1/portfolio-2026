@@ -16,8 +16,12 @@ function ParallaxImage({ src, alt, className = "" }: { src: string; alt: string;
   const springY = useSpring(y, { stiffness: 100, damping: 30 });
 
   return (
-    <motion.div ref={ref} style={{ y: springY }} className={`relative w-full overflow-hidden rounded-lg md:rounded-2xl ${className}`}>
-      <img src={src} alt={alt} className="w-full h-auto block" loading="lazy" />
+    <motion.div 
+      ref={ref} 
+      style={{ y: springY }} 
+      className={`relative w-full overflow-hidden rounded-lg md:rounded-2xl transform-gpu ${className}`}
+    >
+      <img src={src} alt={alt} className="w-full h-auto block align-bottom" loading="lazy" />
     </motion.div>
   );
 }
@@ -120,14 +124,16 @@ export default function EquilarCaseStudy() {
       
       {/* ─── Hero Section ────────────────────────────────────────────── */}
       <section className="relative w-full h-screen min-h-[800px] flex items-end justify-center pb-24 px-4 overflow-hidden bg-black">
-        {/* Video Background */}
-        <div className="absolute inset-0 z-0 select-none">
+        {/* Cinematic Auto-playing Video */}
+        <div className="absolute inset-0 z-0 select-none flex items-center justify-center">
           <video 
             src="/works/equilarapp/hero.mp4" 
             autoPlay loop muted playsInline 
-            className="w-full h-full object-cover brightness-[0.6] md:brightness-75"
+            className="w-full h-full object-contain brightness-[0.5] md:brightness-75 scale-[1.02]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-background" />
+          {/* Subtle gradient overlay to merge video into background and hide pixelated text at bottom */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-background" />
+          <div className="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-background via-background/80 to-transparent blur-sm" />
         </div>
 
         {/* Global Back Link */}
@@ -163,13 +169,16 @@ export default function EquilarCaseStudy() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-16 md:gap-24">
           <motion.div 
             className="md:w-1/3 flex flex-col gap-12"
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
             <div>
               <h3 className="text-xs font-bold text-muted uppercase tracking-[0.2em] mb-3">Role</h3>
               <p className="text-foreground text-sm leading-relaxed">
-                Senior Product Designer (Hands-on)<br />
-                End-to-end UX/UI, Prototyping, and Visual Design
+                Senior Product Designer<br />
+                Hands-on UX/UI, Prototyping & Visual Design
               </p>
             </div>
             <div>
@@ -268,17 +277,40 @@ export default function EquilarCaseStudy() {
           </div>
 
           {/* Large Scale Screens 7 - 9 */}
-          <div className="flex flex-col gap-16">
-            <ParallaxImage src="/works/equilarapp/7.png" alt="Equilar Flow 1" />
-            <ParallaxImage src="/works/equilarapp/8.png" alt="Equilar Flow 2" />
-            <ParallaxImage src="/works/equilarapp/9.png" alt="Equilar Flow 3" />
+          <div className="flex flex-col gap-24 md:gap-32">
+            <div className="flex flex-col gap-8">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full">
+                <p className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue mb-2">Structure</p>
+                <h3 className="text-3xl md:text-4xl font-display font-medium text-foreground tracking-tight">Information Architecture</h3>
+              </motion.div>
+              <ParallaxImage src="/works/equilarapp/7.png" alt="Equilar Information Architecture" />
+            </div>
+
+            <div className="flex flex-col gap-8">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full">
+                <p className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue mb-2">Ideation</p>
+                <h3 className="text-3xl md:text-4xl font-display font-medium text-foreground tracking-tight">Wireframes and Flows</h3>
+              </motion.div>
+              <ParallaxImage src="/works/equilarapp/8.png" alt="Equilar Wireframes" />
+            </div>
+
+            <div className="flex flex-col pt-8">
+              <ParallaxImage src="/works/equilarapp/9.png" alt="Equilar Flow 3" />
+            </div>
           </div>
 
           {/* Final Details 10 - 13 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
-            <ParallaxImage src="/works/equilarapp/10.png" alt="Equilar Asset 1" />
-            <ParallaxImage src="/works/equilarapp/11.png" alt="Equilar Asset 2" />
-            <ParallaxImage src="/works/equilarapp/12.png" alt="Equilar Asset 3" className="md:col-span-2" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 pt-16">
+            <div className="col-span-1 md:col-span-2 mb-4">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full text-center">
+                <h3 className="text-4xl md:text-5xl font-display font-medium text-foreground tracking-tight mb-4">Final Mockups</h3>
+                <p className="text-muted text-lg font-light">Polished interface designs crafted for high-performance enterprise use.</p>
+              </motion.div>
+            </div>
+            
+            <ParallaxImage src="/works/equilarapp/10.png" alt="Equilar Final Mockup 1" />
+            <ParallaxImage src="/works/equilarapp/11.png" alt="Equilar Final Mockup 2" />
+            <ParallaxImage src="/works/equilarapp/12.png" alt="Equilar Asset 3" className="md:col-span-2 mt-8 md:mt-16" />
             <ParallaxImage src="/works/equilarapp/13.png" alt="Equilar Asset 4" className="md:col-span-2" />
           </div>
 
