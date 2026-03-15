@@ -91,43 +91,72 @@ export default function AIPlayground() {
               <button
                 key={ex.id}
                 onClick={() => handleExhibitChange(ex.id as ExhibitId)}
-                className="group relative flex items-center gap-4 py-2 transition-all duration-700 text-left"
+                className="group relative flex items-center gap-4 py-1.5 md:py-2.5 transition-all duration-300 text-left"
               >
-                <div 
-                  className={`w-[4px] h-4 md:h-8 transition-all duration-1000 rounded-full ${
-                    isActive 
-                      ? "bg-white opacity-100 shadow-[0_0_25px_white]" 
-                      : "bg-white/5 group-hover:bg-white/30 opacity-0 group-hover:opacity-100"
-                  }`} 
+                {/* Thick Indicator Line */}
+                <motion.div 
+                  initial={false}
+                  animate={{ 
+                    height: isActive ? "32px" : "16px",
+                    opacity: isActive ? 1 : 0,
+                  }}
+                  whileHover={{ opacity: isActive ? 1 : 0.4, height: isActive ? "32px" : "24px" }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className={`w-[4px] rounded-full ${isActive ? "bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)]" : "bg-white/40"}`} 
                 />
-                <div className="flex flex-col">
+                
+                <div className="flex flex-col overflow-hidden py-1">
                   <span 
-                    className={`text-[2.2vh] md:text-[2.8vh] lg:text-[3.8vh] font-bold tracking-tighter leading-none transition-all duration-700 flex flex-wrap ${
+                    className={`font-bold tracking-tighter leading-none flex flex-wrap transition-colors duration-300 ${
                       isActive 
-                        ? "text-white translate-x-3 italic" 
-                        : "text-white/10 group-hover:text-white/40 hover:translate-x-1"
+                        ? "text-[2vh] md:text-[2.5vh] lg:text-[3.2vh] text-white uppercase" 
+                        : "text-[1.8vh] md:text-[2.2vh] lg:text-[2.8vh] text-white/20 uppercase"
                     }`}
                   >
-                    {isActive ? (
-                      ex.name.split("").map((char, index) => (
+                    {ex.name.split("").map((char, index) => (
+                      <span key={index} className="relative inline-block overflow-hidden min-w-[0.25em]">
+                        {/* Measuring span */}
+                        <span className="invisible">{char === " " ? "\u00A0" : char}</span>
+                        
+                        {/* Idle / Active visible text */}
                         <motion.span
-                          key={index}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3, delay: index * 0.03 }}
+                          className={`absolute inset-0 flex items-center ${isActive ? "text-white" : "text-white/20"} group-hover:text-white`}
+                          initial={false}
+                          animate={{ y: "0%" }}
+                          whileHover={{ y: "-110%" }}
+                          transition={{
+                            duration: 0.4,
+                            ease: [0.76, 0, 0.24, 1],
+                            delay: index * 0.015, // Ultra-fast Stagger
+                          }}
                         >
                           {char === " " ? "\u00A0" : char}
                         </motion.span>
-                      ))
-                    ) : (
-                      ex.name
-                    )}
+
+                        {/* Hover sliding text - Staggered piano effect */}
+                        <motion.span
+                          className="absolute inset-0 flex items-center text-white font-black"
+                          initial={{ y: "110%" }}
+                          whileHover={{ y: "0%" }}
+                          transition={{
+                            duration: 0.4,
+                            ease: [0.76, 0, 0.24, 1],
+                            delay: index * 0.015, // Ultra-fast Stagger
+                          }}
+                        >
+                          {char === " " ? "\u00A0" : char}
+                        </motion.span>
+                      </span>
+                    ))}
                   </span>
+                  
                   {isActive && (
                      <motion.div 
-                       initial={{ width: 0, opacity: 0 }}
-                       animate={{ width: "100%", opacity: 1 }}
-                       className="h-[2px] bg-gradient-to-r from-white/60 to-transparent mt-1 ml-3"
+                       layoutId="active-underline"
+                       initial={{ opacity: 0 }}
+                       animate={{ opacity: 1 }}
+                       transition={{ duration: 0.3 }}
+                       className="h-[2px] bg-gradient-to-r from-white to-transparent mt-1 ml-1"
                      />
                   )}
                 </div>
@@ -136,8 +165,8 @@ export default function AIPlayground() {
                 {isActive && (
                   <motion.div 
                     layoutId="menu-blob"
-                    className="absolute -inset-x-8 -inset-y-2 bg-white/[0.03] backdrop-blur-md rounded-2xl -z-10 border-l border-white/20"
-                    transition={{ type: "spring", bounce: 0.1, duration: 1 }}
+                    className="absolute -inset-x-6 -inset-y-1 bg-white/[0.04] backdrop-blur-md rounded-2xl -z-10 border-l-[3px] border-white/30"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
               </button>
