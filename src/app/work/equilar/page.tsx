@@ -244,41 +244,33 @@ export default function EquilarCaseStudy() {
             </div>
           </TiltParallaxMedia>
 
-          {/* Staggered Row 1 */}
-          <div className="flex flex-col md:flex-row gap-20 md:gap-0 items-center justify-between">
-            <div className="w-full md:w-[60%] z-10">
-              <TiltParallaxMedia 
-                title={(
-                  <div className="flex flex-col items-center md:items-start gap-4">
-                    <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Visual Identity</span>
-                    <span>Brand System</span>
-                  </div>
-                )}
-                description="Color, typography, and visual language established for product consistency."
-              >
-                <div onClick={() => setLightboxImg("/works/equilarapp/3.png")} className="cursor-zoom-in">
-                  <img src="/works/equilarapp/3.png" alt="Brand Identity" className="w-full h-auto" />
-                </div>
-              </TiltParallaxMedia>
+          <TiltParallaxMedia 
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Visual Identity</span>
+                <span>Brand System</span>
+              </div>
+            )}
+            description="Color, typography, and visual language established for product consistency."
+          >
+            <div onClick={() => setLightboxImg("/works/equilarapp/3.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/3.png" alt="Brand Identity" className="w-full h-auto" />
             </div>
-            
-            <div className="w-full md:w-[45%] md:-ml-[15%] mt-0 md:mt-48 relative z-20">
-              <TiltParallaxMedia 
-                title={(
-                  <div className="flex flex-col items-center md:items-start gap-4 text-left">
-                    <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Evolution</span>
-                    <span>Logo Design</span>
-                  </div>
-                )}
-                description="Geometric identity symbolizing connection and structure."
-                delayOffset={0.2}
-              >
-                <div onClick={() => setLightboxImg("/works/equilarapp/4.png")} className="cursor-zoom-in">
-                  <img src="/works/equilarapp/4.png" alt="Logo Exploration" className="w-full h-auto" />
-                </div>
-              </TiltParallaxMedia>
+          </TiltParallaxMedia>
+          
+          <TiltParallaxMedia 
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Evolution</span>
+                <span>Logo Design Exploration</span>
+              </div>
+            )}
+            description="Geometric identity symbolizing connection, structure, and executive networks."
+          >
+            <div onClick={() => setLightboxImg("/works/equilarapp/4.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/4.png" alt="Logo Exploration" className="w-full h-auto" />
             </div>
-          </div>
+          </TiltParallaxMedia>
 
           <TiltParallaxMedia 
             title={(
@@ -294,41 +286,33 @@ export default function EquilarCaseStudy() {
             </div>
           </TiltParallaxMedia>
 
-          {/* Staggered Row 2 */}
-          <div className="flex flex-col md:flex-row-reverse gap-20 md:gap-0 items-center justify-between">
-            <div className="w-full md:w-[60%] z-10">
-              <TiltParallaxMedia 
-                title={(
-                  <div className="flex flex-col items-center md:items-end gap-4 text-right">
-                    <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Research</span>
-                    <span>Ideation & Sketches</span>
-                  </div>
-                )}
-                description="Whiteboard sessions used to shape early concepts."
-              >
-                <div onClick={() => setLightboxImg("/works/equilarapp/5.png")} className="cursor-zoom-in">
-                  <img src="/works/equilarapp/5.png" alt="Ideation" className="w-full h-auto" />
-                </div>
-              </TiltParallaxMedia>
+          <TiltParallaxMedia 
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Research</span>
+                <span>Ideation & Sketches</span>
+              </div>
+            )}
+            description="Whiteboard sessions and quick sketches used to shape early product concepts."
+          >
+            <div onClick={() => setLightboxImg("/works/equilarapp/5.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/5.png" alt="Ideation" className="w-full h-auto" />
             </div>
-            
-            <div className="w-full md:w-[45%] md:-mr-[15%] mt-0 md:mt-48 relative z-20">
-              <TiltParallaxMedia 
-                title={(
-                  <div className="flex flex-col items-center md:items-end gap-4 text-right">
-                    <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">User Centered</span>
-                    <span>Primary User Profile</span>
-                  </div>
-                )}
-                description="Mapping executive decision-maker motivations."
-                delayOffset={0.2}
-              >
-                <div onClick={() => setLightboxImg("/works/equilarapp/6.png")} className="cursor-zoom-in">
-                  <img src="/works/equilarapp/6.png" alt="User Profile" className="w-full h-auto" />
-                </div>
-              </TiltParallaxMedia>
+          </TiltParallaxMedia>
+          
+          <TiltParallaxMedia 
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">User Centered</span>
+                <span>Primary User Profile</span>
+              </div>
+            )}
+            description="Mapping motivations, environments, and pain points of executive decision-makers."
+          >
+            <div onClick={() => setLightboxImg("/works/equilarapp/6.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/6.png" alt="User Profile" className="w-full h-auto" />
             </div>
-          </div>
+          </TiltParallaxMedia>
 
           <TiltParallaxMedia 
             title={(
@@ -337,6 +321,7 @@ export default function EquilarCaseStudy() {
                 <span>Information Architecture</span>
               </div>
             )}
+            description="Defining the structural hierarchy for seamless navigation through complex data."
           >
             <div onClick={() => setLightboxImg("/works/equilarapp/7.png")} className="cursor-zoom-in">
               <img src="/works/equilarapp/7.png" alt="Information Architecture" className="w-full h-auto" />
@@ -350,6 +335,7 @@ export default function EquilarCaseStudy() {
                 <span>Wireframes and Flows</span>
               </div>
             )}
+            description="Translating complex boardroom interactions into intuitive mobile user flows."
           >
             <div onClick={() => setLightboxImg("/works/equilarapp/8.png")} className="cursor-zoom-in">
               <img src="/works/equilarapp/8.png" alt="Wireframes" className="w-full h-auto" />
@@ -366,18 +352,26 @@ export default function EquilarCaseStudy() {
             title={(
               <div className="flex flex-col items-center gap-4">
                 <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Final Delivery</span>
-                <span>Production Mockups</span>
+                <span>Production Mockup — 01</span>
               </div>
             )}
             description="Polished interface designs crafted for high-performance enterprise use."
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div onClick={() => setLightboxImg("/works/equilarapp/10.png")} className="cursor-zoom-in">
-                <img src="/works/equilarapp/10.png" alt="Final Mockup 1" className="w-full h-auto rounded-lg" />
+            <div onClick={() => setLightboxImg("/works/equilarapp/10.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/10.png" alt="Final Mockup 1" className="w-full h-auto rounded-lg" />
+            </div>
+          </TiltParallaxMedia>
+
+          <TiltParallaxMedia 
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Final Delivery</span>
+                <span>Production Mockup — 02</span>
               </div>
-              <div onClick={() => setLightboxImg("/works/equilarapp/11.png")} className="cursor-zoom-in">
-                <img src="/works/equilarapp/11.png" alt="Final Mockup 2" className="w-full h-auto rounded-lg" />
-              </div>
+            )}
+          >
+            <div onClick={() => setLightboxImg("/works/equilarapp/11.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/11.png" alt="Final Mockup 2" className="w-full h-auto rounded-lg" />
             </div>
           </TiltParallaxMedia>
 
