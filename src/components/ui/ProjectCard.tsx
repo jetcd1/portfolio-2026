@@ -200,7 +200,17 @@ export default function ProjectCard({
             data-hover="true"
           >
             {/* ── Media ─────────────────────────── */}
-            <motion.div className="absolute inset-0" style={{ x: bgX, y: bgY, scale: 1.08 }}>
+            <motion.div 
+              className="absolute inset-0" 
+              style={{ 
+                x: bgX, 
+                y: bgY, 
+                scale: 1.08,
+                willChange: "transform, opacity, filter",
+                backfaceVisibility: "hidden",
+                WebkitFontSmoothing: "antialiased"
+              }}
+            >
               {image && (
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${image})` }} />
               )}
@@ -210,9 +220,10 @@ export default function ProjectCard({
                     src={video}
                     alt={title}
                     className="absolute inset-0 w-full h-full object-cover"
+                    style={{ imageRendering: "-webkit-optimize-contrast" }}
                     animate={{
                       scale: isHovered ? 1.06 : 1,
-                      filter: isHovered ? "brightness(1.15) saturate(1.25)" : "brightness(0.95) saturate(0.85)",
+                      filter: isHovered ? "brightness(1.08) saturate(1.15)" : "brightness(1) saturate(1)",
                     }}
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                   />
@@ -223,10 +234,12 @@ export default function ProjectCard({
                     loop
                     muted
                     playsInline
+                    preload="auto"
                     className="absolute inset-0 w-full h-full object-cover"
+                    style={{ imageRendering: "auto" }}
                     animate={{
                       scale: isHovered ? 1.06 : 1,
-                      filter: isHovered ? "brightness(1.15) saturate(1.25)" : "brightness(0.95) saturate(0.85)",
+                      filter: isHovered ? "brightness(1.08) saturate(1.15)" : "brightness(1) saturate(1)",
                     }}
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                   />
