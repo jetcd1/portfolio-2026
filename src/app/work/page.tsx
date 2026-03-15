@@ -61,6 +61,15 @@ export default function Work() {
           video="/works/equilarapp/thumbnail.mp4"
           href="/work/equilar"
         />
+        {/* Boardedge Project */}
+        <ProjectCard 
+          company="Equilar"
+          title="Boardedge"
+          description="A platform for shareholder engagement and board recruiting, improving corporate governance."
+          tags={["Product UI", "UX", "Design System"]}
+          video="/works/boardedge/thumbnail.gif"
+          href="/work/boardedge"
+        />
       </div>
     </main>
   );

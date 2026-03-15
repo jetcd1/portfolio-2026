@@ -392,10 +392,10 @@ export default function GSEWorkDetail() {
 
       <ProjectNavigation 
         previousProject={{
-          title: "Equilar App",
+          title: "Boardedge",
           company: "Equilar",
-          video: "/works/equilarapp/thumbnail.mp4",
-          href: "/work/equilar"
+          video: "/works/boardedge/thumbnail.gif",
+          href: "/work/boardedge"
         }}
         nextProject={{
           title: "Orion Design System 2.0",

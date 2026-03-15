@@ -346,6 +346,23 @@ export default function Home() {
               href="/work/equilar"
             />
           </motion.div>
+
+          {/* Boardedge Project */}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            <ProjectCard 
+              company="Equilar"
+              title="Boardedge"
+              description="A platform for shareholder engagement and board recruiting, improving corporate governance."
+              tags={["Product UI", "UX", "Design System"]}
+              video="/works/boardedge/thumbnail.gif"
+              href="/work/boardedge"
+            />
+          </motion.div>
         </div>
       </section>
     </main>

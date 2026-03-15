@@ -431,10 +431,10 @@ export default function EquilarCaseStudy() {
           href: "/work/ontada"
         }}
         nextProject={{
-          title: "Ground Service Equipment Request Queue",
-          company: "United Airlines",
-          video: "/works/gse/thumbnail.mp4",
-          href: "/work/united-airlines"
+          title: "Boardedge",
+          company: "Equilar",
+          video: "/works/boardedge/thumbnail.gif",
+          href: "/work/boardedge"
         }}
       />
       
