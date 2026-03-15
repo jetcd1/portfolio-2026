@@ -391,6 +391,12 @@ export default function GSEWorkDetail() {
       </section>
 
       <ProjectNavigation 
+        previousProject={{
+          title: "Equilar App",
+          company: "Equilar",
+          video: "/works/equilarapp/thumbnail.mp4",
+          href: "/work/equilar"
+        }}
         nextProject={{
           title: "Orion Design System 2.0",
           company: "United Airlines",

@@ -304,11 +304,17 @@ export default function OntadaCaseStudy() {
 
       {/* Project Navigation */}
       <ProjectNavigation 
-        nextProject={{
-          title: "Ground Service Equipment\nRequest Queue",
+        previousProject={{
+          title: "Orion Design System 2.0",
           company: "United Airlines",
-          video: "/works/gse/thumbnail.mp4",
-          href: "/work/united-airlines"
+          video: "/works/Orion/thumbnail.mp4",
+          href: "/work/orion"
+        }}
+        nextProject={{
+          title: "Equilar App",
+          company: "Equilar",
+          video: "/works/equilarapp/thumbnail.mp4",
+          href: "/work/equilar"
         }}
       />
       {/* Back to Top */}

@@ -369,6 +369,12 @@ export default function OrionCaseStudy() {
 
       {/* Project Navigation */}
       <ProjectNavigation 
+        previousProject={{
+          title: "Ground Service Equipment Request Queue",
+          company: "United Airlines",
+          video: "/works/gse/thumbnail.mp4",
+          href: "/work/united-airlines"
+        }}
         nextProject={{
           title: "Ontada Design System",
           company: "McKesson",

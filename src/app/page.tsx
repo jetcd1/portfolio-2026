@@ -329,6 +329,23 @@ export default function Home() {
               href="/work/ontada"
             />
           </motion.div>
+
+          {/* Equilar Project */}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            <ProjectCard 
+              company="Equilar"
+              title="Equilar App"
+              description="Board intelligence solutions and executive boardroom connections."
+              tags={["Mobile UI", "UX", "Branding"]}
+              video="/works/equilarapp/thumbnail.mp4"
+              href="/work/equilar"
+            />
+          </motion.div>
         </div>
       </section>
     </main>

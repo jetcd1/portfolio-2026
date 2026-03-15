@@ -51,6 +51,16 @@ export default function Work() {
           video="/works/Ontada/thumbnail.mp4"
           href="/work/ontada"
         />
+
+        {/* Equilar Project */}
+        <ProjectCard 
+          company="Equilar"
+          title="Equilar App"
+          description="Board intelligence solutions and executive boardroom connections."
+          tags={["Mobile UI", "UX", "Branding"]}
+          video="/works/equilarapp/thumbnail.mp4"
+          href="/work/equilar"
+        />
       </div>
     </main>
   );
