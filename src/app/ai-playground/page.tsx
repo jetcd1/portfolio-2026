@@ -121,7 +121,7 @@ export default function AIPlayground() {
                     className={`leading-none flex flex-wrap transition-all duration-300 ${
                       isActive 
                         ? "text-[1.9vh] md:text-[2.4vh] lg:text-[3.1vh] text-white uppercase font-black tracking-tight" 
-                        : "text-[1.8vh] md:text-[2.2vh] lg:text-[2.8vh] text-white/30 font-bold tracking-tight"
+                        : "text-[1.6vh] md:text-[2.0vh] lg:text-[2.5vh] font-medium lowercase tracking-tight"
                     }`}
                   >
                     {ex.name.split("").map((char, index) => (
@@ -131,7 +131,11 @@ export default function AIPlayground() {
                         
                         {/* Idle / Active visible text */}
                         <motion.span
-                          className={`absolute inset-0 flex items-center ${isActive ? "text-white" : "text-white/20"} group-hover:text-white`}
+                          className={`absolute inset-0 flex items-center ${
+                            isActive 
+                              ? "text-white" 
+                              : "text-transparent bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-500 group-hover:from-white group-hover:to-white"
+                          }`}
                           initial={false}
                           animate={{ y: "0%" }}
                           whileHover={{ y: "-110%" }}
