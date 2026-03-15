@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard, Type } from "lucide-react";
+import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard, Type, CircleDashed } from "lucide-react";
 
 // --- Types --- //
 type ExhibitId = 
-  | "core_collapse" | "elastic_field" | "keyboard_wave" | "kinetic_type"
+  | "core_collapse" | "elastic_field" | "keyboard_wave" | "kinetic_type" | "balloon_metaball"
   | "cosmic" | "kinetic" | "physics" | "particles" | "vortex" 
   | "attraction" | "neural" | "optical" | "symmetry" | "quantum"
   | "glitch" | "waves" | "fluid" | "fractal";
@@ -16,6 +16,7 @@ const exhibits = [
   { id: "elastic_field", name: "Elastic UI Field", icon: MousePointerClick, color: "#fff" },
   { id: "keyboard_wave", name: "Keyboard Waveform", icon: Keyboard, color: "#fff" },
   { id: "kinetic_type", name: "Kinetic Typography", icon: Type, color: "#fff" },
+  { id: "balloon_metaball", name: "Balloon Metaballs", icon: CircleDashed, color: "#fff" },
   { id: "vortex", name: "Neon Vortex", icon: Repeat, color: "#ec4899" },
   { id: "cosmic", name: "Cosmic Hyperspace", icon: Sparkles, color: "#9333ea" },
   { id: "attraction", name: "Attraction Grid", icon: Boxes, color: "#06b6d4" },
@@ -65,6 +66,7 @@ export default function AIPlayground() {
              {activeId === "elastic_field" && <ElasticFieldExhibit />}
              {activeId === "keyboard_wave" && <KeyboardWaveformExhibit />}
              {activeId === "kinetic_type" && <KineticTypographyExhibit />}
+             {activeId === "balloon_metaball" && <BalloonMetaballExhibit />}
              {activeId === "vortex" && <VortexExhibit />}
              {activeId === "attraction" && <AttractionGridExhibit />}
              {activeId === "neural" && <NeuralDriftExhibit />}
@@ -1240,6 +1242,322 @@ function KineticTypographyExhibit() {
         </span>
         <span className="text-white/40 text-[9px] uppercase tracking-[0.2em]">
           Move pointer rapidly to trigger velocity shear & chromatic aberration
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function BalloonMetaballExhibit() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const clickTimeRef = useRef(0.0);
+  const mouseRef = useRef({ x: 0.5, y: 0.5 });
+  const timeRef = useRef(0.0);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const gl = canvas.getContext("webgl");
+    if (!gl) return;
+
+    // ----- Shader Sources ----- //
+    const vsSource = `
+      attribute vec4 aVertexPosition;
+      void main() {
+        gl_Position = aVertexPosition;
+      }
+    `;
+
+    // Raymarching Metaball Fragment Shader
+    const fsSource = `
+      precision highp float;
+      
+      uniform vec2 u_resolution;
+      uniform float u_time;
+      uniform vec2 u_mouse;
+      uniform float u_click_time;
+
+      // Polynomial smooth min for metaball surface tension
+      float smin(float a, float b, float k) {
+        float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+        return mix(b, a, h) - k * h * (1.0 - h);
+      }
+
+      float sdSphere(vec3 p, float s) {
+        return length(p) - s;
+      }
+
+      // Hash for pseudo-random noise
+      float hash(float n) {
+        return fract(sin(n) * 43758.5453123);
+      }
+
+      // 3D Noise for organic movement
+      float noise(vec3 x) {
+        vec3 p = floor(x);
+        vec3 f = fract(x);
+        f = f * f * (3.0 - 2.0 * f);
+        float n = p.x + p.y * 57.0 + 113.0 * p.z;
+        return mix(mix(mix(hash(n + 0.0), hash(n + 1.0), f.x),
+                       mix(hash(n + 57.0), hash(n + 58.0), f.x), f.y),
+                   mix(mix(hash(n + 113.0), hash(n + 114.0), f.x),
+                       mix(hash(n + 170.0), hash(n + 171.0), f.x), f.y), f.z);
+      }
+
+      // SDF Map: Calculates the combined distance connecting the spheres
+      vec2 map(vec3 p) {
+        // Distances
+        float d = 100.0;
+        
+        // Mouse coordinates mapping to 3D space
+        vec2 m = (u_mouse * 2.0 - 1.0) * vec2(u_resolution.x/u_resolution.y, 1.0);
+        vec3 mousePos = vec3(m.x * 3.0, -m.y * 3.0, 0.0);
+        
+        // Explosion offset factor
+        float expT = max(0.0, 1.0 - (u_time - u_click_time)*1.5);
+
+        // Core central sphere that chases mouse
+        float core = sdSphere(p - mousePos, 0.6 + expT*0.5);
+        d = core;
+
+        // Density color tracker
+        float heat = 0.0;
+
+        // Generate multiple orbiting metaballs
+        for(int i = 0; i < 7; i++) {
+           float fi = float(i);
+           
+           // Organic floating offset
+           float t = u_time * (0.5 + fi * 0.1);
+           vec3 organicOffset = vec3(
+             sin(t + fi*1.2) * 1.5,
+             cos(t*1.1 + fi*2.3) * 1.5,
+             sin(t*0.8 + fi*0.5) * 1.0
+           );
+
+           // Exploding scatter vector
+           vec3 scatter = vec3(
+              sin(fi*34.2)*4.0,
+              cos(fi*12.1)*4.0,
+              sin(fi*78.9)*4.0
+           );
+
+           vec3 pos = mix(organicOffset, scatter, expT);
+           
+           // Pull orbiter towards mouse slightly
+           pos = mix(pos, mousePos, 0.2);
+           
+           float sphere = sdSphere(p - pos, 0.4 + sin(fi)*0.1);
+           
+           // Smoothly union the spheres
+           float prevD = d;
+           d = smin(d, sphere, 1.2);
+           
+           // Calculate 'heat' (density) for coloring based on how close spheres are merging
+           heat += exp(-5.0 * distance(p, mix(pos, mousePos, 0.5)));
+        }
+
+        return vec2(d, heat);
+      }
+
+      // Normal calculation by sampling gradients
+      vec3 calcNormal(vec3 p) {
+        const float eps = 0.001;
+        const vec2 h = vec2(eps, 0);
+        return normalize(vec3(
+          map(p + h.xyy).x - map(p - h.xyy).x,
+          map(p + h.yxy).x - map(p - h.yxy).x,
+          map(p + h.yyx).x - map(p - h.yyx).x
+        ));
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+        vec2 p = uv * 2.0 - 1.0;
+        p.x *= u_resolution.x / u_resolution.y;
+
+        // Ray setup
+        vec3 ro = vec3(0.0, 0.0, 5.0); // camera origin
+        vec3 rd = normalize(vec3(p, -2.0)); // ray direction
+
+        // Raymarching loop
+        float t = 0.0;
+        float heat = 0.0;
+        for(int i = 0; i < 64; i++) {
+           vec3 pos = ro + rd * t;
+           vec2 res = map(pos);
+           if(res.x < 0.001 || t > 20.0) {
+              heat = res.y;
+              break;
+           }
+           t += res.x;
+        }
+
+        // Base color (Deep dark space)
+        vec3 col = vec3(0.02, 0.02, 0.04);
+
+        if(t < 20.0) {
+           // Hit surface
+           vec3 pos = ro + rd * t;
+           vec3 nor = calcNormal(pos);
+           
+           // Lighting Setup
+           vec3 lightDir = normalize(vec3(1.0, 1.0, 2.0));
+           float dif = clamp(dot(nor, lightDir), 0.0, 1.0);
+           
+           // Fresnel / Rim Lighting (The glass/neon edge effect)
+           float fre = pow(clamp(1.0 - dot(nor, -rd), 0.0, 1.0), 3.0);
+           
+           // Fake Refraction / Background sample (simplistic)
+           vec3 ref = reflect(rd, nor);
+           float fakeEnv = smoothstep(-0.2, 0.2, ref.y) * 0.5 + 0.5;
+           
+           // Base metaball color - reactive to fusion heat
+           vec3 baseCol = mix(vec3(0.1, 0.3, 0.8), vec3(1.0, 0.1, 0.6), clamp(heat * 0.5, 0.0, 1.0));
+           
+           // Click flash
+           float flash = max(0.0, 1.0 - (u_time - u_click_time)*3.0);
+           baseCol = mix(baseCol, vec3(1.0), flash);
+
+           // Combine lighting
+           col = baseCol * (dif * 0.8 + 0.2); // Diffuse
+           col += vec3(0.5, 0.8, 1.0) * fre * 2.0; // Glowing Rim
+           col += vec3(1.0) * pow(clamp(dot(ref, lightDir), 0.0, 1.0), 32.0); // Specular Highlight
+           col += fakeEnv * 0.2 * baseCol; // Environment Reflection
+        } else {
+           // Background Subtle Grid / Particles (Optics)
+           float n = noise(vec3(p * 10.0, u_time * 0.5));
+           col += vec3(n * 0.05);
+        }
+
+        // Vignette
+        col *= 1.0 - 0.5 * length(uv - 0.5);
+        
+        // Tonemapping & Gamma
+        col = col / (1.0 + col);
+        col = pow(col, vec3(1.0/2.2));
+
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `;
+
+    // Shader Compilation Helper
+    const loadShader = (type: number, source: string) => {
+      const shader = gl.createShader(type);
+      if(!shader) return null;
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error("Shader failed to compile: ", gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+        return null;
+      }
+      return shader;
+    };
+
+    const vertexShader = loadShader(gl.VERTEX_SHADER, vsSource);
+    const fragmentShader = loadShader(gl.FRAGMENT_SHADER, fsSource);
+    if (!vertexShader || !fragmentShader) return;
+
+    const program = gl.createProgram();
+    if (!program) return;
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error("Program failed to link: ", gl.getProgramInfoLog(program));
+      return;
+    }
+    gl.useProgram(program);
+
+    // Provide a full screen quad buffer
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    const positions = new Float32Array([-1.0,  1.0,  1.0,  1.0, -1.0, -1.0,  1.0, -1.0]);
+    gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+    
+    const positionAttributeLocation = gl.getAttribLocation(program, "aVertexPosition");
+    gl.enableVertexAttribArray(positionAttributeLocation);
+    gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+    // Uniforms setup
+    const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+    const timeLocation = gl.getUniformLocation(program, "u_time");
+    const mouseLocation = gl.getUniformLocation(program, "u_mouse");
+    const clickTimeLocation = gl.getUniformLocation(program, "u_click_time");
+    
+    // Set u_click_time far in the past initially
+    gl.uniform1f(clickTimeLocation, -999.0);
+
+    const resize = () => {
+      const displayWidth  = window.innerWidth;
+      const displayHeight = window.innerHeight;
+      if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+        canvas.width  = displayWidth;
+        canvas.height = displayHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+      }
+    };
+    window.addEventListener("resize", resize); resize();
+
+    // Render loop
+    const render = (now: number) => {
+      timeRef.current = now * 0.001; // seconds
+      
+      // Interpolate mouse smoothly in javascript before sending to shader
+      gl.uniform2f(mouseLocation, mouseRef.current.x, mouseRef.current.y);
+      gl.uniform1f(timeLocation, timeRef.current);
+      
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      rafRef.current = requestAnimationFrame(render);
+    };
+    rafRef.current = requestAnimationFrame(render);
+
+    return () => {
+       window.removeEventListener("resize", resize);
+       cancelAnimationFrame(rafRef.current);
+       gl.deleteProgram(program);
+    };
+  }, []);
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    // Normalize coordinates 0.0 to 1.0 for the shader
+    mouseRef.current.x = e.clientX / window.innerWidth;
+    mouseRef.current.y = e.clientY / window.innerHeight;
+  };
+
+  const handlePointerDown = () => {
+     const canvas = canvasRef.current;
+     if(!canvas) return;
+     const gl = canvas.getContext("webgl");
+     if(!gl) return;
+     // The entire program isn't tracked in state, so we just blindly grab the current bound program
+     const program = gl.getParameter(gl.CURRENT_PROGRAM);
+     if(program) {
+       const uClickTime = gl.getUniformLocation(program, "u_click_time");
+       gl.uniform1f(uClickTime, timeRef.current);
+     }
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full cursor-crosshair overflow-hidden"
+      onPointerMove={handlePointerMove}
+      onPointerDown={handlePointerDown}
+    >
+      <canvas ref={canvasRef} className="w-full h-full" />
+      
+      <div className="absolute inset-x-0 bottom-16 text-center pointer-events-none">
+        <span className="text-white text-[10px] md:text-sm font-bold tracking-[0.4em] uppercase mb-2 block">
+          Metaball Fusion
+        </span>
+        <span className="text-white/40 text-[9px] uppercase tracking-[0.2em] block">
+          GLSL Raymarching • Smooth Min (smin) Surface Tension
+        </span>
+        <span className="text-white/20 text-[8px] uppercase tracking-[0.2em] mt-1 block">
+          Move pointer to attract • Click to detonate
         </span>
       </div>
     </div>
