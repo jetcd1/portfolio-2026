@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink, Apple } from "lucide-react";
 
 import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
@@ -97,25 +97,76 @@ function ConnectionsInteraction() {
   );
 }
 
+// App Store Button Component
+function AppStoreButton() {
+  return (
+    <motion.a
+      href="https://apps.apple.com/us/app/equilar/id1534511321"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl text-white text-base font-medium transition-all duration-500 hover:bg-white/20 hover:border-white/40 shadow-2xl overflow-hidden mt-8"
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-apple-blue/0 via-apple-blue/20 to-apple-blue/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
+      <Apple className="w-6 h-6 relative z-10" />
+      <div className="flex flex-col items-start relative z-10">
+        <span className="text-[10px] uppercase tracking-widest opacity-60 leading-none mb-1">Download on the</span>
+        <span className="text-lg font-semibold leading-none">App Store</span>
+      </div>
+    </motion.a>
+  );
+}
+
+// Lightbox Component
+function Lightbox({ src, isOpen, onClose }: { src: string; isOpen: boolean; onClose: () => void }) {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
+        >
+          <motion.img
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            src={src}
+            alt="Fullscreen preview"
+            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+          />
+          <button 
+            className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors"
+            onClick={onClose}
+          >
+            <span className="text-sm uppercase tracking-widest">Close</span>
+          </button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export default function EquilarCaseStudy() {
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <main ref={containerRef} className="min-h-screen bg-background selection:bg-apple-blue selection:text-white pb-0 pt-[120px] md:pt-[160px]">
       
-      {/* Global Back Link */}
-      <motion.div style={{ opacity: headerOpacity }} className="fixed top-8 left-4 md:top-12 md:left-10 z-[100]">
-        <Link href="/work" className="inline-flex items-center gap-2 group px-4 py-2 rounded-full bg-background/80 backdrop-blur-md border border-border/50 hover:bg-foreground hover:text-background transition-all duration-500 shadow-sm">
-          <ArrowLeft className="w-4 h-4 text-muted-foreground group-hover:text-background transition-colors" />
-          <span className="text-xs font-medium tracking-widest uppercase text-muted-foreground group-hover:text-background transition-colors">All Work</span>
-        </Link>
-      </motion.div>
+      <Lightbox src={lightboxImg || ""} isOpen={!!lightboxImg} onClose={() => setLightboxImg(null)} />
 
       {/* ─── Hero Section ────────────────────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
-        {/* Full-screen Background Image (1.png instead of video for this specific work) */}
+        {/* Full-screen Background Image */}
         <div className="absolute inset-0 w-full h-full z-0">
           <img
             src="/works/equilarapp/1.png"
@@ -127,21 +178,23 @@ export default function EquilarCaseStudy() {
           <div className="absolute inset-0 bg-black/40 pointer-events-none" />
         </div>
         
-        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center text-center mt-auto md:mt-0">
+        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="block text-[13px] font-medium tracking-[0.2em] uppercase text-white/70 mb-6 font-mono">
-              Equilar — Board Intelligence
+            <span className="block text-[13px] font-medium tracking-[0.2em] uppercase text-apple-blue mb-6 font-mono">
+              Equilar — Actionable Intelligence
             </span>
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-display font-medium text-white tracking-tight leading-[1.05] mb-8 drop-shadow-sm">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-medium text-white tracking-tight leading-[1.05] mb-10 drop-shadow-lg">
               Equilar <span className="text-apple-blue italic md:not-italic">App</span>
             </h1>
-            <p className="text-lg md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-12 font-medium drop-shadow-sm">
-              Equilar is the leading provider of board intelligence solutions. The Equilar app helps you with business development and be prepared for your most important business meetings. Search over 300K profiles of executives and board members (who are typically not on LinkedIn), identify “who knows who” and navigate boardroom connections to tap new business opportunities.
+            <p className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-6 font-medium drop-shadow-sm">
+              <span className="text-apple-blue font-semibold">Equilar</span> is the leading provider of <span className="text-apple-blue font-semibold">board intelligence</span> solutions. The app empowers executive teams with 300K+ executive profiles to <span className="text-apple-blue font-semibold">uncover connections</span> and secure mission-critical business meetings.
             </p>
+            
+            <AppStoreButton />
           </motion.div>
 
           {/* Metadata Grid (Consistent with other works) */}
@@ -174,103 +227,170 @@ export default function EquilarCaseStudy() {
       </section>
 
       {/* ─── Case Study Media Section ─────────────────────────────────── */}
-      <section className="w-full py-32 md:py-64 px-4 md:px-8 bg-background flex flex-col items-center gap-48 md:gap-64 overflow-visible">
-        <div className="max-w-[1400px] w-full flex flex-col gap-32 md:gap-56">
+      <section className="w-full py-32 md:py-64 px-4 md:px-8 bg-background flex flex-col items-center gap-48 md:gap-80 overflow-visible">
+        <div className="max-w-[1400px] w-full flex flex-col gap-40 md:gap-72">
           
           <TiltParallaxMedia 
-            title="Connections Interaction" 
-            description="Developing a dynamic visual language to represent complex boardroom networks."
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Interactions</span>
+                <span>Connections Algorithm</span>
+              </div>
+            )}
+            description="Developing a dynamic visual language to represent complex boardroom networks and shared history."
           >
-            <ConnectionsInteraction />
+            <div className="cursor-default pointer-events-auto">
+              <ConnectionsInteraction />
+            </div>
           </TiltParallaxMedia>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-            <TiltParallaxMedia 
-              title="Brand Identity System" 
-              description="Color, typography, and visual language established for product consistency."
-            >
-              <img src="/works/equilarapp/3.png" alt="Brand Identity" className="w-full h-auto" />
-            </TiltParallaxMedia>
+          {/* Staggered Row 1 */}
+          <div className="flex flex-col md:flex-row gap-20 md:gap-0 items-center justify-between">
+            <div className="w-full md:w-[60%] z-10">
+              <TiltParallaxMedia 
+                title={(
+                  <div className="flex flex-col items-center md:items-start gap-4">
+                    <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Visual Identity</span>
+                    <span>Brand System</span>
+                  </div>
+                )}
+                description="Color, typography, and visual language established for product consistency."
+              >
+                <div onClick={() => setLightboxImg("/works/equilarapp/3.png")} className="cursor-zoom-in">
+                  <img src="/works/equilarapp/3.png" alt="Brand Identity" className="w-full h-auto" />
+                </div>
+              </TiltParallaxMedia>
+            </div>
             
-            <TiltParallaxMedia 
-              title="Logo Design Exploration" 
-              description="Developing a geometric identity symbolizing connection, structure, and executive networks."
-              delayOffset={0.2}
-            >
-              <div className="mt-0 md:mt-24">
-                <img src="/works/equilarapp/4.png" alt="Logo Exploration" className="w-full h-auto" />
-              </div>
-            </TiltParallaxMedia>
-          </div>
-
-          <TiltParallaxMedia 
-            title="Icon System" 
-            description="A unified icon library designed to support fast scanning and clarity across data-dense enterprise interfaces."
-          >
-            <img src="/works/equilarapp/4a.png" alt="Icon System" className="w-full h-auto max-w-4xl mx-auto" />
-          </TiltParallaxMedia>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-            <TiltParallaxMedia 
-              title="Ideation & Exploration" 
-              description="Whiteboard sessions and quick sketches used to shape early product concepts."
-            >
-              <img src="/works/equilarapp/5.png" alt="Ideation" className="w-full h-auto" />
-            </TiltParallaxMedia>
-            
-            <TiltParallaxMedia 
-              title="Primary User Profile" 
-              description="Mapping motivations, environments, and pain points of executive decision-makers."
-              delayOffset={0.2}
-            >
-              <div className="mt-0 md:mt-24">
-                <img src="/works/equilarapp/6.png" alt="User Profile" className="w-full h-auto" />
-              </div>
-            </TiltParallaxMedia>
+            <div className="w-full md:w-[45%] md:-ml-[15%] mt-0 md:mt-48 relative z-20">
+              <TiltParallaxMedia 
+                title={(
+                  <div className="flex flex-col items-center md:items-start gap-4 text-left">
+                    <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Evolution</span>
+                    <span>Logo Design</span>
+                  </div>
+                )}
+                description="Geometric identity symbolizing connection and structure."
+                delayOffset={0.2}
+              >
+                <div onClick={() => setLightboxImg("/works/equilarapp/4.png")} className="cursor-zoom-in">
+                  <img src="/works/equilarapp/4.png" alt="Logo Exploration" className="w-full h-auto" />
+                </div>
+              </TiltParallaxMedia>
+            </div>
           </div>
 
           <TiltParallaxMedia 
             title={(
               <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Structure</span>
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">UI Componentry</span>
+                <span>Iconography System</span>
+              </div>
+            )}
+            description="A unified icon library designed to support fast scanning and clarity across data-dense enterprise interfaces."
+          >
+            <div onClick={() => setLightboxImg("/works/equilarapp/4a.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/4a.png" alt="Icon System" className="w-full h-auto max-w-5xl mx-auto" />
+            </div>
+          </TiltParallaxMedia>
+
+          {/* Staggered Row 2 */}
+          <div className="flex flex-col md:flex-row-reverse gap-20 md:gap-0 items-center justify-between">
+            <div className="w-full md:w-[60%] z-10">
+              <TiltParallaxMedia 
+                title={(
+                  <div className="flex flex-col items-center md:items-end gap-4 text-right">
+                    <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Research</span>
+                    <span>Ideation & Sketches</span>
+                  </div>
+                )}
+                description="Whiteboard sessions used to shape early concepts."
+              >
+                <div onClick={() => setLightboxImg("/works/equilarapp/5.png")} className="cursor-zoom-in">
+                  <img src="/works/equilarapp/5.png" alt="Ideation" className="w-full h-auto" />
+                </div>
+              </TiltParallaxMedia>
+            </div>
+            
+            <div className="w-full md:w-[45%] md:-mr-[15%] mt-0 md:mt-48 relative z-20">
+              <TiltParallaxMedia 
+                title={(
+                  <div className="flex flex-col items-center md:items-end gap-4 text-right">
+                    <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">User Centered</span>
+                    <span>Primary User Profile</span>
+                  </div>
+                )}
+                description="Mapping executive decision-maker motivations."
+                delayOffset={0.2}
+              >
+                <div onClick={() => setLightboxImg("/works/equilarapp/6.png")} className="cursor-zoom-in">
+                  <img src="/works/equilarapp/6.png" alt="User Profile" className="w-full h-auto" />
+                </div>
+              </TiltParallaxMedia>
+            </div>
+          </div>
+
+          <TiltParallaxMedia 
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Blueprints</span>
                 <span>Information Architecture</span>
               </div>
             )}
           >
-            <img src="/works/equilarapp/7.png" alt="Information Architecture" className="w-full h-auto" />
+            <div onClick={() => setLightboxImg("/works/equilarapp/7.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/7.png" alt="Information Architecture" className="w-full h-auto" />
+            </div>
           </TiltParallaxMedia>
 
           <TiltParallaxMedia 
             title={(
               <div className="flex flex-col items-center gap-4">
-                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Ideation</span>
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">UX Strategy</span>
                 <span>Wireframes and Flows</span>
               </div>
             )}
           >
-            <img src="/works/equilarapp/8.png" alt="Wireframes" className="w-full h-auto" />
-          </TiltParallaxMedia>
-
-          <TiltParallaxMedia noPadding={true}>
-            <img src="/works/equilarapp/9.png" alt="Flow Detail" className="w-full h-auto" />
-          </TiltParallaxMedia>
-
-          <TiltParallaxMedia 
-            title="Final Mockups" 
-            description="Polished interface designs crafted for high-performance enterprise use."
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <img src="/works/equilarapp/10.png" alt="Final Mockup 1" className="w-full h-auto" />
-              <img src="/works/equilarapp/11.png" alt="Final Mockup 2" className="w-full h-auto" />
+            <div onClick={() => setLightboxImg("/works/equilarapp/8.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/8.png" alt="Wireframes" className="w-full h-auto" />
             </div>
           </TiltParallaxMedia>
 
           <TiltParallaxMedia noPadding={true}>
-            <img src="/works/equilarapp/12.png" alt="Product Detail 1" className="w-full h-auto" />
+            <div onClick={() => setLightboxImg("/works/equilarapp/9.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/9.png" alt="Flow Detail" className="w-full h-auto" />
+            </div>
+          </TiltParallaxMedia>
+
+          <TiltParallaxMedia 
+            title={(
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-apple-blue">Final Delivery</span>
+                <span>Production Mockups</span>
+              </div>
+            )}
+            description="Polished interface designs crafted for high-performance enterprise use."
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div onClick={() => setLightboxImg("/works/equilarapp/10.png")} className="cursor-zoom-in">
+                <img src="/works/equilarapp/10.png" alt="Final Mockup 1" className="w-full h-auto rounded-lg" />
+              </div>
+              <div onClick={() => setLightboxImg("/works/equilarapp/11.png")} className="cursor-zoom-in">
+                <img src="/works/equilarapp/11.png" alt="Final Mockup 2" className="w-full h-auto rounded-lg" />
+              </div>
+            </div>
           </TiltParallaxMedia>
 
           <TiltParallaxMedia noPadding={true}>
-            <img src="/works/equilarapp/13.png" alt="Product Detail 2" className="w-full h-auto" />
+            <div onClick={() => setLightboxImg("/works/equilarapp/12.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/12.png" alt="Product Detail 1" className="w-full h-auto" />
+            </div>
+          </TiltParallaxMedia>
+
+          <TiltParallaxMedia noPadding={true}>
+            <div onClick={() => setLightboxImg("/works/equilarapp/13.png")} className="cursor-zoom-in">
+              <img src="/works/equilarapp/13.png" alt="Product Detail 2" className="w-full h-auto" />
+            </div>
           </TiltParallaxMedia>
 
         </div>
