@@ -109,7 +109,7 @@ export default function AIPlayground() {
                   <span 
                     className={`leading-none flex flex-wrap transition-all duration-300 ${
                       isActive 
-                        ? "text-[1.9vh] md:text-[2.4vh] lg:text-[3.1vh] text-white uppercase font-black tracking-[0.08em]" 
+                        ? "text-[1.9vh] md:text-[2.4vh] lg:text-[3.1vh] text-white uppercase font-black tracking-tight" 
                         : "text-[1.8vh] md:text-[2.2vh] lg:text-[2.8vh] text-white/30 font-bold tracking-tight"
                     }`}
                   >
