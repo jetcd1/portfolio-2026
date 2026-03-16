@@ -112,7 +112,7 @@ export default function AIPlayground() {
                    whileHover={{ x: 4 }}
                    className="flex items-center gap-4"
                 >
-                  <motion.div 
+                    <motion.div 
                     initial={false}
                     animate={{ 
                       height: isActive ? "32px" : "16px",
@@ -120,7 +120,7 @@ export default function AIPlayground() {
                     }}
                     whileHover={{ opacity: isActive ? 1 : 0.4, height: isActive ? "32px" : "24px" }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                    className={`w-[4px] rounded-full ${isActive ? "bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)]" : "bg-white/40"}`} 
+                    className={`w-[6px] rounded-full ${isActive ? "bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)]" : "bg-white/40"}`} 
                   />
                   
                   <div className="flex flex-col overflow-hidden py-1">
@@ -142,7 +142,7 @@ export default function AIPlayground() {
                             className={`absolute inset-0 flex items-center ${
                               isActive 
                                 ? "text-white" 
-                                : "text-transparent bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-500 group-hover:from-white group-hover:to-white"
+                                : "text-neutral-500 group-hover:text-white"
                             }`}
                             initial={false}
                             animate={{ y: "0%", rotate: 0, skewX: 0 }}
@@ -175,7 +175,7 @@ export default function AIPlayground() {
                     </motion.span>
                     
                     {/* Hover & Active Underline - Dash Swipe Interaction */}
-                    <div className="relative h-[2px] w-full mt-1 overflow-hidden">
+                    <div className="relative h-[4px] w-full mt-1 overflow-hidden">
                       {/* Base Track */}
                       <div className={`absolute inset-0 h-full w-full transition-opacity duration-500 ${isActive ? 'bg-white/20' : 'bg-transparent group-hover:bg-white/10'}`} />
                       
@@ -206,7 +206,7 @@ export default function AIPlayground() {
                 {isActive && (
                   <motion.div 
                     layoutId="menu-blob"
-                    className="absolute -inset-x-6 -inset-y-1 bg-white/[0.04] backdrop-blur-md rounded-2xl -z-10 border-l-[3px] border-white/30"
+                    className="absolute -inset-x-6 -inset-y-1 bg-white/[0.04] backdrop-blur-md rounded-2xl -z-10 border-l-[6px] border-white/30"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
