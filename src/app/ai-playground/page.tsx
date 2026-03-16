@@ -118,7 +118,7 @@ export default function AIPlayground() {
                       height: isActive ? "32px" : "16px",
                       opacity: isActive ? 1 : 0,
                     }}
-                    whileHover={{ opacity: isActive ? 1 : 0.4, height: isActive ? "32px" : "24px" }}
+                    whileHover={{ opacity: 1, height: isActive ? "32px" : "24px" }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
                     className={`w-[6px] rounded-full ${isActive ? "bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)]" : "bg-white/40"}`} 
                   />
@@ -128,8 +128,8 @@ export default function AIPlayground() {
                       initial={false}
                       className={`leading-none flex flex-wrap transition-all duration-300 ${
                         isActive 
-                          ? "text-[1.5vh] md:text-[1.9vh] lg:text-[2.4vh] text-white font-bold tracking-tight" 
-                          : "text-[1.2vh] md:text-[1.5vh] lg:text-[1.9vh] font-normal tracking-tight"
+                          ? "text-[1.4vh] md:text-[1.7vh] lg:text-[2.1vh] text-white font-bold tracking-tight" 
+                          : "text-[1.0vh] md:text-[1.2vh] lg:text-[1.5vh] font-normal tracking-tight"
                       }`}
                     >
                       {ex.name.toUpperCase().split("").map((char, index) => (
