@@ -128,11 +128,11 @@ export default function AIPlayground() {
                       initial={false}
                       className={`leading-none flex flex-wrap transition-all duration-300 ${
                         isActive 
-                          ? "text-[1.9vh] md:text-[2.4vh] lg:text-[3.1vh] text-white font-bold tracking-tight" 
-                          : "text-[1.6vh] md:text-[2.0vh] lg:text-[2.5vh] font-medium tracking-tight"
+                          ? "text-[1.5vh] md:text-[1.9vh] lg:text-[2.4vh] text-white font-bold tracking-tight" 
+                          : "text-[1.2vh] md:text-[1.5vh] lg:text-[1.9vh] font-normal tracking-tight"
                       }`}
                     >
-                      {(isActive ? ex.name.toUpperCase() : ex.name).split("").map((char, index) => (
+                      {ex.name.toUpperCase().split("").map((char, index) => (
                         <span key={index} className="relative inline-block overflow-hidden min-w-[0.25em]">
                           {/* Measuring span */}
                           <span className="invisible">{char === " " ? "\u00A0" : char}</span>
@@ -142,7 +142,7 @@ export default function AIPlayground() {
                             className={`absolute inset-0 flex items-center ${
                               isActive 
                                 ? "text-white" 
-                                : "text-neutral-500 group-hover:text-white"
+                                : "text-neutral-400 group-hover:text-white"
                             }`}
                             initial={false}
                             animate={{ y: "0%", rotate: 0, skewX: 0 }}
