@@ -293,6 +293,7 @@ export default function Home() {
               description="Internal operations platform for airport teams to manage equipment requests across stations."
               tags={["Aviation", "Internal Tools", "Design System"]}
               video="/works/gse/thumbnail.mp4"
+              image="/works/gse/1.png"
               href="/work/united-airlines"
             />
           </motion.div>
@@ -326,6 +327,7 @@ export default function Home() {
               description="Initiated and established a comprehensive design system from scratch, scaling it across McKesson's internal product ecosystem."
               tags={["Design System", "Healthcare", "Figma"]}
               video="/works/Ontada/thumbnail.mp4"
+              image="/works/Ontada/Cover - Ontada.png"
               href="/work/ontada"
             />
           </motion.div>
@@ -343,6 +345,7 @@ export default function Home() {
               description="Board intelligence solutions and executive boardroom connections."
               tags={["Mobile UI", "UX", "Branding"]}
               video="/works/equilarapp/thumbnail.mp4"
+              image="/works/equilarapp/1.png"
               href="/work/equilar"
             />
           </motion.div>

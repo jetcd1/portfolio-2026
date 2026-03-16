@@ -233,6 +233,7 @@ export default function ProjectCard({
                     src={video}
                     loop
                     muted
+                    autoPlay
                     playsInline
                     preload="auto"
                     className="absolute inset-0 w-full h-full object-cover"
