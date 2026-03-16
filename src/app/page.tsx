@@ -181,7 +181,7 @@ function HeroTitle() {
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1],
                 repeat: Infinity,
-                repeatDelay: 8,
+                repeatDelay: 6,
                 delay: baseDelay + 2.5
               }}
               style={{
@@ -209,7 +209,7 @@ function HeroTitle() {
                 duration: 1,
                 ease: [0.16, 1, 0.3, 1],
                 repeat: Infinity,
-                repeatDelay: 8,
+                repeatDelay: 6,
                 delay: baseDelay + 2.8 // Delay relative to Structuring sweep
               }}
               style={{
