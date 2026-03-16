@@ -111,6 +111,7 @@ export default function ProjectCard({
   const spotlightRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   // ── Scroll Reveal Logic ────────────────────────────────────
   const { scrollYProgress } = useScroll({
@@ -199,7 +200,7 @@ export default function ProjectCard({
             className="group block w-full relative aspect-[16/10] md:aspect-video min-h-[400px] max-h-[700px] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] cursor-none"
             data-hover="true"
           >
-            {/* ── Media ─────────────────────────── */}
+            {/* Media */}
             <motion.div 
               className="absolute inset-0" 
               style={{ 
@@ -236,9 +237,12 @@ export default function ProjectCard({
                     autoPlay
                     playsInline
                     preload="auto"
+                    poster={image}
+                    onPlaying={() => setIsVideoPlaying(true)}
                     className="absolute inset-0 w-full h-full object-cover"
                     style={{ imageRendering: "auto" }}
                     animate={{
+                      opacity: isVideoPlaying ? 1 : (image ? 0 : 1),
                       scale: isHovered ? 1.06 : 1,
                       filter: isHovered ? "brightness(1.08) saturate(1.15)" : "brightness(1) saturate(1)",
                     }}
