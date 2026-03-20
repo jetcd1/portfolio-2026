@@ -17,13 +17,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setHasMounted(true);
     const unlocked = localStorage.getItem("chan_portfolio_unlocked");
-    console.log("AUTH_PROVIDER_MOUNTED: unlocked =", unlocked);
     if (unlocked === "true") {
       setIsUnlocked(true);
     }
   }, []);
-
-  console.log("AUTH_PROVIDER_RENDER: hasMounted =", hasMounted, "isUnlocked =", isUnlocked);
 
   const handleLock = () => {
     localStorage.removeItem("chan_portfolio_unlocked");
