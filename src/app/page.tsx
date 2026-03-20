@@ -229,6 +229,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center justify-start relative">
+      <div className="fixed top-0 left-0 bg-red-500 text-white z-[99999] p-2">DEPLOY_TEST_V1</div>
       <InteractiveBackground />
 
       {/* ── Hero ──────────────────────────────────────────────────── */}
