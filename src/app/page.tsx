@@ -228,7 +228,7 @@ export default function Home() {
   const { isIntroDone } = useIntro();
 
   return (
-    <main className="flex flex-col items-center justify-start pb-24 relative">
+    <main className="flex flex-col items-center justify-start relative">
       <InteractiveBackground />
 
       {/* ── Hero ──────────────────────────────────────────────────── */}
@@ -264,7 +264,7 @@ export default function Home() {
       </section>
 
       {/* ── Selected Work ─────────────────────────────────────────── */}
-      <section id="work" className="w-full max-w-7xl px-4 md:px-8 py-24 md:py-32">
+      <section id="work" className="w-full max-w-7xl px-4 md:px-8 pt-24 md:pt-32 pb-12 md:pb-16">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
