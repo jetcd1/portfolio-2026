@@ -12,37 +12,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isUnlocked, setIsUnlocked] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-    const unlocked = localStorage.getItem("chan_portfolio_unlocked");
-    if (unlocked === "true") {
-      setIsUnlocked(true);
-    }
-  }, []);
-
-  const handleLock = () => {
-    localStorage.removeItem("chan_portfolio_unlocked");
-    setIsUnlocked(false);
-    window.location.reload();
-  };
-
-  // If not mounted yet, show a black screen to prevent flashing content
-  if (!hasMounted) {
-    return <div className="fixed inset-0 bg-black z-[10000]" />;
-  }
-
-  // If not unlocked, show the PasswordGate
-  if (!isUnlocked) {
-    return <PasswordGate onUnlock={() => setIsUnlocked(true)} />;
-  }
-
-  return (
-    <AuthContext.Provider value={{ isUnlocked, lock: handleLock }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  // DEBUG: Always show PasswordGate to verify it's reachable on live
+  return <PasswordGate onUnlock={() => setIsUnlocked(true)} />;
 }
 
 export function useAuth() {
