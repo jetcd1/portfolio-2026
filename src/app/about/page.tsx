@@ -78,6 +78,40 @@ export default function About() {
                     ↗
                   </span>
                 </a>
+                , where I prototype and launch small experimental tools such as{" "}
+                <a
+                  href="https://linkroot.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative inline-flex items-center gap-1.5 text-apple-red font-semibold"
+                >
+                  <span className="relative">
+                    LinkRoot
+                    <span
+                      className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-apple-red transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
+                    />
+                  </span>
+                  <span className="inline-block text-apple-red/60 text-[0.75em] leading-none translate-y-[-0.15em] transition-transform duration-300 ease-out group-hover:-translate-y-[0.35em] group-hover:translate-x-[0.15em] group-hover:text-apple-red select-none">
+                    ↗
+                  </span>
+                </a>
+                {" "}and{" "}
+                <a
+                  href="https://safesignup.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative inline-flex items-center gap-1.5 text-apple-red font-semibold"
+                >
+                  <span className="relative">
+                    SafeSignup
+                    <span
+                      className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-apple-red transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
+                    />
+                  </span>
+                  <span className="inline-block text-apple-red/60 text-[0.75em] leading-none translate-y-[-0.15em] transition-transform duration-300 ease-out group-hover:-translate-y-[0.35em] group-hover:translate-x-[0.15em] group-hover:text-apple-red select-none">
+                    ↗
+                  </span>
+                </a>
                 .
               </motion.p>
             </div>

@@ -7,6 +7,7 @@ import CustomCursor from "@/components/layout/CustomCursor";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import IntroLoader from "@/components/animations/IntroLoader";
 import { IntroProvider } from "@/components/providers/IntroProvider";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,15 +33,17 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className={`${inter.variable} ${outfit.variable} antialiased selection:bg-foreground selection:text-background`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <IntroProvider>
-            <IntroLoader />
-            <CustomCursor />
-            <Navbar />
-            <main className="min-h-screen">
-              {children}
-            </main>
-            <Footer />
-          </IntroProvider>
+          <AuthProvider>
+            <IntroProvider>
+              <IntroLoader />
+              <CustomCursor />
+              <Navbar />
+              <main className="min-h-screen">
+                {children}
+              </main>
+              <Footer />
+            </IntroProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
