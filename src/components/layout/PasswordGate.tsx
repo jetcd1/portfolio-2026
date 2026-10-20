@@ -8,7 +8,7 @@ interface PasswordGateProps {
   onUnlock: () => void;
 }
 
-const PASSWORD = "2323";
+const PASSWORD = "1212";
 
 export default function PasswordGate({ onUnlock }: PasswordGateProps) {
   const [input, setInput] = useState("");
