@@ -253,9 +253,12 @@ export default function Home() {
               ease: [0.16, 1, 0.3, 1], 
               delay: (isIntroDone ? 0.4 : 3.8) + 0.5 
             }}
-            className="text-muted text-lg md:text-2xl max-w-2xl font-light tracking-tight opacity-70 !leading-[1.6]"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-display font-normal tracking-[-0.03em] max-w-3xl text-center !leading-[1.25] text-foreground/90 mt-2"
           >
-            Designing clarity<br className="hidden md:block" /> for complex systems.
+            Designing clarity{" "}
+            <span className="text-muted/60 font-light block sm:inline">
+              for complex systems.
+            </span>
           </motion.p>
         </motion.div>
 
@@ -275,7 +278,7 @@ export default function Home() {
           <div>
             <h2 className="text-5xl md:text-8xl font-display font-semibold tracking-[-0.04em] mb-6 text-foreground leading-[0.9]">Selected Work</h2>
             <p className="text-muted text-xl md:text-2xl max-w-2xl font-light opacity-80 leading-relaxed">
-              <span className="text-apple-blue font-medium">11 years</span> of experience crafting high-density, scalable interfaces for enterprise operations.
+              <span className="text-apple-blue font-medium">12 years</span> of experience crafting high-density, scalable interfaces for enterprise operations.
             </p>
           </div>
         </motion.div>

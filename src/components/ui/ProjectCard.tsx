@@ -278,8 +278,8 @@ export default function ProjectCard({
               <motion.div className="max-w-[70%] pr-4" style={{ x: contentX, y: contentY }}>
                 {company && (
                   <motion.span 
-                    className="block text-[13px] font-semibold tracking-[0.12em] uppercase text-apple-blue mb-3"
-                    animate={isHovered ? { opacity: 1, y: -2 } : { opacity: 0.9, y: 0 }}
+                    className="block text-[13px] font-semibold tracking-[0.12em] uppercase text-apple-red mb-3"
+                    animate={isHovered ? { opacity: 1, y: -2 } : { opacity: 0.95, y: 0 }}
                     transition={{ duration: 0.4 }}
                   >
                     {company}
@@ -299,10 +299,10 @@ export default function ProjectCard({
                   initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: isHovered ? 0.38 : 0 }}
                 >
-                  <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-apple-blue font-bold">
+                  <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-apple-red font-bold">
                     View Project
                   </span>
-                  <div className="h-px w-8 bg-apple-blue opacity-80" />
+                  <div className="h-px w-8 bg-apple-red opacity-80" />
                 </motion.div>
               </motion.div>
 
