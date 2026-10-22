@@ -131,10 +131,10 @@ export default function ProjectCard({
   // ── Cursor tracking ────────────────────────────────────────
   const cursorX = useMotionValue(0.5);
   const cursorY = useMotionValue(0.5);
-  const smoothX = useSpring(cursorX, { stiffness: 150, damping: 24, mass: 0.5 });
-  const smoothY = useSpring(cursorY, { stiffness: 150, damping: 24, mass: 0.5 });
-  const prlxX = useSpring(cursorX, { stiffness: 80, damping: 20, mass: 0.6 });
-  const prlxY = useSpring(cursorY, { stiffness: 80, damping: 20, mass: 0.6 });
+  const smoothX = useSpring(cursorX, { stiffness: 420, damping: 34, mass: 0.18 });
+  const smoothY = useSpring(cursorY, { stiffness: 420, damping: 34, mass: 0.18 });
+  const prlxX = useSpring(cursorX, { stiffness: 300, damping: 32, mass: 0.2 });
+  const prlxY = useSpring(cursorY, { stiffness: 300, damping: 32, mass: 0.2 });
 
   // 3-D tilt ±3°
   const rotateY = useTransform(smoothX, [0, 1], ["-3deg", "3deg"]);
@@ -235,9 +235,8 @@ export default function ProjectCard({
                     src={video}
                     loop
                     muted
-                    autoPlay
                     playsInline
-                    preload="auto"
+                    preload="none"
                     poster={image}
                     onPlaying={() => setIsVideoPlaying(true)}
                     className="absolute inset-0 w-full h-full object-cover"

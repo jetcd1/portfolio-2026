@@ -12,12 +12,10 @@
  * Spring physics handled by framer-motion useSpring for smoothness.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useSpring } from "framer-motion";
 
 export default function HeroField() {
-  const [mounted, setMounted] = useState(false);
-
   // Direct DOM refs for zero-rerender cursor response
   const primaryRef   = useRef<HTMLDivElement>(null);
   const secondaryRef  = useRef<HTMLDivElement>(null);
@@ -28,6 +26,7 @@ export default function HeroField() {
   // Spring-smoothed cursor position (raw values, updated imperatively)
   const rawX = useRef(0);
   const rawY = useRef(0);
+  const isHeroActive = useRef(true);
   const smoothX = useSpring(0, { stiffness: 55, damping: 18, mass: 1.2 });
   const smoothY = useSpring(0, { stiffness: 55, damping: 18, mass: 1.2 });
   // Faster spring for corona (tighter follow)
@@ -35,9 +34,8 @@ export default function HeroField() {
   const fastY = useSpring(0, { stiffness: 120, damping: 22, mass: 0.6 });
 
   useEffect(() => {
-    setMounted(true);
-
     const handleMove = (e: MouseEvent) => {
+      if (!isHeroActive.current) return;
       rawX.current = e.clientX;
       rawY.current = e.clientY;
       smoothX.set(e.clientX);
@@ -48,6 +46,7 @@ export default function HeroField() {
 
     // Drive DOM from spring values imperatively — avoids React render cycle
     const unsubSX = smoothX.on("change", (x) => {
+      if (!isHeroActive.current) return;
       const y = smoothY.get();
       if (primaryRef.current)  primaryRef.current.style.transform  = `translate(${x - 500}px, ${y - 500}px)`;
       if (secondaryRef.current) secondaryRef.current.style.transform = `translate(${x - 350}px, ${y - 350}px)`;
@@ -61,6 +60,7 @@ export default function HeroField() {
     });
 
     const unsubSY = smoothY.on("change", (y) => {
+      if (!isHeroActive.current) return;
       const x = smoothX.get();
       if (primaryRef.current)  primaryRef.current.style.transform  = `translate(${x - 500}px, ${y - 500}px)`;
       if (secondaryRef.current) secondaryRef.current.style.transform = `translate(${x - 350}px, ${y - 350}px)`;
@@ -74,24 +74,31 @@ export default function HeroField() {
     });
 
     const unsubFX = fastX.on("change", (x) => {
+      if (!isHeroActive.current) return;
       if (coronaRef.current) coronaRef.current.style.transform = `translate(${x - 100}px, ${fastY.get() - 100}px)`;
     });
     const unsubFY = fastY.on("change", (y) => {
+      if (!isHeroActive.current) return;
       if (coronaRef.current) coronaRef.current.style.transform = `translate(${fastX.get() - 100}px, ${y - 100}px)`;
     });
 
+    const handleScroll = () => {
+      isHeroActive.current = window.scrollY < window.innerHeight * 1.15;
+    };
+    handleScroll();
+
     window.addEventListener("mousemove", handleMove, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("scroll", handleScroll);
       unsubSX();
       unsubSY();
       unsubFX();
       unsubFY();
     };
   }, [smoothX, smoothY, fastX, fastY]);
-
-  if (!mounted) return null;
 
   return (
     <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-background transition-colors duration-500">

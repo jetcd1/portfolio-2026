@@ -400,7 +400,7 @@ export default function Home() {
               title="Boardedge"
               description="A platform for shareholder engagement and board recruiting, improving corporate governance."
               tags={["Product UI", "UX", "Design System"]}
-              video="/works/boardedge/thumbnail.gif"
+              image="/works/boardedge/hero.png"
               href="/work/boardedge"
             />
           </motion.div>
