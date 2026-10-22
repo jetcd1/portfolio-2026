@@ -8,6 +8,7 @@ import { ArrowLeft, ExternalLink, Apple } from "lucide-react";
 import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import BackToTop from "@/components/ui/BackToTop";
+import AmbientLight from "@/components/animations/AmbientLight";
 
 // Custom Section 2: Boardroom Connections Interaction (Code-driven instead of 2.png)
 function ConnectionsInteraction() {
@@ -166,12 +167,16 @@ export default function EquilarCaseStudy() {
 
       {/* ─── Hero Section ────────────────────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
+        <AmbientLight variant="detail" />
         {/* Full-screen Background Image */}
         <div className="absolute inset-0 w-full h-full z-0">
-          <img
-            src="/works/equilarapp/1.png"
-            alt="Equilar Hero Background"
+          <video
+            src="/works/equilarapp/thumbnail.mp4"
             className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
+            loop
+            muted
+            playsInline
+            autoPlay
           />
           {/* Cinematic Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black pointer-events-none" />

@@ -8,6 +8,7 @@ import { ArrowLeft, Search, Share2, BarChart3, Apple, Monitor, Database, Users, 
 import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import BackToTop from "@/components/ui/BackToTop";
+import AmbientLight from "@/components/animations/AmbientLight";
 
 // --- Custom Section: My Role ---
 function MyRoleSection() {
@@ -189,10 +190,11 @@ export default function BoardedgeCaseStudy() {
 
       {/* ─── Hero Section ────────────────────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
+        <AmbientLight variant="detail" />
         {/* Full-screen Background Image */}
         <div className="absolute inset-0 w-full h-full z-0">
           <img
-            src="/works/boardedge/hero.png"
+            src="/works/boardedge/thumbnail.gif"
             alt="Boardedge Hero Background"
             className="absolute top-0 left-0 w-full h-full object-cover opacity-60 brightness-75"
           />

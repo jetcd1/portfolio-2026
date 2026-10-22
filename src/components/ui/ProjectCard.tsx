@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useRef, useState, useCallback, useMemo } from "react";
+import AmbientLight from "@/components/animations/AmbientLight";
 
 interface ProjectCardProps {
   title: string;
@@ -264,6 +265,9 @@ export default function ProjectCard({
               className="absolute inset-0 pointer-events-none"
               style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)" }}
             />
+
+            {/* Visible cloud-like light drifting across the thumbnail */}
+            <AmbientLight variant="thumbnail" />
 
             {/* Overlay */}
             <motion.div

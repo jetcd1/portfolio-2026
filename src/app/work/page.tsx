@@ -21,6 +21,16 @@ export default function Work() {
       </motion.div>
 
       <div className="flex flex-col gap-32 md:gap-48 mt-24">
+        {/* Reddit Ads Branding Project */}
+        <ProjectCard
+          company="Reddit"
+          title="Ads Design Branding"
+          description="Creating a visual identity for the Reddit Ads Design team."
+          tags={["Visual Design", "Branding"]}
+          image="/works/reddit-branding/cover.svg"
+          href="/work/reddit-ads-branding"
+        />
+
         {/* Reddit Ads Project */}
         <ProjectCard 
           company="Reddit"

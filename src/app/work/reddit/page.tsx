@@ -3,6 +3,7 @@
 import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import BackToTop from "@/components/ui/BackToTop";
+import AmbientLight from "@/components/animations/AmbientLight";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 
@@ -166,6 +167,7 @@ export default function RedditWorkDetail() {
     <main className="min-h-screen bg-background selection:bg-[#FF4500] selection:text-white">
       {/* ─── Hero Section ──────────────────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
+        <AmbientLight variant="detail" warm />
         {/* Gradient Background */}
         <div className="absolute inset-0 w-full h-full z-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#FF4500]/20 via-background to-background pointer-events-none" />

@@ -4,6 +4,7 @@ import { motion, Variants, useMotionValue, useSpring, useTransform } from "frame
 import Link from "next/link";
 import ProjectCard from "@/components/ui/ProjectCard";
 import InteractiveBackground from "@/components/animations/InteractiveBackground";
+import AmbientLight from "@/components/animations/AmbientLight";
 import { useRef, useState, useCallback, MouseEvent, useEffect } from "react";
 import { useIntro } from "@/components/providers/IntroProvider";
 
@@ -233,6 +234,7 @@ export default function Home() {
 
       {/* ── Hero ──────────────────────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex text-center flex-col items-center justify-center p-8 overflow-visible">
+        <AmbientLight variant="hero" className="inset-x-0 -top-20 bottom-0" />
 
         <motion.div
           key={isIntroDone ? "ready" : "intro"}
@@ -284,6 +286,23 @@ export default function Home() {
         </motion.div>
 
         <div className="flex flex-col gap-16 md:gap-32">
+          {/* Reddit Ads Branding Project */}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            <ProjectCard
+              company="Reddit"
+              title="Ads Design Branding"
+              description="Creating a visual identity for the Reddit Ads Design team."
+              tags={["Visual Design", "Branding"]}
+              image="/works/reddit-branding/cover.svg"
+              href="/work/reddit-ads-branding"
+            />
+          </motion.div>
+
           {/* Reddit Ads Project */}
           <motion.div
             initial={{ opacity: 0, y: 60 }}

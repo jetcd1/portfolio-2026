@@ -4,6 +4,7 @@ import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import KeyGoalsSection from "@/components/ui/KeyGoalsSection";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import BackToTop from "@/components/ui/BackToTop";
+import AmbientLight from "@/components/animations/AmbientLight";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -233,11 +234,12 @@ export default function GSEWorkDetail() {
     <main className="min-h-screen bg-background selection:bg-apple-blue selection:text-white">
       {/* ─── Hero Section ────────────────────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
+        <AmbientLight variant="detail" />
         {/* Full-screen Background Video */}
         <div className="absolute inset-0 w-full h-full z-0">
           <video
             ref={heroVideoRef}
-            src="/works/gse/hero.mp4"
+            src="/works/gse/thumbnail.mp4"
             className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
             loop
             muted

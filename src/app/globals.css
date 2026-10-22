@@ -69,6 +69,136 @@ body {
   50%       { opacity: 0.055; transform: translate(-50%, -50%) scale(1.08); }
 }
 
+/* Shared ambient light field for thumbnails and title backgrounds */
+.ambient-light {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.ambient-light__orb {
+  position: absolute;
+  display: block;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.46;
+  will-change: transform, opacity;
+}
+
+.ambient-light__orb--one {
+  width: 58%;
+  aspect-ratio: 1;
+  left: -8%;
+  top: -18%;
+  background: radial-gradient(circle, rgba(41,151,255,.95) 0%, rgba(0,113,227,.42) 38%, transparent 72%);
+  animation: ambient-drift-one 7s ease-in-out infinite alternate;
+}
+
+.ambient-light__orb--two {
+  width: 52%;
+  aspect-ratio: 1;
+  right: -10%;
+  top: 18%;
+  background: radial-gradient(circle, rgba(122,92,255,.8) 0%, rgba(67,56,202,.32) 42%, transparent 72%);
+  animation: ambient-drift-two 9s ease-in-out infinite alternate;
+}
+
+.ambient-light__orb--three {
+  width: 44%;
+  aspect-ratio: 1;
+  left: 32%;
+  bottom: -24%;
+  background: radial-gradient(circle, rgba(255,255,255,.48) 0%, rgba(41,151,255,.2) 42%, transparent 72%);
+  animation: ambient-drift-three 11s ease-in-out infinite alternate;
+}
+
+.ambient-light__wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 48%, rgba(255,255,255,.08), transparent 58%);
+  animation: ambient-breathe 9s ease-in-out infinite;
+}
+
+.ambient-light__cloud {
+  position: absolute;
+  width: 72%;
+  height: 54%;
+  border-radius: 48% 52% 44% 56% / 58% 42% 58% 42%;
+  filter: blur(78px);
+  opacity: .3;
+  will-change: transform, opacity;
+  background: radial-gradient(ellipse at 35% 55%, rgba(255,255,255,.7), rgba(255,255,255,.18) 40%, transparent 72%);
+}
+.ambient-light__cloud--one {
+  left: -12%;
+  top: 18%;
+  animation: ambient-cloud-one 9s ease-in-out infinite alternate;
+}
+.ambient-light__cloud--two {
+  right: -18%;
+  bottom: 2%;
+  animation: ambient-cloud-two 12s ease-in-out infinite alternate;
+}
+
+.ambient-light--thumbnail { opacity: .82; mix-blend-mode: screen; }
+.ambient-light--thumbnail .ambient-light__orb { filter: blur(52px); }
+.ambient-light--thumbnail .ambient-light__cloud { filter: blur(42px); }
+.ambient-light--hero { opacity: .42; z-index: 0; }
+.ambient-light--detail { opacity: .82; z-index: 1; mix-blend-mode: screen; }
+.ambient-light--detail .ambient-light__orb { filter: blur(130px); }
+.ambient-light--warm .ambient-light__orb--one {
+  background: radial-gradient(circle, rgba(255,69,0,.9) 0%, rgba(255,59,48,.34) 40%, transparent 72%);
+}
+.ambient-light--warm .ambient-light__orb--two {
+  background: radial-gradient(circle, rgba(217,70,239,.7) 0%, rgba(139,92,246,.28) 42%, transparent 72%);
+}
+
+@keyframes ambient-drift-one {
+  0% { transform: translate3d(-12%, -8%, 0) scale(.84); opacity: .16; }
+  100% { transform: translate3d(42%, 28%, 0) scale(1.25); opacity: .7; }
+}
+@keyframes ambient-drift-two {
+  0% { transform: translate3d(16%, -14%, 0) scale(1.18); opacity: .18; }
+  100% { transform: translate3d(-46%, 30%, 0) scale(.82); opacity: .68; }
+}
+@keyframes ambient-drift-three {
+  0% { transform: translate3d(-28%, 18%, 0) scale(.78); opacity: .14; }
+  100% { transform: translate3d(34%, -34%, 0) scale(1.28); opacity: .58; }
+}
+@keyframes ambient-breathe {
+  0%, 100% { opacity: .35; transform: scale(.96); }
+  50% { opacity: .72; transform: scale(1.06); }
+}
+@keyframes ambient-cloud-one {
+  0% { transform: translate3d(-18%, 14%, 0) rotate(-7deg) scale(.82); opacity: .08; }
+  55% { opacity: .58; }
+  100% { transform: translate3d(48%, -22%, 0) rotate(10deg) scale(1.28); opacity: .2; }
+}
+@keyframes ambient-cloud-two {
+  0% { transform: translate3d(22%, 14%, 0) rotate(7deg) scale(1.22); opacity: .12; }
+  50% { opacity: .62; }
+  100% { transform: translate3d(-52%, -28%, 0) rotate(-12deg) scale(.82); opacity: .1; }
+}
+
+.reddit-hero-backdrop {
+  will-change: transform, filter, opacity;
+  animation: reddit-hero-drift 10s ease-in-out infinite alternate;
+}
+@keyframes reddit-hero-drift {
+  0% { transform: scale(1.08) translate3d(-1.5%, -1%, 0); filter: brightness(.72) saturate(.9); }
+  50% { filter: brightness(1.16) saturate(1.18); }
+  100% { transform: scale(1.16) translate3d(2.5%, 1.5%, 0); filter: brightness(.88) saturate(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-light__orb,
+  .ambient-light__cloud,
+  .ambient-light__wash { animation: none; }
+  .reddit-hero-backdrop { animation: none; }
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

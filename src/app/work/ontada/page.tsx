@@ -3,6 +3,7 @@
 import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import BackToTop from "@/components/ui/BackToTop";
+import AmbientLight from "@/components/animations/AmbientLight";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, BookOpen, Globe, Layout, Palette } from "lucide-react";
@@ -178,10 +179,11 @@ export default function OntadaCaseStudy() {
     <main className="min-h-screen bg-background selection:bg-apple-blue selection:text-white">
       {/* ─── Hero Section ────────────────────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
+        <AmbientLight variant="detail" />
         <div className="absolute inset-0 w-full h-full z-0">
           <video
             ref={heroVideoRef}
-            src="/works/Ontada/hero2.mp4"
+            src="/works/Ontada/thumbnail.mp4"
             className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
             loop
             muted
