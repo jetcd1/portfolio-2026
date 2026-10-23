@@ -299,6 +299,7 @@ export default function Home() {
               description="Creating a visual identity for the Reddit Ads Design team."
               tags={["Visual Design", "Branding"]}
               image="/works/reddit-branding/cover.svg"
+              ambientLight
               href="/work/reddit-ads-branding"
             />
           </motion.div>
@@ -316,6 +317,7 @@ export default function Home() {
               description="Unified design system for Reddit's advertising platform, establishing scalable foundations across the advertiser experience."
               tags={["Design System", "Ad Tech", "Figma"]}
               image="/works/reddit/ads-design-system-thumbnail.jpg"
+              companyAccent="apple-cyan"
               imageMotion="snoo-greeting"
               href="/work/reddit"
             />
@@ -333,6 +335,7 @@ export default function Home() {
               description="Internal operations platform for airport teams to manage equipment requests across stations."
               tags={["Aviation", "Internal Tools", "Design System"]}
               video="/works/gse/thumbnail.mp4"
+              videoAutoPlay
               image="/works/gse/1.png"
               href="/work/united-airlines"
             />

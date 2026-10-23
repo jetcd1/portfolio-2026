@@ -19,6 +19,9 @@ interface ProjectCardProps {
   company?: string;
   image?: string;
   video?: string;
+  videoAutoPlay?: boolean;
+  ambientLight?: boolean;
+  companyAccent?: "apple-cyan";
   imageMotion?: "snoo-greeting";
   href: string;
 }
@@ -107,6 +110,9 @@ export default function ProjectCard({
   company,
   image,
   video,
+  videoAutoPlay = false,
+  ambientLight = false,
+  companyAccent,
   imageMotion,
   href,
 }: ProjectCardProps) {
@@ -171,8 +177,8 @@ export default function ProjectCard({
     setIsHovered(false);
     cursorX.set(0.5);
     cursorY.set(0.5);
-    if (videoRef.current) videoRef.current.pause();
-  }, [cursorX, cursorY]);
+    if (videoRef.current && !videoAutoPlay) videoRef.current.pause();
+  }, [cursorX, cursorY, videoAutoPlay]);
 
   return (
     <motion.div
@@ -217,8 +223,15 @@ export default function ProjectCard({
             >
               {image && (
                 <div
-                  className={`absolute inset-0 bg-cover bg-center ${imageMotion === "snoo-greeting" ? "snoo-card-greeting" : ""}`}
-                  style={{ backgroundImage: `url(${image})` }}
+                  className={`absolute inset-0 bg-center ${imageMotion === "snoo-greeting" ? "snoo-card-greeting" : "bg-cover"}`}
+                  style={{
+                    backgroundImage: `url(${image})`,
+                    ...(imageMotion === "snoo-greeting" && {
+                      backgroundColor: "#ff4500",
+                      backgroundRepeat: "no-repeat",
+                      backgroundSize: "contain",
+                    }),
+                  }}
                 />
               )}
               {video && (
@@ -241,7 +254,8 @@ export default function ProjectCard({
                     loop
                     muted
                     playsInline
-                    preload="none"
+                    autoPlay={videoAutoPlay}
+                    preload={videoAutoPlay ? "metadata" : "none"}
                     poster={image}
                     onPlaying={() => setIsVideoPlaying(true)}
                     className="absolute inset-0 w-full h-full object-cover"
@@ -270,8 +284,8 @@ export default function ProjectCard({
               style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)" }}
             />
 
-            {/* Visible cloud-like light drifting across the thumbnail */}
-            <AmbientLight variant="thumbnail" />
+            {/* Optional cloud-like light, reserved for selected artwork. */}
+            {ambientLight && <AmbientLight variant="thumbnail" />}
 
             {/* Overlay */}
             <motion.div
@@ -286,7 +300,7 @@ export default function ProjectCard({
               <motion.div className="max-w-[70%] pr-4" style={{ x: contentX, y: contentY }}>
                 {company && (
                   <motion.span 
-                    className="block text-[13px] font-semibold tracking-[0.12em] uppercase text-apple-red mb-3"
+                    className={`block text-[13px] font-semibold tracking-[0.12em] uppercase mb-3 ${companyAccent === "apple-cyan" ? "text-[#64D2FF]" : "text-apple-red"}`}
                     animate={isHovered ? { opacity: 1, y: -2 } : { opacity: 0.95, y: 0 }}
                     transition={{ duration: 0.4 }}
                   >

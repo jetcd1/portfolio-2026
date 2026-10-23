@@ -199,13 +199,13 @@ body {
   animation: snoo-greeting 3.2s cubic-bezier(.45, 0, .25, 1) infinite;
 }
 @keyframes snoo-greeting {
-  0%, 16%, 100% { transform: scale(1.035) translate3d(0, 0, 0) rotate(0deg); filter: brightness(1); }
-  25% { transform: scale(1.055) translate3d(.3%, -1.2%, 0) rotate(-1.2deg); filter: brightness(1.04); }
-  34% { transform: scale(1.04) translate3d(-.15%, -.3%, 0) rotate(.7deg); }
-  43% { transform: scale(1.052) translate3d(.2%, -1%, 0) rotate(-.8deg); }
-  52% { transform: scale(1.04) translate3d(-.1%, -.2%, 0) rotate(.45deg); }
-  63% { transform: scale(1.048) translate3d(.1%, -.65%, 0) rotate(-.35deg); filter: brightness(1.02); }
-  76% { transform: scale(1.035) translate3d(0, 0, 0) rotate(0deg); filter: brightness(1); }
+  0%, 16%, 100% { transform: scale(.93) translate3d(0, 0, 0) rotate(0deg); filter: brightness(1); }
+  25% { transform: scale(.95) translate3d(.3%, -1.2%, 0) rotate(-1.2deg); filter: brightness(1.04); }
+  34% { transform: scale(.935) translate3d(-.15%, -.3%, 0) rotate(.7deg); }
+  43% { transform: scale(.947) translate3d(.2%, -1%, 0) rotate(-.8deg); }
+  52% { transform: scale(.935) translate3d(-.1%, -.2%, 0) rotate(.45deg); }
+  63% { transform: scale(.943) translate3d(.1%, -.65%, 0) rotate(-.35deg); filter: brightness(1.02); }
+  76% { transform: scale(.93) translate3d(0, 0, 0) rotate(0deg); filter: brightness(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {

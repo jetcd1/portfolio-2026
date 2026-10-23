@@ -28,6 +28,7 @@ export default function Work() {
           description="Creating a visual identity for the Reddit Ads Design team."
           tags={["Visual Design", "Branding"]}
           image="/works/reddit-branding/cover.svg"
+          ambientLight
           href="/work/reddit-ads-branding"
         />
 
@@ -38,6 +39,7 @@ export default function Work() {
           description="Unified design system for Reddit's advertising platform, establishing scalable foundations across the advertiser experience."
           tags={["Design System", "Ad Tech", "Figma"]}
           image="/works/reddit/ads-design-system-thumbnail.jpg"
+          companyAccent="apple-cyan"
           imageMotion="snoo-greeting"
           href="/work/reddit"
         />
@@ -49,6 +51,7 @@ export default function Work() {
           description="Internal operations platform for airport teams to manage equipment requests across stations."
           tags={["Aviation", "Internal Tools"]}
           video="/works/gse/thumbnail.mp4"
+          videoAutoPlay
           href="/work/united-airlines"
         />
 
