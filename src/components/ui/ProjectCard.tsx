@@ -222,17 +222,19 @@ export default function ProjectCard({
               }}
             >
               {image && (
-                <div
-                  className={`absolute inset-0 bg-center ${imageMotion === "snoo-greeting" ? "snoo-card-greeting" : "bg-cover"}`}
-                  style={{
-                    backgroundImage: `url(${image})`,
-                    ...(imageMotion === "snoo-greeting" && {
-                      backgroundColor: "#ff4500",
-                      backgroundRepeat: "no-repeat",
-                      backgroundSize: "contain",
-                    }),
-                  }}
-                />
+                imageMotion === "snoo-greeting" ? (
+                  <div className="absolute inset-0 bg-[#ff4500] overflow-hidden">
+                    <div
+                      className="snoo-card-greeting absolute inset-0 bg-center bg-contain bg-no-repeat"
+                      style={{ backgroundImage: `url(${image})` }}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${image})` }}
+                  />
+                )
               )}
               {video && (
                 video.toLowerCase().endsWith('.gif') ? (
@@ -321,10 +323,10 @@ export default function ProjectCard({
                   initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: isHovered ? 0.38 : 0 }}
                 >
-                  <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-apple-red font-bold">
+                  <span className={`text-[11px] font-mono uppercase tracking-[0.25em] font-bold ${companyAccent === "apple-cyan" ? "text-[#64D2FF]" : "text-apple-red"}`}>
                     View Project
                   </span>
-                  <div className="h-px w-8 bg-apple-red opacity-80" />
+                  <div className={`h-px w-8 opacity-80 ${companyAccent === "apple-cyan" ? "bg-[#64D2FF]" : "bg-apple-red"}`} />
                 </motion.div>
               </motion.div>
 

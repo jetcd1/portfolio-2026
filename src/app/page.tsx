@@ -370,6 +370,7 @@ export default function Home() {
               description="Initiated and established a comprehensive design system from scratch, scaling it across McKesson's internal product ecosystem."
               tags={["Design System", "Healthcare", "Figma"]}
               video="/works/Ontada/thumbnail.mp4"
+              videoAutoPlay
               image="/works/Ontada/Cover - Ontada.png"
               href="/work/ontada"
             />
