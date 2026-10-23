@@ -316,6 +316,7 @@ export default function Home() {
               description="Unified design system for Reddit's advertising platform, establishing scalable foundations across the advertiser experience."
               tags={["Design System", "Ad Tech", "Figma"]}
               image="/works/reddit/ads-design-system-thumbnail.jpg"
+              imageMotion="snoo-greeting"
               href="/work/reddit"
             />
           </motion.div>

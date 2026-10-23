@@ -19,6 +19,7 @@ interface ProjectCardProps {
   company?: string;
   image?: string;
   video?: string;
+  imageMotion?: "snoo-greeting";
   href: string;
 }
 
@@ -106,6 +107,7 @@ export default function ProjectCard({
   company,
   image,
   video,
+  imageMotion,
   href,
 }: ProjectCardProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -214,7 +216,10 @@ export default function ProjectCard({
               }}
             >
               {image && (
-                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${image})` }} />
+                <div
+                  className={`absolute inset-0 bg-cover bg-center ${imageMotion === "snoo-greeting" ? "snoo-card-greeting" : ""}`}
+                  style={{ backgroundImage: `url(${image})` }}
+                />
               )}
               {video && (
                 video.toLowerCase().endsWith('.gif') ? (

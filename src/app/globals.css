@@ -192,11 +192,28 @@ body {
   100% { transform: scale(1.16) translate3d(2.5%, 1.5%, 0); filter: brightness(.88) saturate(1.06); }
 }
 
+/* Lightweight greeting loop for the Reddit Ads Design System card. */
+.snoo-card-greeting {
+  transform-origin: 72% 72%;
+  will-change: transform, filter;
+  animation: snoo-greeting 3.2s cubic-bezier(.45, 0, .25, 1) infinite;
+}
+@keyframes snoo-greeting {
+  0%, 16%, 100% { transform: scale(1.035) translate3d(0, 0, 0) rotate(0deg); filter: brightness(1); }
+  25% { transform: scale(1.055) translate3d(.3%, -1.2%, 0) rotate(-1.2deg); filter: brightness(1.04); }
+  34% { transform: scale(1.04) translate3d(-.15%, -.3%, 0) rotate(.7deg); }
+  43% { transform: scale(1.052) translate3d(.2%, -1%, 0) rotate(-.8deg); }
+  52% { transform: scale(1.04) translate3d(-.1%, -.2%, 0) rotate(.45deg); }
+  63% { transform: scale(1.048) translate3d(.1%, -.65%, 0) rotate(-.35deg); filter: brightness(1.02); }
+  76% { transform: scale(1.035) translate3d(0, 0, 0) rotate(0deg); filter: brightness(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ambient-light__orb,
   .ambient-light__cloud,
   .ambient-light__wash { animation: none; }
   .reddit-hero-backdrop { animation: none; }
+  .snoo-card-greeting { animation: none; }
 }
 
 .no-scrollbar::-webkit-scrollbar {
