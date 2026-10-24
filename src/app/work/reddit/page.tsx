@@ -1,320 +1,104 @@
 "use client";
 
-import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
-import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import BackToTop from "@/components/ui/BackToTop";
-import AmbientLight from "@/components/animations/AmbientLight";
-import { useEffect } from "react";
-import { motion } from "framer-motion";
+import ProjectNavigation from "@/components/ui/ProjectNavigation";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { useEffect, useRef } from "react";
 
-/* ─── Problem Section ─────────────────────────────────────────────── */
-const ProblemSection = () => (
-  <section className="w-full flex flex-col items-center gap-20 md:gap-32 px-4">
-    <div className="max-w-4xl w-full flex flex-col items-center text-center">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <p className="text-[11px] font-mono uppercase tracking-[0.22em] text-[#FF4500] mb-6">Problem</p>
-        <h2 className="text-4xl md:text-6xl font-display font-medium text-foreground tracking-tight mb-12">
-          Fragmented Ad Creation
-        </h2>
-      </motion.div>
+const base = "/works/reddit/showcase";
+const snoos = "/works/reddit/snoos";
+const foundations = "/works/reddit/foundations";
+const ease = [0.16, 1, 0.3, 1] as const;
 
-      <div className="flex flex-col gap-6 text-xl md:text-2xl text-muted font-light leading-relaxed max-w-3xl">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-        >
-          Reddit&apos;s advertising platform lacked a cohesive design language, resulting in inconsistent UI patterns across ad creation flows and campaign management tools.
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          As the Ads org scaled rapidly, teams were building components in isolation — creating duplicated effort, visual inconsistency, and a degraded advertiser experience.
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          A unified Ads Design System was needed to align cross-functional teams, accelerate development velocity, and establish a scalable foundation for Reddit&apos;s growing advertiser ecosystem.
-        </motion.p>
-      </div>
+function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  return <motion.div initial={{ opacity: 0, y: 42 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-8%" }} transition={{ duration: .85, delay, ease }} className={className}>{children}</motion.div>;
+}
+
+function Chapter({ number, label, dark = false }: { number: string; label: string; dark?: boolean }) {
+  return <div className={`mb-12 flex items-center gap-6 font-mono text-[10px] font-semibold uppercase tracking-[.22em] ${dark ? "text-white/45" : "text-black/45"}`}><span className="text-[#ff5c2b]">{number}</span><span>{label}</span></div>;
+}
+
+function Media({ src, alt, caption, className = "" }: { src: string; alt: string; caption?: string; className?: string }) {
+  return <figure className={`overflow-hidden rounded-[1.5rem] border border-black/10 bg-[#f4f4f4] shadow-[0_24px_80px_rgba(0,0,0,.08)] ${className}`}><img src={src} alt={alt} loading="lazy" className="block h-auto w-full object-contain" />{caption && <figcaption className="border-t border-black/10 bg-white px-5 py-4 text-[11px] tracking-wide text-black/50">{caption}</figcaption>}</figure>;
+}
+
+function MotionSpecimen() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const ensurePlayback = () => videoRef.current?.play().catch(() => undefined);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    void video.play().catch(() => undefined);
+  }, []);
+
+  return <Reveal className="mt-20 flex justify-center bg-white px-0 md:px-10">
+    <div className="relative w-full max-w-[1080px] overflow-hidden bg-white">
+      <video ref={videoRef} autoPlay loop muted playsInline preload="auto" onCanPlay={ensurePlayback} onLoadedData={ensurePlayback} className="block max-h-[820px] w-full object-contain">
+        <source src={`${base}/process-video.mp4`} type="video/mp4" />
+      </video>
+      <motion.div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_35%_46%,rgba(255,112,82,.11),transparent_34%),radial-gradient(circle_at_68%_52%,rgba(225,69,190,.10),transparent_31%)] mix-blend-multiply" animate={{ opacity: [.28, .62, .28], x: [-18, 20, -18], scale: [1, 1.035, 1] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }} />
     </div>
-  </section>
-);
+  </Reveal>;
+}
 
-/* ─── Design Process Section ──────────────────────────────────────── */
-const DesignProcessSection = () => {
-  const steps = [
-    { title: "Audit", desc: "Conducted a full UI audit across the Ads platform, identifying patterns, inconsistencies, and component redundancies." },
-    { title: "Align", desc: "Collaborated with engineering and product to define token architecture, component scope, and contribution guidelines." },
-    { title: "Build", desc: "Designed and documented a scalable component library in Figma, establishing foundational primitives to complex ad modules." },
-    { title: "Scale", desc: "Rolled out the system across Ads teams, enabling faster iteration and a consistent advertiser experience at scale." },
-  ];
+function Heading({ children, copy, dark = false }: { children: React.ReactNode; copy: string; dark?: boolean }) {
+  return <div className="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-end"><Reveal><h2 className="text-5xl font-semibold leading-[.98] tracking-[-.055em] md:text-8xl">{children}</h2></Reveal><Reveal delay={.08}><p className={`text-lg leading-relaxed ${dark ? "text-white/50" : "text-black/55"}`}>{copy}</p></Reveal></div>;
+}
 
-  return (
-    <div className="w-full relative py-20 md:py-32 overflow-hidden rounded-[2rem] md:rounded-[3rem] border border-border bg-secondary/30 shadow-2xl group">
-      <motion.div
-        className="absolute inset-0 z-0 opacity-40 pointer-events-none"
-        style={{
-          background: "linear-gradient(-45deg, var(--background), var(--secondary), var(--background))",
-          backgroundSize: "400% 400%",
-        }}
-        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-12 w-full flex flex-col items-center">
-        <motion.div
-          className="text-center mb-16 md:mb-28"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-20%" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <h3 className="text-3xl md:text-5xl font-display font-medium text-foreground tracking-tight mb-4">Design Process</h3>
-          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-light tracking-wide">
-            From system audit to enterprise delivery — building a design foundation that scales with Reddit Ads.
-          </p>
-        </motion.div>
-
-        <div className="relative flex flex-col md:flex-row justify-between w-full gap-16 md:gap-8 mt-4">
-          {/* Dashed Line Desktop */}
-          <div className="hidden md:block absolute top-[11px] left-[12.5%] right-[12.5%] h-[2px] z-0 pointer-events-none">
-            <svg className="w-full h-full" preserveAspectRatio="none">
-              <motion.line
-                x1="0" y1="1" x2="100%" y2="1"
-                stroke="#FF4500" strokeWidth="2" strokeDasharray="6 8"
-                initial={{ pathLength: 0, opacity: 0 }}
-                whileInView={{ pathLength: 1, opacity: 0.3 }}
-                viewport={{ once: true, margin: "-20%" }}
-                transition={{ duration: 2, ease: "easeInOut" }}
-              />
-            </svg>
-          </div>
-
-          {/* Dashed Line Mobile */}
-          <div className="block md:hidden absolute left-[23px] top-[24px] bottom-[24px] w-[2px] z-0 pointer-events-none">
-            <svg className="w-full h-full" preserveAspectRatio="none">
-              <motion.line
-                x1="1" y1="0" x2="1" y2="100%"
-                stroke="#FF4500" strokeWidth="2" strokeDasharray="6 8"
-                initial={{ pathLength: 0, opacity: 0 }}
-                whileInView={{ pathLength: 1, opacity: 0.3 }}
-                viewport={{ once: true, margin: "-20%" }}
-                transition={{ duration: 2, ease: "easeInOut" }}
-              />
-            </svg>
-          </div>
-
-          {steps.map((step, i) => (
-            <motion.div
-              key={i}
-              className="relative z-10 flex flex-row md:flex-col items-start md:items-center flex-1 group cursor-default"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-20%" }}
-              transition={{ duration: 0.8, delay: i * 0.2, ease: "easeOut" }}
-            >
-              <div className="relative flex-shrink-0 flex items-center justify-center w-6 h-6 md:mb-10 md:w-auto md:h-auto mx-3 md:mx-auto">
-                <div className="absolute inset-0 bg-[#FF4500] w-12 h-12 -left-3 -top-3 md:-left-4 md:-top-4 rounded-full opacity-0 group-hover:opacity-40 blur-[15px] transition-all duration-500 pointer-events-none" />
-                <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-[#FF4500] ring-4 ring-background group-hover:scale-[1.3] transition-transform duration-500 relative z-10 shadow-[0_0_10px_rgba(255,69,0,0.2)] md:group-hover:shadow-[0_0_20px_rgba(255,69,0,0.8)]" />
-              </div>
-              <div className="pl-6 md:pl-0 text-left md:text-center mt-[-4px] md:mt-0 flex flex-col items-start md:items-center max-w-[280px] mx-auto">
-                <h4 className="text-xl md:text-[22px] font-display font-medium text-foreground group-hover:text-foreground transition-colors duration-500 mb-3 tracking-tight">
-                  {step.title}
-                </h4>
-                <p className="text-[15px] md:text-base text-muted-foreground group-hover:text-foreground/80 transition-colors duration-500 leading-[1.6] tracking-[0.01em] font-light">
-                  {step.desc}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-/* ─── Media Content ───────────────────────────────────────────────── */
-const redditMediaContent = [
-  { id: 1, type: "custom-problem" },
-  { id: 2, type: "custom-process" },
-  // TODO: 이미지/영상 파일을 /public/works/reddit/ 폴더에 추가한 후 아래 항목들의 주석을 해제하세요
-  // { id: 3, type: "image", src: "/works/reddit/1.png", title: "Component Architecture" },
-  // { id: 4, type: "image", src: "/works/reddit/2.png", title: "Token System" },
-  // { id: 5, type: "image", src: "/works/reddit/3.png", title: "Ad Creation Flow" },
-  // { id: 6, type: "video", src: "/works/reddit/4.mp4", title: "Interactive Components" },
+const principles = [
+  ["01", "Define defaults", "Give core interactions a clear, dependable starting point."],
+  ["02", "Close the gaps", "Reduce workarounds with complete, reusable patterns."],
+  ["03", "Guide decisions", "Make guidance part of the system, not an afterthought."],
+  ["04", "Express the brand", "Carry Reddit's personality into real product moments."],
 ];
 
-/* ─── Page ────────────────────────────────────────────────────────── */
 export default function RedditWorkDetail() {
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 110, damping: 28, mass: .2 });
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  return (
-    <main className="min-h-screen bg-background selection:bg-[#FF4500] selection:text-white">
-      {/* ─── Hero Section ──────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
-        <AmbientLight variant="detail" warm />
-        {/* Gradient Background */}
-        <div className="absolute inset-0 w-full h-full z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#FF4500]/20 via-background to-background pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black pointer-events-none" />
-        </div>
+  return <main className="min-h-screen overflow-hidden bg-white text-[#111113] selection:bg-[#ff4500] selection:text-white">
+    <motion.div className="fixed inset-x-0 top-0 z-[100] h-[3px] origin-left bg-[#ff4500]" style={{ scaleX: progress }} />
 
-        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center text-center mt-auto md:mt-0">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="block text-[13px] font-medium tracking-[0.2em] uppercase text-white/70 mb-6 font-mono">
-              Reddit — Ads Design System
-            </span>
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-display font-medium text-white tracking-tight leading-[1.05] mb-8 drop-shadow-sm">
-              Reddit Ads<br />
-              <span className="text-[#FF4500] italic md:not-italic">Design System</span>
-            </h1>
-            <p className="text-lg md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-12 font-medium drop-shadow-sm">
-              A unified design system for <span className="text-[#FF4500] font-semibold">Reddit&apos;s advertising platform</span> — establishing scalable foundations to{" "}
-              <span className="text-[#FF4500] font-semibold whitespace-nowrap">accelerate, align, and elevate</span> the advertiser experience.
-            </p>
-          </motion.div>
+    <section className="relative min-h-[1050px] overflow-hidden bg-[#101011] px-5 pb-28 pt-40 text-white md:px-12">
+      <motion.div className="absolute -right-52 top-28 h-[720px] w-[720px] rounded-full bg-[#ff4500]/25 blur-[130px]" animate={{ scale: [.8, 1.15, .9], x: [0, -70, 25], y: [0, 55, -20] }} transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }} />
+      <div className="relative z-10 mx-auto max-w-[1380px]">
+        <Reveal><p className="font-mono text-[11px] font-semibold uppercase tracking-[.22em] text-white/50">Reddit · Ads Design System</p></Reveal>
+        <Reveal delay={.08}><h1 className="mt-12 max-w-6xl text-[clamp(4.3rem,9vw,9.2rem)] font-semibold leading-[.91] tracking-[-.07em]">Designing the system <span className="text-[#ff4500]">behind</span> better ads.</h1></Reveal>
+        <div className="mt-12"><Reveal delay={.16}><p className="max-w-2xl text-lg leading-relaxed text-white/60 md:text-xl">Strengthening an existing UI foundation while exploring a more cohesive, expressive, and scalable direction across Reddit&apos;s advertising tools.</p></Reveal></div>
+        <div className="relative mt-24 h-[430px] md:h-[620px]"><motion.div initial={{ opacity: 0, rotate: -4, y: 90 }} animate={{ opacity: 1, rotate: -2, y: 0 }} transition={{ duration: 1, delay: .3, ease }} className="absolute left-0 top-0 w-[73%] overflow-hidden rounded-2xl border-[6px] border-[#2b2b2e] shadow-2xl"><img src={`${base}/dashboard.png`} alt="Reddit Ads Manager dashboard" className="w-full" /></motion.div><motion.div initial={{ opacity: 0, rotate: 4, y: 120 }} animate={{ opacity: 1, rotate: 2, y: 0 }} transition={{ duration: 1, delay: .45, ease }} className="absolute bottom-0 right-0 w-[48%] overflow-hidden rounded-2xl border-[6px] border-[#2b2b2e] shadow-2xl"><img src={`${base}/rmax-filled.png`} alt="RMax campaign creation experience" className="w-full" /></motion.div></div>
+      </div>
+    </section>
 
-          {/* Metadata Grid */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 border-t border-white/20 pt-10 mt-16 w-full max-w-4xl"
-          >
-            {[
-              { label: "Role", value: "Product Design" },
-              { label: "Scope", value: ["Design System", "Figma"] },
-              { label: "Platform", value: "Web App" },
-            ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <span className="text-[12px] uppercase tracking-[0.15em] text-white/50 font-semibold mb-3">{item.label}</span>
-                {Array.isArray(item.value) ? (
-                  <div className="flex flex-col gap-1">
-                    {item.value.map((v, j) => (
-                      <span key={j} className="text-[16px] text-white/90 font-medium leading-[1.4]">{v}</span>
-                    ))}
-                  </div>
-                ) : (
-                  <span className="text-[16px] text-white/90 font-medium leading-[1.4]">{item.value}</span>
-                )}
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+    <section className="px-5 py-28 md:px-12 md:py-40"><div className="mx-auto max-w-[1380px]"><Chapter number="01" label="The overview" /><div className="grid gap-16 lg:grid-cols-[1.05fr_.95fr] lg:gap-28"><Reveal><h2 className="text-5xl font-semibold leading-[1.02] tracking-[-.055em] md:text-8xl">Not just more components.<br /><span className="text-[#ff4500]">A clearer product.</span></h2></Reveal><Reveal delay={.1}><p className="text-xl leading-relaxed text-black/65">Reddit&apos;s advertising tools needed more than visual consistency. They needed a system that helped teams make better decisions without losing the character of the brand.</p><div className="mt-14 divide-y divide-black/10 border-y border-black/10">{[["Role", "UI / Design Systems Designer"], ["Focus", "Visual systems · Components · Product UI"], ["Story", "ADS 1.0 foundation → ADS 2.0 direction"]].map(([k,v]) => <div key={k} className="grid grid-cols-[100px_1fr] py-5"><span className="font-mono text-[10px] uppercase tracking-wider text-black/40">{k}</span><strong className="text-sm font-medium">{v}</strong></div>)}</div></Reveal></div></div></section>
 
-      {/* ─── Case Study Media Section ──────────────────────────────────── */}
-      <section className="w-full py-32 md:py-64 px-4 md:px-8 bg-background flex flex-col items-center gap-48 md:gap-64 overflow-visible">
-        <div className="max-w-[1400px] w-full flex flex-col gap-32 md:gap-56">
-          {redditMediaContent.map((item, index) => {
-            if (item.type === "custom-problem") return <ProblemSection key={item.id} />;
-            if (item.type === "custom-process") return <DesignProcessSection key={item.id} />;
+    <section className="bg-[#101011] px-5 py-28 text-white md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="02" label="The challenge" dark /><div className="grid items-end gap-10 lg:grid-cols-[1fr_420px]"><Reveal><h2 className="text-[clamp(4.5rem,9vw,9.5rem)] font-semibold leading-[.92] tracking-[-.07em]">The system <span className="text-white/35">worked.</span><br />But it didn&apos;t <i className="font-normal text-[#ff5c2b]">guide.</i></h2></Reveal><Reveal delay={.1}><p className="pb-3 text-lg leading-relaxed text-white/55">ADS 1.0 supported the core campaign workflow. As the product expanded, however, repeated interactions began to diverge and teams increasingly relied on one-off decisions.</p></Reveal></div><Reveal className="mt-20"><div className="mb-7 grid gap-5 md:grid-cols-[.8fr_1.2fr] md:items-end"><div><p className="font-mono text-[10px] font-semibold uppercase tracking-[.18em] text-[#ff5c2b]">ADS 1.0 · Current experience</p><h3 className="mt-4 text-3xl font-semibold tracking-[-.04em] md:text-5xl">A solid foundation<br />under growing pressure.</h3></div><p className="max-w-xl text-sm leading-relaxed text-white/50">This campaign creation screen represents the working 1.0 foundation: familiar navigation, structured forms, and clear task progression. It also reveals where evolving requirements created inconsistent controls, incomplete shared states, and limited room for a unified product voice.</p></div><Media src={`${base}/ads-1-current-campaign.png`} alt="ADS 1.0 campaign creation experience" caption="ADS 1.0 / campaign creation · one representative current-state screen" /></Reveal><div className="mt-8 grid gap-6 md:grid-cols-2"><Reveal><Media src={`${base}/reality.png`} alt="Current system inconsistencies" caption="System audit / repeated interactions had begun to diverge" /></Reveal><Reveal delay={.08}><Media src={`${base}/problems.png`} alt="Four key design system problems" caption="Opportunity map / defaults, gaps, guidance, and brand expression" /></Reveal></div><Reveal className="relative mx-auto mt-20 max-w-5xl rounded-[2rem] bg-[#19191b] px-8 pt-10 md:px-14"><p className="max-w-xl text-2xl font-medium tracking-tight md:text-4xl">Untangling complexity into a shared language.</p><motion.img src={`${snoos}/untangle.png`} alt="Snoo untangling a complex thread" className="mx-auto mt-6 max-h-[620px] w-auto" animate={{ y: [0, -10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} /></Reveal></div></section>
 
-            return (
-              <TiltParallaxMedia
-                key={item.id}
-                title={(item as { title?: string }).title}
-                delayOffset={(index % 4) * 0.15}
-                noPadding={item.type === "video"}
-              >
-                {item.type === "image" ? (
-                  <img
-                    src={(item as unknown as { src: string }).src}
-                    alt={(item as unknown as { title?: string }).title || `Reddit Ads Render ${item.id}`}
-                    className="w-full h-auto block"
-                    loading="lazy"
-                  />
-                ) : (
-                  <video
-                    src={(item as unknown as { src: string }).src}
-                    className="w-full h-auto block"
-                    loop
-                    muted
-                    playsInline
-                    autoPlay
-                  />
-                )}
-              </TiltParallaxMedia>
-            );
-          })}
-        </div>
-      </section>
+    <section className="bg-[#ff4500] px-5 py-28 text-white md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="03" label="The opportunity" dark /><Reveal><h2 className="max-w-6xl text-[clamp(3.8rem,8vw,8.2rem)] font-semibold leading-[1.01] tracking-[-.065em]">From a collection of UI parts to an <span className="text-[#171719]">opinionated system.</span></h2><p className="mt-10 max-w-2xl text-xl text-white/80">One clear direction. Reusable patterns. A recognizable product language.</p></Reveal><Reveal className="mt-20 overflow-hidden rounded-3xl border-[8px] border-[#171719]"><img src={`${base}/direction.png`} alt="Four design system priorities" className="w-full" /></Reveal></div></section>
 
-      {/* ─── Outcome Section ───────────────────────────────────────────── */}
-      <section className="w-full py-40 md:py-56 px-4 md:px-12 border-t border-border/30 bg-background/50">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-16 md:gap-32 items-start">
-          <motion.div
-            className="md:w-1/3"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <h3 className="text-sm md:text-base font-medium text-[#FF4500] uppercase tracking-[0.2em] mb-4">
-              Impact
-            </h3>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-foreground tracking-tight leading-tight">
-              Scalable by<br />
-              <span className="text-[#FF4500]">Design</span>
-            </h2>
-          </motion.div>
+    <section className="px-5 py-28 md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="04" label="Design principles" /><Heading copy="Four priorities shaped the system—from interaction consistency to brand expression.">Build the rules.<br /><span className="text-[#ff4500]">Not just the UI.</span></Heading><div className="mt-20 grid gap-x-10 gap-y-3 border-t border-black/15 sm:grid-cols-2 lg:grid-cols-4">{principles.map(([n,t,d], i) => <Reveal key={n} delay={i*.06} className="border-b border-black/15 py-9 lg:border-b-0"><span className="font-mono text-xs font-bold text-[#ff4500]">{n}</span><h3 className="mb-4 mt-16 text-2xl font-semibold tracking-tight">{t}</h3><p className="text-sm leading-relaxed text-black/50">{d}</p></Reveal>)}</div><Reveal className="mt-16 grid items-center overflow-hidden rounded-[2rem] bg-[#f4f0eb] md:grid-cols-[.9fr_1.1fr]"><div className="p-9 md:p-14"><p className="font-mono text-[10px] uppercase tracking-[.18em] text-[#ff4500]">Shared direction</p><h3 className="mt-5 text-4xl font-semibold tracking-[-.04em] md:text-6xl">Better together,<br />by design.</h3></div><motion.img src={`${snoos}/high-five.png`} alt="Two Snoos celebrating collaboration" className="max-h-[600px] w-full object-contain" whileInView={{ scale: [.94, 1] }} transition={{ duration: .9, ease }} /></Reveal></div></section>
 
-          <motion.div
-            className="md:w-2/3 flex flex-col gap-10"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          >
-            <p className="text-2xl md:text-4xl font-display text-foreground leading-snug tracking-tight font-medium">
-              Delivered a cohesive design system that unified{" "}
-              <span className="text-[#FF4500]">Reddit Ads</span> across the entire advertiser platform.
-            </p>
-            <p className="text-xl md:text-2xl text-muted leading-relaxed font-light">
-              By establishing a shared token architecture, component library, and contribution model, cross-functional teams could move faster while maintaining visual consistency — transforming a fragmented ecosystem into a{" "}
-              <span className="text-[#FF4500] font-medium">scalable design foundation</span>.
-            </p>
-            <p className="text-xl md:text-2xl text-muted leading-relaxed font-light">
-              The system reduced design-to-development handoff friction, standardized ad creation workflows, and set a precedent for systematic thinking across the broader Reddit product organization.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <section className="bg-[#f4f1ed] px-5 py-28 md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="05" label="Visual foundations" /><Heading copy="Semantic and primitive tokens turn visual decisions into repeatable system behavior across dense product workflows.">Precision with<br /><span className="text-[#ff4500]">personality.</span></Heading><div className="mt-16 grid gap-6 md:grid-cols-2"><Reveal><Media src={`${base}/color.png`} alt="Color foundation" caption="Color / functional by default, branded by intention" /></Reveal><Reveal delay={.08}><Media src={`${base}/type.png`} alt="Typography scale" caption="Typography / hierarchy that helps people scan" /></Reveal></div><Reveal className="mt-6"><Media src={`${foundations}/semantic-type.png`} alt="Shreddit desktop semantic typography tokens" caption="Semantic typography / a clearer role-based scale mapped from legacy tokens" className="[&>img]:max-h-[920px] [&>img]:object-contain" /></Reveal><div className="mt-6 grid gap-6 md:grid-cols-3"><Reveal><Media src={`${foundations}/primitive-line.png`} alt="Primitive line tokens" caption="Primitive / line" className="[&>img]:max-h-[620px] [&>img]:object-contain" /></Reveal><Reveal delay={.06}><Media src={`${foundations}/primitive-radius.png`} alt="Primitive radius tokens" caption="Primitive / radius" className="[&>img]:max-h-[620px] [&>img]:object-contain" /></Reveal><Reveal delay={.12}><Media src={`${foundations}/primitive-space.png`} alt="Primitive spacing tokens" caption="Primitive / space" className="[&>img]:max-h-[620px] [&>img]:object-contain" /></Reveal></div></div></section>
 
-      <ProjectNavigation
-        previousProject={{
-          title: "Boardedge",
-          company: "Equilar",
-          video: "/works/boardedge/thumbnail.gif",
-          href: "/work/boardedge",
-        }}
-        nextProject={{
-          title: "Ground Service Equipment Request Queue",
-          company: "United Airlines",
-          video: "/works/gse/thumbnail.mp4",
-          href: "/work/united-airlines",
-        }}
-      />
-      <BackToTop />
-    </main>
-  );
+    <section className="px-5 py-28 md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="06" label="Component craft" /><Heading copy="A reliable system covers defaults, content, interaction states, feedback, and edge cases—not just ideal component examples.">Consistency lives<br /><span className="text-[#ff4500]">in the details.</span></Heading><Reveal className="mt-16"><Media src={`${base}/components.png`} alt="Component studies" caption="Component studies / cards · previews · media · inputs · notifications" /></Reveal><Reveal className="mt-6"><Media src={`${base}/navigation.png`} alt="Navigation patterns" caption="Navigation / recognizable patterns across tools" /></Reveal><Reveal className="mt-6"><Media src={`${base}/notifications.png`} alt="Notification patterns" caption="Notifications / states, filters, and contextual actions" /></Reveal><Reveal className="mt-6"><Media src={`${base}/education.png`} alt="Education components" caption="Education / contextual help, guidance cards, banners, and next steps" /></Reveal><Reveal className="mt-20"><div className="mb-8 grid gap-4 md:grid-cols-[1fr_1.1fr] md:items-end"><div><p className="font-mono text-[10px] font-semibold uppercase tracking-[.18em] text-[#ff4500]">Design to code</p><h3 className="mt-4 text-4xl font-semibold tracking-[-.045em] md:text-6xl">Code Connect,<br />ready to reconnect.</h3></div><p className="max-w-xl text-sm leading-relaxed text-black/55">The Button library documents a complete set of variants, states, icon options, and loading behavior. This downloaded local Figma copy preserves the component model, while its original Code Connect mapping does not transfer with the duplicated file. The production mapping must be re-published from the source library and code repository.</p></div><Media src={`${base}/code-connect-button.png`} alt="Figma Button component library with Code Connect status" caption="Button component / documented variants and properties · Code Connect shown as not started in the downloaded local copy" /></Reveal></div></section>
+
+    <section className="bg-[#101011] px-5 py-28 text-white md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="07" label="In product · RMax" dark /><Reveal><h2 className="text-[clamp(4.5rem,9vw,9.5rem)] font-semibold leading-[.92] tracking-[-.07em]">The system,<br /><i className="font-normal text-[#ff5c2b]">in context.</i></h2><p className="mt-10 max-w-3xl text-xl leading-relaxed text-white/50">The real test is not a component sheet. It is whether an end-to-end product experience feels coherent and easy to navigate.</p></Reveal><div className="mt-20 grid items-start gap-7 lg:grid-cols-2"><Reveal><Media src={`${base}/rmax-empty.png`} alt="RMax empty state" caption="01 / START — Empty state · guidance · progressive entry" /></Reveal><Reveal delay={.1}><Media src={`${base}/rmax-filled.png`} alt="RMax populated state" caption="02 / BUILD — Populated form · feedback · live preview" /></Reveal></div><p className="mt-5 font-mono text-[10px] uppercase tracking-wider text-white/35">Two UI states shown for context—not presented as a verified before/after comparison.</p></div></section>
+
+    <section className="px-5 py-28 md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="08" label="Connected experiences" /><Heading copy="The shared visual approach extends into dashboards, business management, notifications, and contextual guidance.">One language.<br /><span className="text-[#ff4500]">Multiple surfaces.</span></Heading><Reveal className="mt-16"><Media src={`${base}/dashboard.png`} alt="Ads Manager dashboard" caption="Ads Manager / performance, actions, and guidance" /></Reveal><Reveal className="mt-6"><Media src={`${base}/business.png`} alt="Business Manager dashboard" caption="Business Manager / connected product surface" /></Reveal></div></section>
+
+    <section className="bg-[#f4f1ed] px-5 py-28 md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="09" label="Intelligent moments" /><Heading copy="Expressive insights and practical recommendations can serve different intentions while belonging to the same visual family.">Insights should<br /><span className="text-[#ff4500]">lead to action.</span></Heading><Reveal className="mt-16"><Media src={`${base}/visual-system.png`} alt="Insight visual system" caption="Insight patterns / flexible treatments for different user intentions" /></Reveal><Reveal className="mt-6"><Media src={`${base}/branding-system.png`} alt="Gradient branding system" caption="Branding language / ambient gradients, palette, and typography" /></Reveal><Reveal className="mt-10 grid overflow-hidden rounded-[2rem] bg-white md:grid-cols-2"><motion.img src={`${snoos}/insights.png`} alt="Snoo presenting campaign insights" className="h-full max-h-[650px] w-full object-contain" animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} /><div className="flex flex-col justify-center p-10 md:p-16"><p className="font-mono text-[10px] uppercase tracking-[.18em] text-[#ff4500]">Guided confidence</p><h3 className="mt-6 text-4xl font-semibold tracking-[-.045em] md:text-6xl">Make the next step obvious.</h3></div></Reveal></div></section>
+
+    <section className="bg-[#101011] px-5 py-28 text-white md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="10" label="Exploring agentic identity" dark /><Heading dark copy="Identity studies explore how agentic moments could feel distinct while remaining connected to the broader product experience.">Giving AI a<br /><i className="font-normal text-[#ff5c2b]">visual voice.</i></Heading><div className="mt-16 grid gap-6 md:grid-cols-2"><Reveal><Media src={`${base}/agentic-identity.png`} alt="Agentic identity studies" caption="Identity explorations / shape and color" /></Reveal><Reveal delay={.08}><Media src={`${base}/mark-explorations.png`} alt="Agentic mark explorations" caption="Mark studies / possible directions, not final selection" /></Reveal></div></div></section>
+
+    <section className="px-5 py-28 md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="11" label="Motion & process" /><Heading copy="A short motion specimen shows how ambient movement can reinforce branded moments without distracting from the content.">Designed to<br /><span className="text-[#ff4500]">move forward.</span></Heading><MotionSpecimen /></div></section>
+
+    <section className="bg-[#ff4500] px-5 py-28 text-white md:px-12 md:py-44"><div className="mx-auto max-w-[1380px]"><Chapter number="12" label="The takeaway" dark /><Reveal><h2 className="max-w-6xl text-[clamp(4.5rem,9vw,9.5rem)] font-semibold leading-[.93] tracking-[-.07em]">Make the right design decision <span className="text-[#171719]">the easy one.</span></h2><p className="mt-12 max-w-3xl text-xl leading-relaxed text-white/80">A design system is more than a library. It is a shared language that helps teams build with greater consistency, clarity, and character.</p></Reveal><div className="mt-20 grid gap-4 md:grid-cols-3">{[["Clarity", "Shared interaction patterns"], ["Craft", "Intentional visual foundations"], ["Scale", "Reusable components across surfaces"]].map(([t,d]) => <div key={t} className="rounded-2xl bg-white/10 px-7 py-8"><b className="font-mono text-xs uppercase tracking-[.18em]">{t}</b><span className="mt-3 block text-white/75">{d}</span></div>)}</div><p className="mt-7 font-mono text-[10px] uppercase tracking-wider text-white/60">Design directions and selected product explorations shown. No unverified adoption or business-impact metrics claimed.</p></div></section>
+
+    <ProjectNavigation previousProject={{ title: "Boardedge", company: "Equilar", video: "/works/boardedge/thumbnail.gif", href: "/work/boardedge" }} nextProject={{ title: "Ads Design Branding", company: "Reddit", image: "/works/reddit-branding/cover.svg", href: "/work/reddit-ads-branding" }} />
+    <BackToTop />
+  </main>;
 }

@@ -286,6 +286,25 @@ export default function Home() {
         </motion.div>
 
         <div className="flex flex-col gap-16 md:gap-32">
+          {/* Reddit Ads Design System Project */}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            <ProjectCard
+              company="Reddit"
+              title="Ads Design System"
+              description="Unified design system for Reddit's advertising platform, establishing scalable foundations across the advertiser experience."
+              tags={["Design System", "Ad Tech", "Figma"]}
+              image="/works/reddit/ads-design-system-thumbnail.jpg"
+              companyAccent="apple-cyan"
+              imageMotion="snoo-greeting"
+              href="/work/reddit"
+            />
+          </motion.div>
+
           {/* Reddit Ads Branding Project */}
           <motion.div
             initial={{ opacity: 0, y: 60 }}
@@ -301,25 +320,6 @@ export default function Home() {
               image="/works/reddit-branding/cover.svg"
               ambientLight
               href="/work/reddit-ads-branding"
-            />
-          </motion.div>
-
-          {/* Reddit Ads Project */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-          >
-            <ProjectCard 
-              company="Reddit"
-              title="Ads Design System"
-              description="Unified design system for Reddit's advertising platform, establishing scalable foundations across the advertiser experience."
-              tags={["Design System", "Ad Tech", "Figma"]}
-              image="/works/reddit/ads-design-system-thumbnail.jpg"
-              companyAccent="apple-cyan"
-              imageMotion="snoo-greeting"
-              href="/work/reddit"
             />
           </motion.div>
 

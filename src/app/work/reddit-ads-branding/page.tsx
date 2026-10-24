@@ -111,7 +111,7 @@ export default function RedditAdsBrandingPage() {
         <div className="mt-6 md:mt-10"><Film src="/videos/reddit-ads-branding/brand-application.mp4" label="Reddit Ads Design brand application animation" /></div>
       </div></section>
 
-      <ProjectNavigation previousProject={{ title: "Boardedge", company: "Equilar", video: "/works/boardedge/thumbnail.gif", href: "/work/boardedge" }} nextProject={{ title: "Ads Design System", company: "Reddit", href: "/work/reddit" }} />
+      <ProjectNavigation previousProject={{ title: "Ads Design System", company: "Reddit", image: "/works/reddit/ads-design-system-thumbnail.jpg", href: "/work/reddit" }} nextProject={{ title: "Ground Service Equipment Request Queue", company: "United Airlines", video: "/works/gse/thumbnail.mp4", href: "/work/united-airlines" }} />
       <BackToTop />
     </main>
   );
