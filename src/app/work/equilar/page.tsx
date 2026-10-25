@@ -8,7 +8,6 @@ import { ArrowLeft, ExternalLink, Apple } from "lucide-react";
 import TiltParallaxMedia from "@/components/animations/TiltParallaxMedia";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import BackToTop from "@/components/ui/BackToTop";
-import AmbientLight from "@/components/animations/AmbientLight";
 
 // Custom Section 2: Boardroom Connections Interaction (Code-driven instead of 2.png)
 function ConnectionsInteraction() {
@@ -167,7 +166,6 @@ export default function EquilarCaseStudy() {
 
       {/* ─── Hero Section ────────────────────────────────────────────────── */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
-        <AmbientLight variant="detail" />
         {/* Full-screen Background Image */}
         <div className="absolute inset-0 w-full h-full z-0">
           <video

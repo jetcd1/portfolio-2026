@@ -40,7 +40,7 @@ export default function Work() {
           description="Creating a visual identity for the Reddit Ads Design team."
           tags={["Visual Design", "Branding"]}
           image="/works/reddit-branding/cover.svg"
-          ambientLight
+          cornerBadge="/works/reddit-branding/assets/reddit-full-color.png"
           href="/work/reddit-ads-branding"
         />
 

@@ -3,9 +3,8 @@
 import { motion, Variants, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Link from "next/link";
 import ProjectCard from "@/components/ui/ProjectCard";
-import InteractiveBackground from "@/components/animations/InteractiveBackground";
-import AmbientLight from "@/components/animations/AmbientLight";
-import { useRef, useState, useCallback, MouseEvent, useEffect } from "react";
+import OpticalCursorField from "@/components/animations/OpticalCursorField";
+import { useRef, useState, useCallback, MouseEvent } from "react";
 import { useIntro } from "@/components/providers/IntroProvider";
 
 /* ─── Entrance animation variants ──────────────────────────────────── */
@@ -230,12 +229,9 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center justify-start relative">
-      <InteractiveBackground />
-
       {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-screen flex text-center flex-col items-center justify-center p-8 overflow-visible">
-        <AmbientLight variant="hero" className="inset-x-0 -top-20 bottom-0" />
-
+      <section className="relative w-full min-h-[90svh] md:min-h-[84svh] flex text-center flex-col items-center justify-center px-8 pb-20 pt-24 overflow-hidden">
+        <OpticalCursorField />
         <motion.div
           key={isIntroDone ? "ready" : "intro"}
           variants={getStaggerContainer(isIntroDone)}
@@ -318,7 +314,7 @@ export default function Home() {
               description="Creating a visual identity for the Reddit Ads Design team."
               tags={["Visual Design", "Branding"]}
               image="/works/reddit-branding/cover.svg"
-              ambientLight
+              cornerBadge="/works/reddit-branding/assets/reddit-full-color.png"
               href="/work/reddit-ads-branding"
             />
           </motion.div>
@@ -336,7 +332,7 @@ export default function Home() {
               tags={["Aviation", "Internal Tools", "Design System"]}
               video="/works/gse/thumbnail.mp4"
               videoAutoPlay
-              image="/works/gse/1.png"
+              image="/works/gse/7a.png"
               href="/work/united-airlines"
             />
           </motion.div>

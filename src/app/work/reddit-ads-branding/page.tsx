@@ -1,6 +1,5 @@
 "use client";
 
-import AmbientLight from "@/components/animations/AmbientLight";
 import BackToTop from "@/components/ui/BackToTop";
 import ProjectNavigation from "@/components/ui/ProjectNavigation";
 import { motion, useReducedMotion } from "framer-motion";
@@ -63,8 +62,15 @@ export default function RedditAdsBrandingPage() {
           <img src="/works/reddit-branding/cover.svg" alt="" className="reddit-hero-backdrop w-full h-full object-cover opacity-45 scale-[1.08]" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/15 to-background" />
         </div>
-        <AmbientLight variant="detail" warm />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(0,0,0,.48)_100%)] z-[2]" />
+        <motion.img
+          src="/works/reddit-branding/assets/reddit-full-color.png"
+          alt="Reddit Snoo"
+          initial={{ opacity: 0, scale: 0.82, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.85, delay: 0.2, ease }}
+          className="absolute left-6 top-28 z-10 h-16 w-16 object-contain drop-shadow-[0_16px_36px_rgba(0,0,0,0.32)] md:left-12 md:top-32 md:h-24 md:w-24 lg:left-16 lg:h-28 lg:w-28"
+        />
         <div className="relative z-10 w-full max-w-6xl mx-auto text-center">
           <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease }} className="text-[11px] md:text-xs font-mono tracking-[0.25em] uppercase text-[#ff8b70] mb-7">Reddit · Visual Identity &amp; Branding</motion.p>
           <motion.h1 initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease }} className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.5rem] font-display font-medium tracking-[-0.055em] leading-[0.9] text-white">Reddit Ads Design<br /><span className="text-[#ff5c3b]">Branding</span></motion.h1>

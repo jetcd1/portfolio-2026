@@ -10,7 +10,6 @@ import {
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useRef, useState, useCallback, useMemo } from "react";
-import AmbientLight from "@/components/animations/AmbientLight";
 
 interface ProjectCardProps {
   title: string;
@@ -20,9 +19,9 @@ interface ProjectCardProps {
   image?: string;
   video?: string;
   videoAutoPlay?: boolean;
-  ambientLight?: boolean;
   companyAccent?: "apple-cyan";
   imageMotion?: "snoo-greeting";
+  cornerBadge?: string;
   href: string;
 }
 
@@ -111,9 +110,9 @@ export default function ProjectCard({
   image,
   video,
   videoAutoPlay = false,
-  ambientLight = false,
   companyAccent,
   imageMotion,
+  cornerBadge,
   href,
 }: ProjectCardProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -257,7 +256,7 @@ export default function ProjectCard({
                     muted
                     playsInline
                     autoPlay={videoAutoPlay}
-                    preload={videoAutoPlay ? "metadata" : "none"}
+                    preload={videoAutoPlay ? "auto" : "none"}
                     poster={image}
                     onPlaying={() => setIsVideoPlaying(true)}
                     className="absolute inset-0 w-full h-full object-cover"
@@ -273,6 +272,17 @@ export default function ProjectCard({
               )}
             </motion.div>
 
+            {cornerBadge && (
+              <motion.img
+                src={cornerBadge}
+                alt=""
+                aria-hidden="true"
+                className="absolute left-7 top-7 z-20 h-16 w-16 object-contain drop-shadow-[0_10px_28px_rgba(0,0,0,0.28)] md:left-11 md:top-11 md:h-24 md:w-24"
+                animate={{ y: isHovered ? -4 : 0, scale: isHovered ? 1.04 : 1 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              />
+            )}
+
             {/* Spotlight */}
             <div
               ref={spotlightRef}
@@ -285,9 +295,6 @@ export default function ProjectCard({
               className="absolute inset-0 pointer-events-none"
               style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)" }}
             />
-
-            {/* Optional cloud-like light, reserved for selected artwork. */}
-            {ambientLight && <AmbientLight variant="thumbnail" />}
 
             {/* Overlay */}
             <motion.div

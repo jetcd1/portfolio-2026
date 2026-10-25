@@ -122,7 +122,7 @@ export default function IntroLoader() {
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
                   style={{ textShadow: "0 0 40px rgba(255,255,255,0.2)" }}
                 >
-                  CHAN <span className="font-light">JEON</span>
+                  CHAN <span className="font-light text-[#8E8E93]">JEON</span>
                 </motion.h1>
               </div>
 
