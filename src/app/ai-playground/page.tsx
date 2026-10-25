@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard, Type, CircleDashed, Clock } from "lucide-react";
+import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard, Type, CircleDashed, Clock, Menu, X } from "lucide-react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Html, Text, Float } from "@react-three/drei";
@@ -30,7 +30,6 @@ const exhibits = [
   { id: "optical", name: "Optical Flow", icon: PenTool, color: "#f59e0b" },
   { id: "symmetry", name: "Symmetry Lab", icon: Compass, color: "#3b82f6" },
   { id: "quantum", name: "Quantum Field", icon: Activity, color: "#8b5cf6" },
-  { id: "quantum", name: "Quantum Field", icon: Activity, color: "#8b5cf6" },
   { id: "physics", name: "Falling Physics", icon: Layers, color: "#f59e0b" },
   { id: "particles", name: "Neon Particle Flow", icon: Zap, color: "#10b981" },
   { id: "fluid", name: "Bio-Organic Fluid", icon: Globe, color: "#06b6d4" },
@@ -42,12 +41,14 @@ const exhibits = [
 export default function AIPlayground() {
   const [activeId, setActiveId] = useState<ExhibitId>("core_collapse");
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleExhibitChange = (id: ExhibitId) => {
     if (id === activeId) return;
     setIsTransitioning(true);
     setActiveId(id);
+    setIsMobileMenuOpen(false);
     setTimeout(() => setIsTransitioning(false), 1200);
   };
 
@@ -90,7 +91,7 @@ export default function AIPlayground() {
       </AnimatePresence>
 
       {/* ─── Premium Sidebar ────────────────────────────────────────────── */}
-      <nav className="fixed left-0 top-0 bottom-0 z-50 flex flex-col justify-center pl-4 md:pl-8 pr-12 pointer-events-none">
+      <nav aria-label="AI Lab experiments" className="fixed left-0 top-0 bottom-0 z-50 hidden flex-col justify-center pl-8 pr-12 pointer-events-none md:flex">
         <div className="flex flex-col gap-0 pointer-events-auto max-h-[85vh] overflow-y-auto no-scrollbar py-20 pr-4" ref={scrollRef}>
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
@@ -107,7 +108,8 @@ export default function AIPlayground() {
               <button
                 key={ex.id}
                 onClick={() => handleExhibitChange(ex.id as ExhibitId)}
-                className="group relative flex items-center gap-4 py-0.5 transition-all duration-300 text-left"
+                aria-current={isActive ? "page" : undefined}
+                className="group relative flex min-h-8 items-center gap-4 py-0.5 transition-all duration-300 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-black"
               >
                 {/* Magnetic Hover Indicator */}
                 <motion.div 
@@ -217,6 +219,81 @@ export default function AIPlayground() {
           })}
         </div>
       </nav>
+
+      {/* ─── Accessible mobile experiment menu ─────────────────────────── */}
+      <div className="fixed inset-x-0 top-0 z-[70] flex items-center justify-between bg-gradient-to-b from-black via-black/90 to-transparent px-4 pb-8 pt-4 md:hidden">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[.3em] text-white/45">AI Lab</p>
+          <p className="mt-1 max-w-[230px] truncate text-base font-semibold text-white">{exhibits.find((ex) => ex.id === activeId)?.name}</p>
+        </div>
+        <button
+          type="button"
+          aria-label={isMobileMenuOpen ? "Close experiment menu" : "Open experiment menu"}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-experiment-menu"
+          onClick={() => setIsMobileMenuOpen((open) => !open)}
+          className="flex h-12 min-w-12 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white backdrop-blur-xl transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+        >
+          {isMobileMenuOpen ? <X aria-hidden size={22} /> : <Menu aria-hidden size={22} />}
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close experiment menu"
+              className="fixed inset-0 z-[71] bg-black/55 backdrop-blur-sm md:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            <motion.nav
+              id="mobile-experiment-menu"
+              aria-label="Choose an AI Lab experiment"
+              className="fixed inset-y-0 left-0 z-[72] flex w-[min(88vw,380px)] flex-col border-r border-white/10 bg-[#090909] px-4 pb-[max(24px,env(safe-area-inset-bottom))] pt-[max(20px,env(safe-area-inset-top))] text-white shadow-[24px_0_80px_rgba(0,0,0,.5)] md:hidden"
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", stiffness: 360, damping: 36 }}
+            >
+              <div className="mb-5 flex items-center justify-between px-2">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[.3em] text-white/40">Experimental</p>
+                  <h2 className="mt-1 text-2xl font-bold tracking-tight">AI LAB</h2>
+                </div>
+                <button
+                  type="button"
+                  aria-label="Close experiment menu"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  <X aria-hidden size={22} />
+                </button>
+              </div>
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1">
+                {exhibits.map((ex) => {
+                  const isActive = activeId === ex.id;
+                  const Icon = ex.icon;
+                  return <button
+                    key={ex.id}
+                    type="button"
+                    aria-current={isActive ? "page" : undefined}
+                    onClick={() => handleExhibitChange(ex.id as ExhibitId)}
+                    className={`mb-1 flex min-h-14 w-full items-center gap-4 rounded-2xl px-4 text-left text-[16px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${isActive ? "bg-white text-black" : "text-white/75 hover:bg-white/10 hover:text-white"}`}
+                  >
+                    <Icon aria-hidden size={20} strokeWidth={1.8} className="shrink-0" />
+                    <span>{ex.name}</span>
+                    {isActive && <span className="ml-auto text-[10px] font-bold uppercase tracking-[.16em]">Active</span>}
+                  </button>;
+                })}
+              </div>
+            </motion.nav>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -1804,4 +1881,3 @@ function ChronosSphereExhibit() {
     </div>
   );
 }
-
