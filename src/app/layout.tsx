@@ -38,7 +38,7 @@ export default function RootLayout({
               <IntroLoader />
               <CustomCursor />
               <Navbar />
-              <main className="min-h-screen">
+              <main className="min-h-screen w-full max-w-full overflow-x-hidden [overflow-x:clip]">
                 {children}
               </main>
               <Footer />
