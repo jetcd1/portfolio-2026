@@ -5,58 +5,69 @@ import { useEffect, useRef } from "react";
 /** Direct DOM updates keep the pointer responsive without React re-renders. */
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const reticleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
     const dot = dotRef.current;
-    const ring = ringRef.current;
-    if (!dot || !ring) return;
+    const reticle = reticleRef.current;
+    if (!dot || !reticle) return;
 
     let frame = 0;
-    let x = -40;
-    let y = -40;
+    let targetX = -40;
+    let targetY = -40;
+    let reticleX = -40;
+    let reticleY = -40;
+    let angle = 0;
+    let interactive = false;
+    let pressed = false;
     const render = () => {
-      dot.style.transform = `translate3d(${x - 4}px, ${y - 4}px, 0)`;
-      ring.style.transform = `translate3d(${x - 16}px, ${y - 16}px, 0)`;
-      frame = 0;
+      reticleX += (targetX - reticleX) * 0.24;
+      reticleY += (targetY - reticleY) * 0.24;
+      angle += (((targetX - reticleX) * 0.35) - angle) * 0.12;
+      const scale = pressed ? 0.78 : interactive ? 1.34 : 1;
+      reticle.style.transform = `translate3d(${reticleX - 18}px, ${reticleY - 18}px, 0) rotate(${Math.max(-9, Math.min(9, angle))}deg) scale(${scale})`;
+      frame = requestAnimationFrame(render);
     };
     const onPointerMove = (event: PointerEvent) => {
-      x = event.clientX;
-      y = event.clientY;
+      targetX = event.clientX;
+      targetY = event.clientY;
+      dot.style.transform = `translate3d(${targetX - 3}px, ${targetY - 3}px, 0) rotate(45deg)`;
       dot.style.opacity = "1";
-      ring.style.opacity = "1";
-      if (!frame) frame = requestAnimationFrame(render);
+      reticle.style.opacity = "1";
     };
     const onPointerOver = (event: PointerEvent) => {
       const target = event.target as HTMLElement;
-      const interactive = Boolean(target.closest("a, button, [data-hover]"));
-      dot.style.opacity = interactive ? "0" : "1";
-      ring.style.width = interactive ? "48px" : "32px";
-      ring.style.height = interactive ? "48px" : "32px";
-      ring.style.margin = interactive ? "-8px 0 0 -8px" : "0";
-      ring.style.backgroundColor = interactive ? "rgba(209, 242, 121, 0.16)" : "transparent";
+      interactive = Boolean(target.closest("a, button, input, textarea, select, [data-hover]"));
+      reticle.dataset.interactive = interactive ? "true" : "false";
     };
+    const onPointerDown = () => { pressed = true; };
+    const onPointerUp = () => { pressed = false; };
     const onLeave = () => {
       dot.style.opacity = "0";
-      ring.style.opacity = "0";
+      reticle.style.opacity = "0";
     };
 
+    frame = requestAnimationFrame(render);
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("pointerover", onPointerOver, { passive: true });
+    window.addEventListener("pointerdown", onPointerDown, { passive: true });
+    window.addEventListener("pointerup", onPointerUp, { passive: true });
     document.addEventListener("mouseleave", onLeave);
     return () => {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerover", onPointerOver);
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
       document.removeEventListener("mouseleave", onLeave);
     };
   }, []);
 
   return (
     <>
-      <div ref={dotRef} className="fixed top-0 left-0 w-2 h-2 bg-accent rounded-full pointer-events-none z-[999] opacity-0 will-change-transform transition-opacity duration-100 max-[1024px]:hidden" />
-      <div ref={ringRef} className="fixed top-0 left-0 w-8 h-8 border border-accent rounded-full pointer-events-none z-[999] opacity-0 will-change-transform transition-[width,height,margin,background-color,opacity] duration-100 max-[1024px]:hidden" />
+      <div ref={reticleRef} className="designer-cursor-reticle" />
+      <div ref={dotRef} className="designer-cursor-core" />
     </>
   );
 }

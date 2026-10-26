@@ -8,7 +8,7 @@ export default function Footer() {
   return (
     <footer className="w-full py-8 border-t border-white/5 flex flex-col items-center justify-center">
       <p className="text-sm font-medium tracking-wide text-[#86868b]">
-        Copyright © {year} CHAN JEON. All rights reserved.
+        Copyright © {year} Chan Jeon. All rights reserved.
       </p>
     </footer>
   );

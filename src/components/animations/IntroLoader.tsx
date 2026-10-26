@@ -13,6 +13,14 @@ export default function IntroLoader() {
   const pathname = usePathname();
 
   useEffect(() => {
+    const hasSeenIntro = window.sessionStorage.getItem("chan-intro-seen") === "true";
+
+    if (hasSeenIntro) {
+      setShowIntro(false);
+      setIsIntroDone(true);
+      return;
+    }
+
     // If intro has already been seen this session, skip entirely
     if (isIntroDone) {
       setShowIntro(false);
@@ -38,6 +46,7 @@ export default function IntroLoader() {
     const t3 = setTimeout(() => {
       setShowIntro(false);
       setIsIntroDone(true);
+      window.sessionStorage.setItem("chan-intro-seen", "true");
     }, 4500);
 
     return () => {
@@ -102,11 +111,11 @@ export default function IntroLoader() {
               initial={{ opacity: 0, scale: 0.8, filter: "blur(30px)" }}
               animate={phase === 1 
                 ? { opacity: 1, scale: 1, filter: "blur(0px)", letterSpacing: "0.02em" } 
-                : { 
+                : {
                     opacity: 0, 
-                    scale: 1.8, 
-                    filter: "blur(100px) brightness(4) contrast(1.2)", 
-                    letterSpacing: "1.5em",
+                    scale: 1.08,
+                    filter: "blur(24px)",
+                    letterSpacing: "0.08em",
                   }
               }
               transition={{ 
@@ -137,38 +146,6 @@ export default function IntroLoader() {
                 </motion.p>
               </div>
 
-              {/* Dynamic Shatter / Flash Ending Effect */}
-              {phase === 2 && (
-                <motion.div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-[150vw] h-[150vh] pointer-events-none -z-10"
-                >
-                  {/* Central brilliant flash */}
-                  <motion.div
-                    className="absolute bg-foreground rounded-full blur-[80px] md:blur-[120px]"
-                    initial={{ width: 0, height: 0, opacity: 0 }}
-                    animate={{ width: "80vw", height: "80vw", opacity: [0, 1, 0] }}
-                    transition={{ duration: 1.2, ease: "easeInOut" }}
-                  />
-                  {/* High-speed horizontal streaks */}
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={`streak-${i}`}
-                      className="absolute h-[2px] bg-foreground/80 md:bg-foreground shadow-[0_0_20px_rgba(255,255,255,0.8)]"
-                      style={{ top: `${45 + Math.random() * 10}%` }}
-                      initial={{ width: 0, scaleX: 0, opacity: 1 }}
-                      animate={{ width: "150vw", scaleX: 1, opacity: 0, x: i % 2 === 0 ? "50%" : "-50%" }}
-                      transition={{ duration: 0.8, delay: i * 0.1, ease: "circIn" }}
-                    />
-                  ))}
-                  {/* Burst ring */}
-                  <motion.div
-                    className="absolute border-[2px] border-foreground/50 rounded-full"
-                    initial={{ width: "10vw", height: "10vw", opacity: 1 }}
-                    animate={{ width: "120vw", height: "120vw", opacity: 0, borderWidth: "10px" }}
-                    transition={{ duration: 0.9, ease: "easeOut" }}
-                  />
-                </motion.div>
-              )}
             </motion.div>
           )}
 
@@ -177,6 +154,7 @@ export default function IntroLoader() {
             onClick={() => {
               setShowIntro(false);
               setIsIntroDone(true);
+              window.sessionStorage.setItem("chan-intro-seen", "true");
             }}
             className="absolute bottom-12 right-12 text-[10px] tracking-widest uppercase text-muted/40 hover:text-muted transition-colors opacity-0 animate-[fadeIn_0.5s_ease-in_forwards] z-[120]"
             style={{ animationDelay: '1s' }}

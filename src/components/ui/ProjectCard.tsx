@@ -33,7 +33,7 @@ function FlipTitle({ title, isHovered }: { title: string; isHovered: boolean }) 
   let globalIdx = 0;
 
   return (
-    <h3 className="text-4xl md:text-5xl font-display font-medium tracking-tight text-white leading-[1.18]">
+    <h3 className="text-center text-[clamp(2rem,9vw,2.75rem)] font-display font-medium leading-[1.08] tracking-[-0.045em] text-white sm:text-left sm:text-4xl sm:leading-[1.18] md:text-5xl">
       {lines.map((words, li) => (
         <span key={li} className="block">
           {words.map((word, wi) => {
@@ -163,7 +163,7 @@ export default function ProjectCard({
     cursorX.set(nx);
     cursorY.set(ny);
     if (spotlightRef.current) {
-      spotlightRef.current.style.background = `radial-gradient(circle 54% at ${nx * 100}% ${ny * 100}%, rgba(255,255,255,0.065) 0%, transparent 58%)`;
+      spotlightRef.current.style.background = `radial-gradient(circle 58% at ${nx * 100}% ${ny * 100}%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.045) 38%, transparent 68%)`;
     }
   }, [cursorX, cursorY]);
 
@@ -219,6 +219,12 @@ export default function ProjectCard({
                 backfaceVisibility: "hidden",
                 WebkitFontSmoothing: "antialiased"
               }}
+              animate={{
+                filter: isHovered
+                  ? "brightness(1.2) saturate(1.24) contrast(1.03)"
+                  : "brightness(1) saturate(1) contrast(1)",
+              }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
             >
               {image && (
                 imageMotion === "snoo-greeting" ? (
@@ -244,7 +250,7 @@ export default function ProjectCard({
                     style={{ imageRendering: "-webkit-optimize-contrast" }}
                     animate={{
                       scale: isHovered ? 1.06 : 1,
-                      filter: isHovered ? "brightness(1.08) saturate(1.15)" : "brightness(1) saturate(1)",
+                      filter: isHovered ? "brightness(1.04) saturate(1.06)" : "brightness(1) saturate(1)",
                     }}
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                   />
@@ -264,7 +270,7 @@ export default function ProjectCard({
                     animate={{
                       opacity: isVideoPlaying ? 1 : (image ? 0 : 1),
                       scale: isHovered ? 1.06 : 1,
-                      filter: isHovered ? "brightness(1.08) saturate(1.15)" : "brightness(1) saturate(1)",
+                      filter: isHovered ? "brightness(1.04) saturate(1.06)" : "brightness(1) saturate(1)",
                     }}
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                   />
@@ -291,25 +297,28 @@ export default function ProjectCard({
             />
 
             {/* Scrim */}
-            <div
+            <motion.div
               className="absolute inset-0 pointer-events-none"
               style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)" }}
+              animate={{ opacity: isHovered ? 0.58 : 1 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             />
+            <div className="absolute inset-0 bg-black/25 pointer-events-none sm:hidden" />
 
             {/* Overlay */}
             <motion.div
               className="absolute inset-0 pointer-events-none"
-              style={{ background: "rgba(0,0,0,0.15)" }}
+              style={{ background: "rgba(255,255,255,0.08)" }}
               animate={{ opacity: isHovered ? 1 : 0 }}
               transition={{ duration: 0.5 }}
             />
 
             {/* Content */}
-            <div className="absolute inset-x-0 bottom-0 p-10 md:p-16 flex justify-between items-end pointer-events-none">
-              <motion.div className="max-w-[70%] pr-4" style={{ x: contentX, y: contentY }}>
+            <div className="absolute inset-0 flex items-center justify-center p-6 pointer-events-none sm:inset-x-0 sm:bottom-0 sm:top-auto sm:items-end sm:justify-between sm:p-10 md:p-16">
+              <motion.div className="w-full max-w-[92%] text-center sm:w-auto sm:max-w-[70%] sm:pr-4 sm:text-left" style={{ x: contentX, y: contentY }}>
                 {company && (
                   <motion.span 
-                    className={`block text-[13px] font-semibold tracking-[0.12em] uppercase mb-3 ${companyAccent === "apple-cyan" ? "text-[#64D2FF]" : "text-apple-red"}`}
+                    className={`mb-3 block text-[11px] font-semibold uppercase tracking-[0.16em] sm:text-[13px] sm:tracking-[0.12em] ${companyAccent === "apple-cyan" ? "text-[#64D2FF]" : "text-apple-red"}`}
                     animate={isHovered ? { opacity: 1, y: -2 } : { opacity: 0.95, y: 0 }}
                     transition={{ duration: 0.4 }}
                   >
@@ -318,14 +327,16 @@ export default function ProjectCard({
                 )}
                 <FlipTitle title={title} isHovered={isHovered} />
                 <motion.div
-                  className="mt-4 mb-6 h-px bg-white/30 origin-left"
+                  className="mt-4 mb-6 hidden h-px bg-white/30 origin-left sm:block"
                   animate={{ scaleX: isHovered ? 1 : 0 }}
                   initial={{ scaleX: 0 }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: isHovered ? 0.12 : 0 }}
                 />
-                <CascadeDescription text={description} isHovered={isHovered} />
+                <div className="hidden sm:block">
+                  <CascadeDescription text={description} isHovered={isHovered} />
+                </div>
                 <motion.div
-                  className="flex items-center gap-3 mt-6"
+                  className="mt-6 hidden items-center gap-3 sm:flex"
                   animate={{ clipPath: isHovered ? "inset(0% 0% 0% 0%)" : "inset(0% 100% 0% 0%)" }}
                   initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: isHovered ? 0.38 : 0 }}

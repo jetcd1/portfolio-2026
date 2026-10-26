@@ -3,7 +3,7 @@
 import { motion, Variants, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Link from "next/link";
 import ProjectCard from "@/components/ui/ProjectCard";
-import OpticalCursorField from "@/components/animations/OpticalCursorField";
+import HeroBackgroundVideo from "@/components/animations/HeroBackgroundVideo";
 import { useRef, useState, useCallback, MouseEvent } from "react";
 import { useIntro } from "@/components/providers/IntroProvider";
 
@@ -139,85 +139,31 @@ function ScrollCue() {
 /* ─── Hero cursor-responsive title ─────────────────────────────────── */
 function HeroTitle() {
   const { isIntroDone } = useIntro();
-  const heroRef = useRef<HTMLDivElement>(null);
-  const cx = useMotionValue(0.5);
-  const cy = useMotionValue(0.5);
-  const scx = useSpring(cx, { stiffness: 40, damping: 18, mass: 1.5 });
-  const scy = useSpring(cy, { stiffness: 40, damping: 18, mass: 1.5 });
-
-  const complexX = useTransform(scx, [0, 1], ["-6px", "6px"]);
-  const complexY = useTransform(scy, [0, 1], ["-3px", "3px"]);
-  const structX  = useTransform(scx, [0, 1], ["-2px", "2px"]);
-  const structY  = useTransform(scy, [0, 1], ["-1px", "1px"]);
-
-  const onMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
-    const rect = heroRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    cx.set((e.clientX - rect.left) / rect.width);
-    cy.set((e.clientY - rect.top) / rect.height);
-  }, [cx, cy]);
-
-  // Entrance base delay logic: 0.4s if already intro done (refresh), otherwise wait for intro (3.8s)
   const baseDelay = isIntroDone ? 0.4 : 3.8;
 
   return (
-    <div ref={heroRef} onMouseMove={onMove} className="w-full flex flex-col items-center">
-      <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-display font-medium tracking-tighter mb-8 max-w-6xl text-foreground !leading-[1] text-center select-none overflow-visible pb-4">
-        <div className="inline-block relative overflow-hidden h-full py-2">
-          <motion.span 
-            className="inline-block relative" 
-            style={{ x: structX, y: structY }}
+    <div className="flex w-full flex-col items-center">
+      <h1 className="w-full max-w-[82rem] select-none text-center font-display text-white">
+        <span className="block overflow-hidden pb-[0.13em] text-[clamp(3.5rem,7vw,8rem)] font-semibold leading-[0.93] tracking-[-0.06em]">
+          <motion.span
+            className="block"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: baseDelay }}
           >
-            Structuring{" "}
-            {/* Light Sweep - Part 1 */}
-            <motion.div
-              className="absolute inset-0 z-10 w-full h-full"
-              initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
-              transition={{
-                duration: 1,
-                ease: [0.16, 1, 0.3, 1],
-                repeat: Infinity,
-                repeatDelay: 3,
-                delay: baseDelay + 2.5
-              }}
-              style={{
-                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)",
-              }}
-            />
+            Shaping products
           </motion.span>
-        </div>
-        <div className="inline-block relative overflow-hidden h-full py-2">
+        </span>
+        <span className="-mt-[0.04em] block overflow-hidden pb-[0.34em] text-[clamp(4.35rem,9vw,10.5rem)] font-bold leading-[0.98] tracking-[-0.07em]">
           <motion.span
-            className="inline-block text-apple-blue relative"
-            style={{ x: complexX, y: complexY }}
+            className="clarity-gradient-text block"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: baseDelay + 0.15 }}
           >
-            Complexity.
-            
-            {/* Light Sweep - Part 2 (Sequential) */}
-            <motion.div
-              className="absolute inset-0 z-10 w-full h-full"
-              initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
-              transition={{
-                duration: 1,
-                ease: [0.16, 1, 0.3, 1],
-                repeat: Infinity,
-                repeatDelay: 3,
-                delay: baseDelay + 2.8 // Delay relative to Structuring sweep
-              }}
-              style={{
-                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)",
-              }}
-            />
+            with clarity.
           </motion.span>
-        </div>
+        </span>
       </h1>
     </div>
   );
@@ -230,14 +176,14 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-start relative">
       {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-[90svh] md:min-h-[84svh] flex text-center flex-col items-center justify-center px-8 pb-20 pt-24 overflow-hidden">
-        <OpticalCursorField />
+      <section className="relative flex min-h-[100svh] w-full flex-col items-center justify-center overflow-hidden px-5 pb-28 pt-32 text-center sm:px-8 sm:pb-32 sm:pt-36">
+        <HeroBackgroundVideo />
         <motion.div
           key={isIntroDone ? "ready" : "intro"}
           variants={getStaggerContainer(isIntroDone)}
           initial="hidden"
           animate="visible"
-          className="relative z-10 max-w-5xl w-full flex flex-col items-center"
+          className="relative z-10 flex w-full max-w-[88rem] flex-col items-center"
         >
           {/* Cursor-parallax title */}
           <HeroTitle />
@@ -251,12 +197,10 @@ export default function Home() {
               ease: [0.16, 1, 0.3, 1], 
               delay: (isIntroDone ? 0.4 : 3.8) + 0.5 
             }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-display font-normal tracking-[-0.03em] max-w-3xl text-center !leading-[1.25] text-foreground/90 mt-2"
+            className="mt-8 max-w-[52rem] text-center font-sans text-[1.05rem] leading-[1.5] tracking-[-0.018em] sm:mt-11 sm:text-xl md:text-[1.4rem]"
           >
-            Designing clarity{" "}
-            <span className="text-muted/60 font-light block sm:inline">
-              for complex systems.
-            </span>
+            <span className="font-medium text-white/95">Visual design, UI systems,</span>{" "}
+            <span className="font-normal text-white/62">and thoughtful execution for modern digital products.</span>
           </motion.p>
         </motion.div>
 
@@ -265,7 +209,8 @@ export default function Home() {
       </section>
 
       {/* ── Selected Work ─────────────────────────────────────────── */}
-      <section id="work" className="w-full max-w-7xl px-4 md:px-8 pt-24 md:pt-32 pb-12 md:pb-16">
+      <section id="work" className="relative isolate w-full max-w-7xl px-4 md:px-8 pt-24 md:pt-32 pb-12 md:pb-16">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-[-10vw] top-0 -z-10 h-80 bg-[radial-gradient(ellipse_at_top,rgba(113,91,210,0.075),transparent_72%)]" />
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
