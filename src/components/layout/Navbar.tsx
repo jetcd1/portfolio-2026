@@ -20,6 +20,7 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const { isIntroDone } = useIntro();
   const pathname = usePathname();
+  const isAIPlayground = pathname === "/ai-playground";
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -77,7 +78,7 @@ export default function Navbar() {
   return (
     <>
       <motion.header 
-        className="fixed top-0 left-0 right-0 z-50 w-full mix-blend-difference"
+        className={`fixed top-0 left-0 right-0 z-50 w-full mix-blend-difference ${isAIPlayground ? "hidden md:block" : ""}`}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}

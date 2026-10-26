@@ -221,7 +221,7 @@ export default function AIPlayground() {
       </nav>
 
       {/* ─── Accessible mobile experiment menu ─────────────────────────── */}
-      <div className="fixed inset-x-0 top-0 z-[70] flex items-center justify-between bg-gradient-to-b from-black via-black/90 to-transparent px-4 pb-8 pt-4 md:hidden">
+      <div className="fixed inset-x-0 top-0 z-[80] flex items-center justify-between bg-gradient-to-b from-black via-black/90 to-transparent px-4 pb-8 pt-[max(16px,env(safe-area-inset-top))] md:hidden">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-[.3em] text-white/45">AI Lab</p>
           <p className="mt-1 max-w-[230px] truncate text-base font-semibold text-white">{exhibits.find((ex) => ex.id === activeId)?.name}</p>
@@ -244,7 +244,7 @@ export default function AIPlayground() {
             <motion.button
               type="button"
               aria-label="Close experiment menu"
-              className="fixed inset-0 z-[71] bg-black/55 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-[81] bg-black/55 backdrop-blur-sm md:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -253,7 +253,7 @@ export default function AIPlayground() {
             <motion.nav
               id="mobile-experiment-menu"
               aria-label="Choose an AI Lab experiment"
-              className="fixed inset-y-0 left-0 z-[72] flex w-[min(88vw,380px)] flex-col border-r border-white/10 bg-[#090909] px-4 pb-[max(24px,env(safe-area-inset-bottom))] pt-[max(20px,env(safe-area-inset-top))] text-white shadow-[24px_0_80px_rgba(0,0,0,.5)] md:hidden"
+              className="fixed inset-y-0 left-0 z-[82] flex w-[min(88vw,380px)] max-w-full flex-col border-r border-white/10 bg-[#090909] px-4 pb-[max(24px,env(safe-area-inset-bottom))] pt-[max(20px,env(safe-area-inset-top))] text-white shadow-[24px_0_80px_rgba(0,0,0,.5)] md:hidden"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
