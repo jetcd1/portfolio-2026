@@ -152,11 +152,13 @@ function Lightbox({ src, isOpen, onClose }: { src: string; isOpen: boolean; onCl
 
 export default function EquilarCaseStudy() {
   const containerRef = useRef<HTMLElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    heroVideoRef.current?.play().catch(() => undefined);
   }, []);
 
   return (
@@ -169,12 +171,15 @@ export default function EquilarCaseStudy() {
         {/* Full-screen Background Image */}
         <div className="absolute inset-0 w-full h-full z-0">
           <video
-            src="/works/equilarapp/thumbnail.mp4"
+            ref={heroVideoRef}
+            src="/works/equilarapp/hero.mp4"
             className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
             loop
             muted
             playsInline
             autoPlay
+            preload="auto"
+            onCanPlay={(event) => event.currentTarget.play().catch(() => undefined)}
           />
           {/* Cinematic Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black pointer-events-none" />

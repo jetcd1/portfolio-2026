@@ -176,10 +176,12 @@ function Lightbox({ src, isOpen, onClose }: { src: string; isOpen: boolean; onCl
 
 export default function BoardedgeCaseStudy() {
   const containerRef = useRef<HTMLElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    heroVideoRef.current?.play().catch(() => undefined);
   }, []);
 
   return (
@@ -191,10 +193,17 @@ export default function BoardedgeCaseStudy() {
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden">
         {/* Full-screen Background Image */}
         <div className="absolute inset-0 w-full h-full z-0">
-          <img
-            src="/works/boardedge/thumbnail.gif"
-            alt="Boardedge Hero Background"
+          <video
+            ref={heroVideoRef}
+            src="/works/boardedge/hero.mp4"
+            poster="/works/boardedge/hero.png"
             className="absolute top-0 left-0 w-full h-full object-cover opacity-60 brightness-75"
+            loop
+            muted
+            playsInline
+            autoPlay
+            preload="auto"
+            onCanPlay={(event) => event.currentTarget.play().catch(() => undefined)}
           />
           {/* Cinematic Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black pointer-events-none" />
