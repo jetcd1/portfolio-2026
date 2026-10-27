@@ -196,7 +196,6 @@ export default function BoardedgeCaseStudy() {
           <video
             ref={heroVideoRef}
             src="/works/boardedge/hero.mp4"
-            poster="/works/boardedge/hero.png"
             className="absolute top-0 left-0 w-full h-full object-cover opacity-60 brightness-75"
             loop
             muted
