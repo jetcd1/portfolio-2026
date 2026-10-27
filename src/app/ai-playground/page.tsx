@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard, Type, CircleDashed, Clock, Menu, X } from "lucide-react";
+import { Zap, Globe, Cpu, Radio, Sparkles, Wind, Layers, ArrowRight, Activity, Command, Boxes, Share2, Compass, PenTool, Repeat, Target, MousePointerClick, Keyboard, Type, CircleDashed, Clock, ChevronDown, X } from "lucide-react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Html, Text, Float } from "@react-three/drei";
@@ -221,20 +221,27 @@ export default function AIPlayground() {
       </nav>
 
       {/* ─── Accessible mobile experiment menu ─────────────────────────── */}
-      <div className="fixed inset-x-0 top-16 z-[70] flex items-center justify-between bg-gradient-to-b from-black via-black/90 to-transparent px-4 pb-7 pt-2 md:hidden">
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-[.3em] text-white/45">AI Lab</p>
-          <p className="mt-1 max-w-[230px] truncate text-base font-semibold text-white">{exhibits.find((ex) => ex.id === activeId)?.name}</p>
-        </div>
+      <div className="fixed inset-x-0 top-16 z-[70] bg-gradient-to-b from-black via-black/90 to-transparent px-4 pb-7 pt-2 md:hidden">
         <button
           type="button"
           aria-label={isMobileMenuOpen ? "Close experiment menu" : "Open experiment menu"}
           aria-expanded={isMobileMenuOpen}
           aria-controls="mobile-experiment-menu"
           onClick={() => setIsMobileMenuOpen((open) => !open)}
-          className="flex h-12 min-w-12 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white backdrop-blur-xl transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          className="flex min-h-14 w-full items-center justify-between rounded-2xl border border-white/15 bg-black/75 px-4 text-left text-white shadow-[0_12px_35px_rgba(0,0,0,.28)] backdrop-blur-xl transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
         >
-          {isMobileMenuOpen ? <X aria-hidden size={22} /> : <Menu aria-hidden size={22} />}
+          <span className="min-w-0">
+            <span className="block text-[9px] font-bold uppercase tracking-[.24em] text-white/40">Experiment</span>
+            <span className="mt-0.5 block truncate text-[15px] font-semibold tracking-[-.01em]">{exhibits.find((ex) => ex.id === activeId)?.name}</span>
+          </span>
+          <motion.span
+            aria-hidden
+            className="ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10"
+            animate={{ rotate: isMobileMenuOpen ? 180 : 0 }}
+            transition={{ duration: .25, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ChevronDown size={19} />
+          </motion.span>
         </button>
       </div>
 
@@ -253,16 +260,16 @@ export default function AIPlayground() {
             <motion.nav
               id="mobile-experiment-menu"
               aria-label="Choose an AI Lab experiment"
-              className="fixed bottom-0 left-0 top-16 z-[72] flex w-[min(88vw,380px)] max-w-full flex-col border-r border-white/10 bg-[#090909] px-4 pb-[max(24px,env(safe-area-inset-bottom))] pt-5 text-white shadow-[24px_0_80px_rgba(0,0,0,.5)] md:hidden"
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
+              className="fixed inset-x-0 bottom-0 top-16 z-[72] flex flex-col rounded-t-[2rem] border-t border-white/10 bg-[#090909] px-4 pb-[max(24px,env(safe-area-inset-bottom))] pt-5 text-white shadow-[0_-24px_80px_rgba(0,0,0,.55)] md:hidden"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 360, damping: 36 }}
             >
               <div className="mb-5 flex items-center justify-between px-2">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-[.3em] text-white/40">Experimental</p>
-                  <h2 className="mt-1 text-2xl font-bold tracking-tight">AI LAB</h2>
+                  <h2 className="mt-1 text-2xl font-bold tracking-tight">Choose an experiment</h2>
                 </div>
                 <button
                   type="button"
