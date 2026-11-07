@@ -20,6 +20,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.chanjeon.space"),
   title: "Chan Jeon | UI | UX Visual Designer",
   description: "UI | UX Visual Designer building scalable, high-density interfaces for complex systems.",
 };
