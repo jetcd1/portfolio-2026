@@ -28,13 +28,13 @@ export default function About() {
             <div className="space-y-12 text-lg font-medium text-muted">
               <motion.div {...fadeInUp} className="space-y-8">
                 <p className="text-lg md:text-xl text-muted mb-6 italic leading-relaxed">
-                  I'm Chan Jeon, a UI-focused product designer specializing in high-density interfaces and scalable design systems for complex products.
+                  I'm Chan Jeon, a UI-focused product designer with 12+ years of experience crafting clear, scalable digital products and design systems.
                 </p>
                 <p>
-                  I translate business and technical constraints into clear, structured, build-ready UI — working closely with PMs and engineers to deliver consistent and technically grounded solutions.
+                  I turn product, business, and technical constraints into polished, build-ready UI — partnering closely with PMs and engineers to create cohesive experiences that work at scale.
                 </p>
                 <p>
-                  Over the past decade, I've designed enterprise platforms across data, healthcare, and aviation domains. Most recently, I spent about three years at United Airlines working on internal operational tools, focusing on visual UI and contributing to the Orion design system. Before that, I worked at McKesson on complex oncology EHR products, and earlier in my career at Equilar designing enterprise dashboards and data tools.
+                  Most recently, I designed for Reddit's Ads platform, strengthening product UI, design system foundations, and the visual language across advertiser experiences. Previously, I spent nearly three years at United Airlines designing internal operational tools and contributing to the Orion design system. Before that, I worked at McKesson on oncology EHR products and at Equilar on executive intelligence platforms, dashboards, and data tools.
                 </p>
               </motion.div>
 
@@ -47,15 +47,15 @@ export default function About() {
                 <ul className="space-y-4 text-foreground/90 font-medium">
                   <li className="flex items-start gap-3">
                     <span className="text-apple-blue mt-1">•</span>
-                    <span>10+ years in product and UI design</span>
+                    <span>12+ years in product, UI, and visual design</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-apple-blue mt-1">•</span>
-                    <span>Enterprise platforms across aviation, healthcare, and data</span>
+                    <span>Digital products across advertising, aviation, healthcare, and data</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-apple-blue mt-1">•</span>
-                    <span>Design systems built and scaled across multiple teams</span>
+                    <span>Design systems and production-ready UI scaled across teams</span>
                   </li>
                 </ul>
               </motion.div>
