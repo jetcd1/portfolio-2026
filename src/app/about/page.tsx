@@ -27,14 +27,14 @@ export default function About() {
           <div className="grid md:grid-cols-[2fr_1fr] gap-16 mt-16 md:mt-24">
             <div className="space-y-12 text-lg font-medium text-muted">
               <motion.div {...fadeInUp} className="space-y-8">
-                <p className="text-lg md:text-xl text-muted mb-6 italic leading-relaxed">
-                  I'm Chan Jeon, a UI-focused product designer with 12+ years of experience crafting clear, scalable digital products and design systems.
+                <p className="mb-6 text-2xl font-medium leading-[1.45] tracking-[-0.025em] text-foreground md:text-3xl">
+                  I'm Chan Jeon, a UI-focused product designer with <span className="font-semibold text-[#b99cff]">12+ years</span> of experience crafting <span className="text-foreground">clear, scalable digital products</span> and <span className="text-foreground">design systems.</span>
                 </p>
-                <p>
-                  I turn product, business, and technical constraints into polished, build-ready UI — partnering closely with PMs and engineers to create cohesive experiences that work at scale.
+                <p className="text-lg leading-relaxed text-foreground/60 md:text-xl">
+                  I turn product, business, and technical constraints into <span className="font-semibold text-foreground/95">polished, build-ready UI</span> — partnering closely with <span className="text-foreground/85">PMs and engineers</span> to create cohesive experiences that work at scale.
                 </p>
-                <p>
-                  Most recently, I designed for Reddit's Ads platform, strengthening product UI, design system foundations, and the visual language across advertiser experiences. Previously, I spent nearly three years at United Airlines designing internal operational tools and contributing to the Orion design system. Before that, I worked at McKesson on oncology EHR products and at Equilar on executive intelligence platforms, dashboards, and data tools.
+                <p className="text-base leading-[1.85] text-foreground/55 md:text-lg">
+                  Most recently, I designed for <span className="font-semibold text-[#ff5c3b]">Reddit's Ads platform</span>, strengthening product UI, design system foundations, and the visual language across advertiser experiences. Previously, I spent nearly three years at <span className="font-semibold text-[#62a8ff]">United Airlines</span> designing internal operational tools and contributing to the Orion design system. Before that, I worked at <span className="font-semibold text-[#63d4cc]">McKesson</span> on oncology EHR products and at <span className="font-semibold text-[#b99cff]">Equilar</span> on executive intelligence platforms, dashboards, and data tools.
                 </p>
               </motion.div>
 
